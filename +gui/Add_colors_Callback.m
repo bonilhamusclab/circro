@@ -17,9 +17,9 @@ value_colors=v.value_colors;
 fprintf('Drawing circle with %d regions\n',numel(value_colors))
 if isfield(v,'value_sizes')
     value_sizes=v.value_sizes;
-    draw_circle(list_regions,v,value_sizes); %sizes were previously selected
+    drawing.draw_circle(list_regions,v,value_sizes); %sizes were previously selected
 else
-    draw_circle(list_regions,v,(ones(size_value_colors))/4,value_colors)
+    drawing.draw_circle(list_regions,v,(ones(size_value_colors))/4,value_colors)
 end
 if exist('list_regions','var')
     write_names(list_regions,(1+max(value_colors(:))),pi/2);

@@ -1,12 +1,10 @@
 % Callback functions
 % --- add a circle with default options
 function Add_nodes_Callback(obj, ~)
-v=guidata(obj);
-SelectFileToOpen(v);
-v=guidata(obj);
-list_regions=v.list_regions;
-v.number_region=numel(list_regions); 
-draw_circle(list_regions,v); % write circle with the regions listed
-fprintf('Drawing circle with %d regions\n',numel(list_regions))
-write_names(list_regions,1.2,pi/2);
-%end Add_nodes_Callback()
+[list_filename, list_pathname] = uigetfile( ...
+                    {'*.xlsx;', 'excel files (*.xlsx)';...
+                    '*.xls;', 'excel files (*.xls)'; ...
+                    '*.*',       'All Files (*.*)'},...
+                    'Select a text file');
+if isequal(list_filename,0), return; end;
+commands.addCircle(guidata(obj), [list_pathname list_filename]);

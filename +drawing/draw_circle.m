@@ -1,9 +1,10 @@
 % --- creates renderings
 function draw_circle(list_regions,v,sizes,colors,colorscheme)
-axis square
-delete(allchild(v.hAxes));%
-set(v.hMainFigure,'CurrentAxes',v.hAxes)
-set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
+    axis square
+    delete(allchild(v.hAxes));%
+    set(v.hMainFigure,'CurrentAxes',v.hAxes)
+    set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
+    fprintf('Drawing circle with %d regions\n',numel(list_regions))
     n=(size(list_regions,1)*(size(list_regions,2)));
     if nargin<3;
         % set constants

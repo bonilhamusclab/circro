@@ -13,7 +13,7 @@ else
     list_regions=(num2cell(temp));
 end
 value_sizes=v.value_sizes;
-draw_circle(list_regions,v,value_sizes);
+drawing.draw_circle(list_regions,v,value_sizes);
 fprintf('Drawing circle with %d regions\n',numel(list_regions))
 if exist('list_regions','var')
     write_names(list_regions,(1+max(value_sizes(:))),pi/2);
