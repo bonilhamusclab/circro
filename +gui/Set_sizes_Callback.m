@@ -1,20 +1,10 @@
 function Set_sizes_Callback(obj, ~)
 v=guidata(obj);
-Select_size_data(v);
-v=guidata(obj);
-node_sizes=v.node_sizes;
-num_node_size=numel(node_sizes);
-list_node_sizes(1:num_node_size/2,2)=flipud(((num_node_size/2)+1:num_node_size)'); % here in case I decide to add display values in the future
-if isfield(v,'list_regions')
-    list_regions=v.list_regions; % nodes were previously selected
-else
-    temp=[(1:num_node_size/2)' flipud((((num_node_size/2)+1):num_node_size)')]; % nodes were not previously selected- assigning names
-    list_regions=(num2cell(temp));
-end
-node_sizes=v.node_sizes;
-drawing.draw_circle(v, list_regions,node_sizes);
-fprintf('Drawing circle with %d regions\n',numel(list_regions))
-if exist('list_regions','var')
-    write_names(list_regions,(1+max(node_sizes(:))),pi/2);
-end
+[sizes_filename, sizes_pathname] = uigetfile( ...
+                    {'*.xlsx;', 'excel files (*.xlsx)';...
+                    '*.xls;', 'excel files (*.xls)'; ...
+                    '*.*',       'All Files (*.*)'},...
+                    'Select a text file');
+if isequal(sizes_filename,0), return; end;
+commands.setNodeSizes(v, [sizes_pathname sizes_filename]);
 %end Add_sizes_Callback()
