@@ -1,44 +1,43 @@
 % --- creates renderings
-function draw_circle(v,list_regions,sizes,colors,colorscheme)
+function draw_circle(v,node_sequence,node_sizes,node_colors,colorscheme)
     axis square
     delete(allchild(v.hAxes));%
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
     set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
-    fprintf('Drawing circle with %d regions\n',numel(list_regions))
-    num_regions=numel(list_regions);
+    fprintf('Drawing circle with %d regions\n',numel(node_sequence))
+    num_nodes=numel(node_sequence);
+    inner_r = 1;
     if nargin<3;
-        % set constants
-        r = 1;  % sets the outer radius
-        list_sizes(1:num_regions,1)=r*1.1; % sets the inner radius as 0.9 of R
+        node_sizes(1:num_nodes,1)=inner_r*1.1;
     else
-        r = 1;
-        list_sizes(1:num_regions/2,1)=sizes(1:end,1);
-        list_sizes(1:num_regions/2,2)=flipud(sizes(1:end,2));% flip the second column for sequential drawing of segments
-        list_sizes=list_sizes+r;
+        tmp = node_sizes;
+        node_sizes(1:num_nodes/2,1)=tmp(1:end,1);
+        node_sizes(1:num_nodes/2,2)=flipud(tmp(1:end,2));% flip the second column for sequential drawing of segments
+        node_sizes=node_sizes+inner_r;
     end
     if nargin>=4
-        list_colors(1:num_regions/2,1)=colors(1:end,1);th
-        list_colors(1:num_regions/2,2)=flipud(colors(1:end,2));
-        list_colors=[list_colors(1:num_regions/2,1);list_colors(1:num_regions/2,2)]; % organized into one single column 
+        list_colors(1:num_nodes/2,1)=node_colors(1:end,1);
+        list_colors(1:num_nodes/2,2)=flipud(node_colors(1:end,2));
+        list_colors=[list_colors(1:num_nodes/2,1); list_colors(1:num_nodes/2,2)]; % organized into one single column 
        
     else
-        list_colors=rand(num_regions,1);
-        list_colors(num_regions/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
+        list_colors=rand(num_nodes,1);
+        list_colors(num_nodes/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
     end
     if nargin<5
         colorscheme=hot;
     end
     start_radian=pi/2; %sets the origin of the first segment (could also be 0)
-    end_radian=start_radian+(2*pi)/num_regions; %sets the end of the first segment (could also be pi/2)
+    end_radian=start_radian+(2*pi)/num_nodes; %sets the end of the first segment (could also be pi/2)
     % end constants
     
     axis square        
-    for segment=1:num_regions % draw the circle
+    for segment=1:num_nodes % draw the circle
         % map colors
         color=find_color_in_colorscheme(list_colors(segment),list_colors,colorscheme);           
-        drawing.draw_segment(start_radian,end_radian,list_sizes(segment),r,color,[])
+        drawing.draw_segment(start_radian,end_radian,node_sizes(segment),inner_r,color,[])
         start_radian=end_radian;
-        end_radian=start_radian+(2*pi)/num_regions;
+        end_radian=start_radian+(2*pi)/num_nodes;
         pause(0.01)
         hold on        
     end
@@ -48,7 +47,7 @@ function draw_circle(v,list_regions,sizes,colors,colorscheme)
     cbIm = findobj(cb,'Type','image');
     alpha(cbIm,0.5)
     % end add colorbar      
-    R=max(list_sizes(:));
+    R=max(node_sizes(:));
     axis([-2.3*R 2.3*R -2.3*R 2.3*R])
     axis square
     axis off
