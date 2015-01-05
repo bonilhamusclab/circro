@@ -13,8 +13,8 @@ else
     list_regions=(num2cell(temp));
 end
 % check if sizes previously defined
-if isfield(v,'value_sizes')
-    value_sizes=v.list_regions; % nodes were previously selected
+if isfield(v,'node_sizes')
+    node_sizes=v.list_regions; % nodes were previously selected
 else
     temp=[(1:num_value_colors/2)' flipud((((num_value_colors/2)+1):num_value_colors)')]; % nodes were not previously selected- assigning names
     list_regions=(num2cell(temp));

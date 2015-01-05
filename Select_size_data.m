@@ -5,7 +5,5 @@ function Select_size_data(v)
                     '*.*',       'All Files (*.*)'},...
                     'Select a text file');
     if isequal(sizes_filename,0), return; end;
-    [value_sizes, ~]=xlsread([sizes_pathname sizes_filename]);
-    v.value_sizes=value_sizes;       
-    guidata(v.hMainFigure,v)
+    commands.setNodeSizes(v, [sizes_pathname sizes_filename]);
 % end Select_size_data

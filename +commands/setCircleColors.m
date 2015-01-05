@@ -16,9 +16,9 @@ function setCircleColors(v, colors_full_path)
     guidata(v.hMainFigure,v)
     
     fprintf('Drawing circle with %d regions\n',numel(value_colors))
-    if isfield(v,'value_sizes')
-        value_sizes=v.value_sizes;
-        drawing.draw_circle(v, list_regions,value_sizes); %sizes were previously selected
+    if isfield(v,'node_sizes')
+        node_sizes=v.node_sizes;
+        drawing.draw_circle(v, list_regions,node_sizes); %sizes were previously selected
     else
         drawing.draw_circle(v, list_regions,(ones(size_value_colors))/4,value_colors)
     end
