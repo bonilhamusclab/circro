@@ -8,4 +8,12 @@ v=guidata(obj);
                     '*.*',       'All Files (*.*)'},...
                     'Select a text file');
 if isequal(matrix_filename,0), return; end;
-commands.addMatrix(v, [matrix_pathname matrix_filename]);
+prompt = {'Threshold:','Start Radian:', 'Line Radius:'};
+dlg_title = 'Matrix Options';
+num_lines = 1;
+def = {'.5','0', '1'};
+answer = inputdlg(prompt,dlg_title,num_lines,def);
+threshold = str2double(answer(1));
+start_radian = str2double(answer(2));
+radius = str2double(answer(3));
+commands.addMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);
