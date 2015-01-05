@@ -1,5 +1,4 @@
-% --- Add matrix
-function Add_matrix_Callback(obj, ~)
+function Add_edge_matrix_Callback(obj, ~)
 v=guidata(obj);
 
 [matrix_filename, matrix_pathname] = uigetfile( ...
@@ -16,4 +15,4 @@ answer = inputdlg(prompt,dlg_title,num_lines,def);
 threshold = str2double(answer(1));
 start_radian = str2double(answer(2));
 radius = str2double(answer(3));
-commands.addMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);
+commands.addEdgeMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);

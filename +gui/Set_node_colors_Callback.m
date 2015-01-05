@@ -1,5 +1,4 @@
-% --- Add colors
-function Add_colors_Callback(obj, ~)
+function Set_node_colors_Callback(obj, ~)
 
 [colors_filename, colors_pathname] = uigetfile( ...
                     {'*.xlsx;', 'excel files (*.xlsx)';...
@@ -8,5 +7,5 @@ function Add_colors_Callback(obj, ~)
                     'Select a text file');
     if isequal(colors_filename,0), return; end;
     
-commands.setCircleColors(guidata(obj), [colors_pathname colors_filename]);
+commands.setNodeColors(guidata(obj), [colors_pathname colors_filename]);
 % end Add colors;
