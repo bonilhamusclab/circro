@@ -20,4 +20,4 @@ else
     list_regions=(num2cell(temp));
 end
 
-draw_links(matrix,threshold,start_radian,radius)
+drawing.draw_links(matrix,threshold,start_radian,radius)
