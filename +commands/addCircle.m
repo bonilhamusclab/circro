@@ -6,4 +6,4 @@ function addCircle(v, list_full_path)
     v.list_regions=list_regions;
     guidata(v.hMainFigure,v)
     drawing.draw_circle(v, list_regions); % write circle with the regions listed
-    write_names(list_regions,1.2,pi/2);
+    drawing.write_names(list_regions,1.2,pi/2);

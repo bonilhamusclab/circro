@@ -23,6 +23,6 @@ function setCircleColors(v, colors_full_path)
         drawing.draw_circle(v, list_regions,(ones(size_value_colors))/4,value_colors)
     end
     if exist('list_regions','var')
-        write_names(list_regions,(1+max(value_colors(:))),pi/2);
+        drawing.write_names(list_regions,(1+max(value_colors(:))),pi/2);
     end
 % end select colors data
