@@ -1,4 +1,4 @@
-function addCircle(v, list_full_path)
+function addCircularDiagram(v, list_full_path)
     
     [~, list_regions]=xlsread(list_full_path);
     

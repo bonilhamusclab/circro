@@ -11,7 +11,7 @@ set(v.hMainFigure,'Renderer','OpenGL')
 v.hAxes = axes('Parent', v.hMainFigure,'HandleVisibility','on','Units', 'normalized','Position',[0.0 0.0 1 1]); %important: turn ON visibility
 %menus...
 v.hFileMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','File');
-v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Select list of nodes','HandleVisibility','callback', 'Callback', @gui.Add_nodes_Callback); % to open the list of nodes
+v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Add Circular Diagram','HandleVisibility','callback', 'Callback', @gui.AddCircularDiagram_Callback); % to open the list of nodes
 
 v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Edit');
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
