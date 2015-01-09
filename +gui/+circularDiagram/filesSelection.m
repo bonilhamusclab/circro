@@ -22,7 +22,7 @@ function varargout = filesSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 08-Jan-2015 12:25:56
+% Last Modified by GUIDE v2.5 09-Jan-2015 00:36:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,7 +62,7 @@ guidata(hObject, handles);
 % uiwait(handles.figure1);
 
 
-function varargout = filesSelection_OutputFcn(hObject, eventdata, handles) 
+function varargout = filesSelection_OutputFcn(~, ~, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -72,20 +72,28 @@ function varargout = filesSelection_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 % --- Executes on button press in selectSizesFile_button.
-function selectLabelsFile_button_Callback(hObject, eventdata, handles)
+function selectLabelsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[data_filename, data_pathname] = uigetfile( ...
+                    {'*.xlsx;', 'excel files (*.xlsx)';...
+                    '*.xls;', 'excel files (*.xls)'; ...
+                    '*.*',       'All Files (*.*)'},...
+                    'Select a Label file');
+if isequal(data_filename,0), return; end;
+handles.labelsFile = [data_pathname data_filename];
+guidata(handles.output, handles);
 
 % --- Executes on button press in selectSizesFile_button.
-function selectSizesFile_button_Callback(hObject, eventdata, handles)
+function selectSizesFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 
 % --- Executes on button press in selectEdgeMatrixFile_button.
-function selectEdgeMatrixFile_button_Callback(hObject, eventdata, handles)
+function selectEdgeMatrixFile_button_Callback(~, ~, handles)
 % hObject    handle to selectEdgeMatrixFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -93,32 +101,13 @@ function selectEdgeMatrixFile_button_Callback(hObject, eventdata, handles)
 
 
 % --- Executes on button press in selectColorsFile_button.
-function selectColorsFile_button_Callback(hObject, eventdata, handles)
+function selectColorsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectColorsFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 
-
-% --- Executes during object creation, after setting all properties.
-function labelsFilePath_txtbox_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to sizesFilePath_txtbox (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes during object creation, after setting all properties.
-function sizesFilePath_txtbox_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to sizesFilePath_txtbox (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
+function prepForWindowsOs(hObject)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
@@ -126,25 +115,32 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 % --- Executes during object creation, after setting all properties.
-function colorsFilePath_txtbox_CreateFcn(hObject, eventdata, handles)
+function labelsFilePath_txtbox_CreateFcn(hObject, ~, handles)
+% hObject    handle to sizesFilePath_txtbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+prepForWindowsOs(hObject);
+
+
+% --- Executes during object creation, after setting all properties.
+function sizesFilePath_txtbox_CreateFcn(hObject, ~, handles)
+% hObject    handle to sizesFilePath_txtbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+prepForWindowsOs(hObject);
+
+
+% --- Executes during object creation, after setting all properties.
+function colorsFilePath_txtbox_CreateFcn(hObject, ~, handles)
 % hObject    handle to colorsFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+prepForWindowsOs(hObject);
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 % --- Executes during object creation, after setting all properties.
-function edgeMatrxPath_txt_CreateFcn(hObject, eventdata, handles)
+function edgeMatrxPath_txt_CreateFcn(hObject, ~, handles)
 % hObject    handle to edgeMatrxPath_txt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+prepForWindowsOs(hObject);

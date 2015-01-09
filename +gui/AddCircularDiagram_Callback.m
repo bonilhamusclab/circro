@@ -9,5 +9,6 @@ function AddCircularDiagram_Callback(obj, ~)
                     'Select an excel file');
 if isequal(list_filename,0), return; end;
 %}
-uiwait(gui.circularDiagram.filesSelection);
-commands.addCircularDiagram(guidata(obj), [list_pathname list_filename]);
+h = gui.circularDiagram.filesSelection;
+waitfor(h);
+commands.addCircularDiagram(guidata(obj), h.labelsFile);
