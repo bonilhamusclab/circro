@@ -1,4 +1,4 @@
-function addEdgeMatrix(v, matrix_full_path, threshold, start_radian, radius)
+function setCircularEdgeMatrix(v, matrix_full_path, threshold, start_radian, radius)
 matrix = fileUtils.loadMatrix(matrix_full_path);
 v.matrix=matrix;     
 

@@ -8,8 +8,20 @@ function AddCircularDiagram_Callback(obj, ~)
         fn = @setterFn;
     end
 
-    h = gui.circularDiagram.filesSelection(...
-        setFile('labels'), setFile('sizes'), setFile('edgeMatrix'), setFile('colors'));
+    neededFiles = {'labels', 'sizes', 'edgeMatrix', 'colors'};
+    
+    setFileFns = cellfun(@setFile, neededFiles, 'UniformOutput', 0);
+    h = gui.circularDiagram.filesSelection(setFileFns{:});
     waitfor(h);
-    commands.addCircularDiagram(guidata(obj), files.labels);
+    
+    function ret = emptyOrVal(field)
+        if ~isfield(files, field)
+            ret = '';
+        else
+            ret = files.(field);
+        end
+    end
+    
+    inputs = cellfun(@emptyOrVal, neededFiles, 'UniformOutput', 0);
+    commands.addCircularDiagram(guidata(obj), inputs{:});
 end

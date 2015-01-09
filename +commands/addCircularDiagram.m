@@ -5,28 +5,35 @@ function addCircularDiagram(v, varargin)
     sizesFullPath = inputs.sizesFullPath;
     edgeMatrixFullPath = inputs.edgeMatrixFullPath;
     colorsFullPath = inputs.colorsFullPath;
-
-    labels=fileUtils.loadLabels(labelsFullPath);
     
-    v.number_region=numel(labels); 
-    v.list_regions=labels;
-    guidata(v.hMainFigure,v)
-    drawing.draw_circle(v, labels); % write circle with the regions listed
-    drawing.write_names(labels,1.2,pi/2);
+    if labelsFullPath
+        commands.setCircularNodeLabels(v, labelsFullPath);
+    end
+    
+    if sizesFullPath
+        commands.setCircularNodeSizes(v, sizesFullPath);
+    end
+    
+    if edgeMatrixFullPath
+        commands.setCircularEdgeMatrix(v, edgeMatrixFullPath);
+    end
+    
+    if colorsFullPath
+        commands.setCircularNodeColors(v, colorsFullPath);
+    end
 end
 
 function inputParams = parseInputParamsSub(args)
 p = inputParser;
 d.labelsFullPath = ''; d.sizesFullPath = ''; d.edgeMatrixFullPath = ''; d.colorsFullPath = '';
 
-p.addOptional('labelsFullPath', d.labelsFullPath, ...
-    @(x) validateattributes(x, {'char'}, {'nonempty'}));
-p.addOptional('sizesFullPath', d.labelsFullPath, ...
-    @(x) validateattributes(x, {'char'}, {'nonempty'}));
-p.addOptional('edgeMatrixFullPath', d.labelsFullPath, ...
-    @(x) validateattributes(x, {'char'}, {'nonempty'}));
-p.addOptional('colorsFullPath', d.labelsFullPath, ...
-    @(x) validateattributes(x, {'char'}, {'nonempty'}));
+validateChar = @(x) validateattributes(x, {'char'}, {});
+
+p.addOptional('labelsFullPath', d.labelsFullPath, validateChar);
+p.addOptional('sizesFullPath', d.labelsFullPath, validateChar);
+p.addOptional('edgeMatrixFullPath', d.labelsFullPath, validateChar);
+p.addOptional('colorsFullPath', d.labelsFullPath, validateChar);
+
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
     d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath);
 
