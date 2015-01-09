@@ -1,4 +1,4 @@
-function Add_edge_matrix_Callback(obj, ~)
+function AddEdgeMatrix_Callback(obj, ~)
 v=guidata(obj);
 
 [matrix_filename, matrix_pathname] = uigetfile( ...

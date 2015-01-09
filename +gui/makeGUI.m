@@ -17,9 +17,9 @@ v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
 v.hFunctionMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Functions');
 v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','HandleVisibility','callback','Callback', @gui.ToolbarMenu_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set node sizes','HandleVisibility','callback','Callback', @gui.Set_node_sizes_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set node colors','HandleVisibility','callback','Callback', @gui.Set_node_colors_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Add Edge matrix','HandleVisibility','callback','Callback', @gui.Add_edge_matrix_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set node sizes','HandleVisibility','callback','Callback', @gui.SetCircularNodeSizes_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set node colors','HandleVisibility','callback','Callback', @gui.SetCircularNodeColors_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Add Edge matrix','HandleVisibility','callback','Callback', @gui.AddEdgeMatrix_Callback);
 v.hSaveBmpMenu = uimenu('Parent',v.hFileMenu,'Label','Save bitmap','HandleVisibility','callback', 'Callback', @gui.SaveBmpMenu_Callback);
 
 v.hHelpMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Help');
