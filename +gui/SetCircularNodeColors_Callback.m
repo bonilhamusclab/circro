@@ -7,5 +7,5 @@ function SetCircularNodeColors_Callback(obj, ~)
                     'Select an excel file');
     if isequal(colors_filename,0), return; end;
     
-commands.setNodeColors(guidata(obj), [colors_pathname colors_filename]);
+commands.setCircularNodeColors(guidata(obj), [colors_pathname colors_filename]);
 % end Add colors;

@@ -1,4 +1,4 @@
-function setNodeColors(v, colors_full_path)
+function setCircularNodeColors(v, colors_full_path)
     [value_colors, ~]=xlsread(colors_full_path);
     v.value_colors=value_colors; 
     
