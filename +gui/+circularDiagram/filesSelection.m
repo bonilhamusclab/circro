@@ -43,12 +43,40 @@ else
 end
 % End initialization code - DO NOT EDIT
 
+function setBoundField(h, field, value)
+    handles = guidata(h);
+    handles.(field) = value;
+    guidata(handles.output, handles);
+    
+    boundFns = handles.boundFns;
+    if isfield(boundFns, field)
+        fnsForField = boundFns.(field);
+        for i = 1: size(fnsForField, 2)
+            fn = fnsForField{i};
+            fn(value);
+        end
+    end
+    guidata(h, handles);
+
+function bind(h, field, fns)
+    handles = guidata(h);
+    if ~isfield(handles, 'boundFns')
+        handles.boundFns = {};
+    end
+    orig_fns = {};
+    if isfield(handles.boundFns, field)
+        orig_fns = handles.boundFns.(field);
+    end
+    handles.boundFns.(field) = [orig_fns fns];
+    guidata(h, handles);
+    
+
 %So that invoking function has caccess to data
-function handles = callerSetters(handles, setLabelsFn, setSizesFn, setEdgeMatrixFn, setColorsFn)
-handles.setLabelsFn = setLabelsFn;
-handles.setSizesFn = setSizesFn;
-handles.setEdgeMatrixFn = setEdgeMatrixFn;
-handles.setColorsFn = setColorsFn;
+function callerSetters(h, setLabelsFn, setSizesFn, setEdgeMatrixFn, setColorsFn)
+bind(h, 'labelsFile', {setLabelsFn});
+bind(h, 'sizesFile', {setSizesFn});
+bind(h, 'edgeMatrixFile', {setEdgeMatrixFn});
+bind(h, 'colorsFile', {setColorsFn});
 
 % --- Executes just before filesSelection is made visible.
 function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
@@ -60,11 +88,11 @@ function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
 
 % Choose default command line output for filesSelection
 handles.output = hObject;
-    
-handles = callerSetters(handles, varargin{:});
 
 % Update handles structure
 guidata(hObject, handles);
+    
+callerSetters(handles.output, varargin{:});
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -80,7 +108,7 @@ function varargout = filesSelection_OutputFcn(~, ~, handles)
 varargout{1} = handles.output;
 
 
-function selectFile(fileType, handleField, setterFn, handles)
+function selectFile(fileType, handleField, h)
     [data_filename, data_pathname] = uigetfile( ...
                     {'*.xlsx;', 'excel files (*.xlsx)';...
                     '*.xls;', 'excel files (*.xls)'; ...
@@ -90,25 +118,22 @@ function selectFile(fileType, handleField, setterFn, handles)
         return;
     else
         fullpath = [data_pathname data_filename];
-        setterFn(fullpath);
-        handles.(handleField) = fullpath;
-        guidata(handles.output, handles);
+        setBoundField(h, handleField, fullpath);
     end
-    
 
 % --- Executes on button press in selectSizesFile_button.
 function selectLabelsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Labels', 'labelsFile', handles.setLabelsFn, handles);
+selectFile('Labels', 'labelsFile', handles.output);
 
 % --- Executes on button press in selectSizesFile_button.
 function selectSizesFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Sizes', 'sizesFile', handles.setSizesFn, handles);
+selectFile('Sizes', 'sizesFile', handles.output);
 
 
 % --- Executes on button press in selectEdgeMatrixFile_button.
@@ -116,7 +141,7 @@ function selectEdgeMatrixFile_button_Callback(~, ~, handles)
 % hObject    handle to selectEdgeMatrixFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Edge Matrix', 'edgeMatrixFile', handles.setEdgeMatrixFn, handles);
+selectFile('Edge Matrix', 'edgeMatrixFile', handles.output);
 
 
 
@@ -125,7 +150,7 @@ function selectColorsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectColorsFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA
-selectFile('Sizes', 'sizesFile', handles.setSizesFn, handles);
+selectFile('Sizes', 'sizesFile', handles.output);
 
 
 function prepForWindowsOs(hObject)
