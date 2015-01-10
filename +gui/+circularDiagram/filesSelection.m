@@ -22,7 +22,7 @@ function varargout = filesSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 10-Jan-2015 07:55:11
+% Last Modified by GUIDE v2.5 10-Jan-2015 17:32:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -91,7 +91,7 @@ function bindTextBoxes(h)
         fn = @updateTextBox;
     end
     
-    fields = {'labelsFile', 'sizesFile', 'edgeMatrixFile', 'colorsFile'};
+    fields = handles.fields;
     cellfun(@(f) bind(h, f, {updateTexBoxFnGen(f)}), fields, ...
         'UniformOutput', 0);
 end
@@ -106,6 +106,7 @@ function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
 
 % Choose default command line output for filesSelection
 handles.output = hObject;
+handles.fields = {'labelsFile', 'sizesFile', 'edgeMatrixFile', 'colorsFile'};
 
 % Update handles structure
 guidata(hObject, handles);
@@ -215,4 +216,24 @@ function edgeMatrixFilePath_txtbox_CreateFcn(hObject, ~, ~)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
     prepForWindowsOs(hObject);
+end
+
+
+% --- Executes on button press in okPushbutton.
+function okPushbutton_Callback(~, ~, handles)
+% hObject    handle to okPushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+close(handles.output);
+end
+
+% --- Executes on button press in cancelPushbutton.
+function cancelPushbutton_Callback(~, ~, handles)
+% hObject    handle to cancelPushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+fields = handles.fields;
+h = handles.output;
+cellfun(@(f)setBoundField(h, f, ''), fields);
+close(handles.output);
 end
