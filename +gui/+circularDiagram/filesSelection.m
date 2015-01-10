@@ -22,7 +22,7 @@ function varargout = filesSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 09-Jan-2015 00:36:43
+% Last Modified by GUIDE v2.5 10-Jan-2015 07:55:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -42,6 +42,7 @@ else
     gui_mainfcn(gui_State, varargin{:});
 end
 % End initialization code - DO NOT EDIT
+end
 
 function setBoundField(h, field, value)
     handles = guidata(h);
@@ -57,6 +58,7 @@ function setBoundField(h, field, value)
         end
     end
     guidata(h, handles);
+end
 
 function bind(h, field, fns)
     handles = guidata(h);
@@ -69,14 +71,30 @@ function bind(h, field, fns)
     end
     handles.boundFns.(field) = [orig_fns fns];
     guidata(h, handles);
-    
+end
 
 %So that invoking function has caccess to data
 function callerSetters(h, setLabelsFn, setSizesFn, setEdgeMatrixFn, setColorsFn)
-bind(h, 'labelsFile', {setLabelsFn});
-bind(h, 'sizesFile', {setSizesFn});
-bind(h, 'edgeMatrixFile', {setEdgeMatrixFn});
-bind(h, 'colorsFile', {setColorsFn});
+    bind(h, 'labelsFile', {setLabelsFn});
+    bind(h, 'sizesFile', {setSizesFn});
+    bind(h, 'edgeMatrixFile', {setEdgeMatrixFn});
+    bind(h, 'colorsFile', {setColorsFn});
+end
+
+function bindTextBoxes(h)
+    handles = guidata(h);
+    
+    function fn = updateTexBoxFnGen(field)
+        function updateTextBox(value)
+            handles.([field 'Path_txtbox']).String = value;
+        end
+        fn = @updateTextBox;
+    end
+    
+    fields = {'labelsFile', 'sizesFile', 'edgeMatrixFile', 'colorsFile'};
+    cellfun(@(f) bind(h, f, {updateTexBoxFnGen(f)}), fields, ...
+        'UniformOutput', 0);
+end
 
 % --- Executes just before filesSelection is made visible.
 function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
@@ -94,8 +112,11 @@ guidata(hObject, handles);
     
 callerSetters(handles.output, varargin{:});
 
+bindTextBoxes(handles.output);
+
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
+end
 
 
 function varargout = filesSelection_OutputFcn(~, ~, handles) 
@@ -104,9 +125,9 @@ function varargout = filesSelection_OutputFcn(~, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Get default command line output from handles structure
-varargout{1} = handles.output;
-
+    % Get default command line output from handles structure
+    varargout{1} = handles.output;
+end
 
 function selectFile(fileType, handleField, h)
     [data_filename, data_pathname] = uigetfile( ...
@@ -120,20 +141,23 @@ function selectFile(fileType, handleField, h)
         fullpath = [data_pathname data_filename];
         setBoundField(h, handleField, fullpath);
     end
+end
 
 % --- Executes on button press in selectSizesFile_button.
 function selectLabelsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Labels', 'labelsFile', handles.output);
+    selectFile('Labels', 'labelsFile', handles.output);
+end
 
 % --- Executes on button press in selectSizesFile_button.
 function selectSizesFile_button_Callback(~, ~, handles)
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Sizes', 'sizesFile', handles.output);
+    selectFile('Sizes', 'sizesFile', handles.output);
+end
 
 
 % --- Executes on button press in selectEdgeMatrixFile_button.
@@ -141,8 +165,8 @@ function selectEdgeMatrixFile_button_Callback(~, ~, handles)
 % hObject    handle to selectEdgeMatrixFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selectFile('Edge Matrix', 'edgeMatrixFile', handles.output);
-
+    selectFile('Edge Matrix', 'edgeMatrixFile', handles.output);
+end
 
 
 % --- Executes on button press in selectColorsFile_button.
@@ -150,43 +174,45 @@ function selectColorsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectColorsFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA
-selectFile('Sizes', 'sizesFile', handles.output);
-
+    selectFile('Sizes', 'colorsFile', handles.output);
+end
 
 function prepForWindowsOs(hObject)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
+    if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+        set(hObject,'BackgroundColor','white');
+    end
 end
 
 % --- Executes during object creation, after setting all properties.
-function labelsFilePath_txtbox_CreateFcn(hObject, ~, handles)
+function labelsFilePath_txtbox_CreateFcn(hObject, ~, ~)
 % hObject    handle to sizesFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-prepForWindowsOs(hObject);
-
+    prepForWindowsOs(hObject);
+end
 
 % --- Executes during object creation, after setting all properties.
-function sizesFilePath_txtbox_CreateFcn(hObject, ~, handles)
+function sizesFilePath_txtbox_CreateFcn(hObject, ~, ~)
 % hObject    handle to sizesFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-prepForWindowsOs(hObject);
-
+    prepForWindowsOs(hObject);
+end
 
 % --- Executes during object creation, after setting all properties.
-function colorsFilePath_txtbox_CreateFcn(hObject, ~, handles)
+function colorsFilePath_txtbox_CreateFcn(hObject, ~, ~)
 % hObject    handle to colorsFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-prepForWindowsOs(hObject);
-
+    prepForWindowsOs(hObject);
+end
 
 % --- Executes during object creation, after setting all properties.
-function edgeMatrxPath_txt_CreateFcn(hObject, ~, handles)
-% hObject    handle to edgeMatrxPath_txt (see GCBO)
+function edgeMatrixFilePath_txtbox_CreateFcn(hObject, ~, ~)
+% hObject    handle to edgeMatrixFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-prepForWindowsOs(hObject);
+    prepForWindowsOs(hObject);
+end
