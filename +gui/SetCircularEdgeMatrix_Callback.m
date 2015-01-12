@@ -1,4 +1,4 @@
-function AddEdgeMatrix_Callback(obj, ~)
+function SetCircularEdgeMatrix_Callback(obj, ~)
 v=guidata(obj);
 
 [matrix_filename, matrix_pathname] = uigetfile( ...
@@ -15,4 +15,4 @@ answer = inputdlg(prompt,dlg_title,num_lines,def);
 threshold = str2double(answer(1));
 start_radian = str2double(answer(2));
 radius = str2double(answer(3));
-commands.addEdgeMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);
+commands.setCircularEdgeMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);
