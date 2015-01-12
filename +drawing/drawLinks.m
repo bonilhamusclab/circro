@@ -1,12 +1,8 @@
-function drawLinks(v)
-    matrix = v.links.matrix;
-    threshold = v.links.threshold;
-    startRadian = v.links.startRadian;
-    radius = v.links.radius;
+function drawLinks(edgeMatrix, threshold, startRadian, radius)
 
-    numberLinks=size(matrix,1);
+    numberLinks=size(edgeMatrix,1);
 
-    links=triu(matrix>threshold);%# this is a random list of connections
+    links=triu(edgeMatrix>threshold);%# this is a random list of connections
     [ind1,ind2]=ind2sub(size(links),find(links(:)));
     
     for i=1:size(ind1,1);
@@ -63,7 +59,7 @@ function drawLinks(v)
 
             pp = spline(xx,yy);
             yyy = ppval(pp, linspace(0,2*pi,100));
-            plot(yyy(1,:),yyy(2,:),'color',[0.5 0.5 0.5],'linewidth',1.5*matrix(ind1(i),ind2(i)) ) %,yy(1,2:3),yy(2,2:3),'or'), axis equal
+            plot(yyy(1,:),yyy(2,:),'color',[0.5 0.5 0.5],'linewidth',1.5*edgeMatrix(ind1(i),ind2(i)) ); %,yy(1,2:3),yy(2,2:3),'or'), axis equal
 
             %pause(0.8)
         end

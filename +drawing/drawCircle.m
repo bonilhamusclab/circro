@@ -41,7 +41,8 @@ function drawCircle(v)
     drawing.writeLabels(labels, labelRadius, startRadian);
 
     if isfield(v, 'links')
-        drawing.drawLinks(v)
+        links = appState.links;
+        drawing.drawLinks(links.edgeMatrix, links.threshold, startRadian, radius);
     end
 
 end
@@ -51,13 +52,16 @@ function seq = makeSequentialSub(twoD)
 end
 
 function appState = getAppStateSub(v)
-%[labels, sizes, colors, radius, startRadian, labelRadius]
+%[labels, sizes, colors, radius, startRadian, labelRadius, links]
 
-    fields = {'nodeLabels', 'nodeSizes', 'nodeColors'};
+    fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'links'};
     
     indxs = 1:length(fields);
     setFields = arrayfun(@(i) isfield(v, fields{i}), indxs);
     elemCountPerField = arrayfun(@(i) numel(v.(fields{i})), indxs(setFields));
+    if setFields(4)
+        elemCountPerField(end) = size(v.links.edgeMatrix, 1);
+    end
     
     function verifySameElemCountPerField()
         if range(elemCountPerField)
@@ -122,6 +126,11 @@ function appState = getAppStateSub(v)
         appState.labelRadius = max(appState.sizes(:)) * 1.1;
     else
         appState.labelRadius = v.labelRadius;
+    end
+    
+    if isfield(v, 'links')
+        appState.links.edgeMatrix = v.links.edgeMatrix;
+        appState.links.threshold = v.links.threshold;
     end
 
 end
