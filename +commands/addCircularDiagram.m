@@ -6,20 +6,22 @@ function addCircularDiagram(v, varargin)
     edgeMatrixFullPath = inputs.edgeMatrixFullPath;
     colorsFullPath = inputs.colorsFullPath;
     
+    h = v.hMainFigure;
+    
     if labelsFullPath
-        commands.setCircularNodeLabels(v, labelsFullPath);
+        commands.setCircularNodeLabels(guidata(h), labelsFullPath);
     end
     
     if sizesFullPath
-        commands.setCircularNodeSizes(v, sizesFullPath);
+        commands.setCircularNodeSizes(guidata(h), sizesFullPath);
     end
     
     if edgeMatrixFullPath
-        commands.setCircularEdgeMatrix(v, edgeMatrixFullPath);
+        commands.setCircularEdgeMatrix(guidata(h), edgeMatrixFullPath);
     end
     
     if colorsFullPath
-        commands.setCircularNodeColors(v, colorsFullPath);
+        commands.setCircularNodeColors(guidata(h), colorsFullPath);
     end
 end
 

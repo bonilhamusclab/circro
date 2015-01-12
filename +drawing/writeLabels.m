@@ -1,4 +1,5 @@
-function writeLabels(labels,radius,startRadian)
+function writeLabels(v, radius,startRadian)
+    labels = v.labels;
     regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
     numberLabels=size(regions,1);
     for i=1:numberLabels        
@@ -13,4 +14,4 @@ function writeLabels(labels,radius,startRadian)
         end        
         text(x*(1.1), y*(1.1), name, 'HorizontalAlignment','center','FontSize',10)               
     end    
-% end write names
+% end write labels

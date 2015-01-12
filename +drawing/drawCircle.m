@@ -1,9 +1,15 @@
 % --- creates renderings
-function drawCircle(v,labels,nodeSizes,nodeColors,colorscheme)
+function drawCircle(v,nodeSizes,nodeColors,colorscheme)
 axis square
 delete(allchild(v.hAxes));%
 set(v.hMainFigure,'CurrentAxes',v.hAxes)
 set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
+
+if ~isfield(v, 'labels')
+    error('labels must be added to draw a circle, see commands.setCircularNodeLabels or commands.addCircularDiagram')
+end
+labels = v.labels;
+
 fprintf('Drawing circle with %d regions\n',numel(labels))
 numNodes=numel(labels);
 innerR = 1;
@@ -46,6 +52,10 @@ R=max(nodeSizes(:));
 axis([-2.3*R 2.3*R -2.3*R 2.3*R])
 axis square
 axis off
+
+radius = 1.2;
+startRadian = pi/2;
+drawing.writeLabels(v, radius, startRadian);
 
 if isfield(v, 'links')
     drawing.drawLinks(v)
