@@ -23,6 +23,10 @@ function addCircularDiagram(v, varargin)
     if colorsFullPath
         commands.setCircularNodeColors(guidata(h), colorsFullPath);
     end
+    
+    if ~(labelsFullPath || sizesFullPath || edgeMatrixFullPath || colorsFullPath)
+        error('a labels, sizes, edge matrix, or colors file must be specified');
+    end
 end
 
 function inputParams = parseInputParamsSub(args)
