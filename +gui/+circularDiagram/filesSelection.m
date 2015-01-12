@@ -96,6 +96,35 @@ function bindTextBoxes(h)
         'UniformOutput', 0);
 end
 
+function bindOkButtonEnabled(h)
+    handles = guidata(h);
+	fields = handles.fields;
+    
+    cellfun(@(f) bind(h, f, {@toggle}), fields, ...
+        'UniformOutput', 0);
+        
+    function toggle(~)
+        handles = guidata(h);
+        
+        function a = any(cells)
+            a = 0;
+            for i = 1:length(cells)
+                if cells{i}
+                    a = 1;
+                    break;
+                end
+            end
+        end
+
+        Enable = 'off';
+        if any(cellfun(@(f) exist(handles.([f 'Path_txtbox']).String, 'file'), ...
+            fields, 'UniformOutput', 0));
+            Enable = 'on';
+        end
+        handles.okPushbutton.Enable = Enable;
+    end
+end
+
 % --- Executes just before filesSelection is made visible.
 function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -114,6 +143,8 @@ guidata(hObject, handles);
 callerSetters(handles.output, varargin{:});
 
 bindTextBoxes(handles.output);
+
+bindOkButtonEnabled(handles.output);
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
