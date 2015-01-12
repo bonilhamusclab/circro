@@ -1,23 +1,19 @@
 function setCircularNodeColors(v, colorsFullPath)
-    [valueColors, ~]=xlsread(colorsFullPath);
-    v.valueColors=valueColors; 
+    nodeColors =fileUtils.loadColors(colorsFullPath);
+    v.nodeColors=nodeColors; 
     
-    numValueColors=numel(valueColors);
-    sizeValueColors=size(valueColors);
+    numNodeColors=numel(nodeColors);
     
     if ~isfield(v,'labels') % labels were not previously set
-        temp=[(1:numValueColors/2)' flipud((((numValueColors/2)+1):numValueColors)')]; % nodes were not previously selected- assigning names
+        temp=[(1:numNodeColors/2)' flipud((((numNodeColors/2)+1):numNodeColors)')]; % nodes were not previously selected- assigning names
         v.labels=(num2cell(temp));
     end
-    valueColors=v.valueColors;
+    nodeColors=v.nodeColors;
     
-    fprintf('Drawing circle with %d regions\n',numel(valueColors))
-    if ~isfield(v,'nodeSizes')
-        v.nodeSizes = (ones(sizeValueColors))/4;
-    end
+    fprintf('Drawing circle with %d regions\n',numel(nodeColors))
     
     guidata(v.hMainFigure,v);
     
-    drawing.drawCircle(v, valueColors);
+    drawing.drawCircle(v);
     
 % end select colors data
