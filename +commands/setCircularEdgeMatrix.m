@@ -1,15 +1,19 @@
 function setCircularEdgeMatrix(v, edgeMatrixFullPath, varargin)
 matrix = fileUtils.loadMatrix(edgeMatrixFullPath);
-v.matrix=matrix;
 
 inputs = parseInputParamsSub(varargin);
 threshold = inputs.threshold;
 startRadian = inputs.startRadian;
 radius = inputs.radius;
 
+v.links.matrix = matrix;
+v.links.threshold = threshold;
+v.links.startRadian = startRadian;
+v.links.radius = radius;
+
 
 guidata(v.hMainFigure,v);
-drawing.drawLinks(matrix,threshold,startRadian,radius);
+drawing.drawLinks(v);
 
 function inputParams = parseInputParamsSub(args)
 p = inputParser;

@@ -1,4 +1,9 @@
-function drawLinks(matrix,threshold,startRadian,radius)
+function drawLinks(v)
+    matrix = v.links.matrix;
+    threshold = v.links.threshold;
+    startRadian = v.links.startRadian;
+    radius = v.links.radius;
+
     numberLinks=size(matrix,1);
 
     links=triu(matrix>threshold);%# this is a random list of connections
