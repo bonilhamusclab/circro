@@ -46,3 +46,7 @@ R=max(nodeSizes(:));
 axis([-2.3*R 2.3*R -2.3*R 2.3*R])
 axis square
 axis off
+
+if isfield(v, 'links')
+    drawing.drawLinks(v)
+end
