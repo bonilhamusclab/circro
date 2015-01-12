@@ -4,8 +4,8 @@ matrix = fileUtils.loadMatrix(edgeMatrixFullPath);
 inputs = parseInputParamsSub(varargin);
 threshold = inputs.threshold;
 
-v.links.edgeMatrix = matrix;
-v.links.threshold = threshold;
+v.edgeMatrix = matrix;
+v.edgeThreshold = threshold;
 
 guidata(v.hMainFigure,v);
 drawing.drawCircle(v);

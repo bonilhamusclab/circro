@@ -33,16 +33,15 @@ function drawCircle(v)
         hold on        
     end
     
-    R=max(sizes(:));
-    axis([-2.3*R 2.3*R -2.3*R 2.3*R])
+    R=labelRadius;
+    axis([-1.3*R 1.3*R -1.3*R 1.3*R])
     axis square
     axis off
 
     drawing.writeLabels(labels, labelRadius, startRadian);
 
-    if isfield(v, 'links')
-        links = appState.links;
-        drawing.drawLinks(links.edgeMatrix, links.threshold, startRadian, radius);
+    if isfield(v, 'edgeMatrix')
+        drawing.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius);
     end
 
 end
@@ -54,13 +53,13 @@ end
 function appState = getAppStateSub(v)
 %[labels, sizes, colors, radius, startRadian, labelRadius, links]
 
-    fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'links'};
+    fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'edgeMatrix'};
     
     indxs = 1:length(fields);
     setFields = arrayfun(@(i) isfield(v, fields{i}), indxs);
     elemCountPerField = arrayfun(@(i) numel(v.(fields{i})), indxs(setFields));
     if setFields(4)
-        elemCountPerField(end) = size(v.links.edgeMatrix, 1);
+        elemCountPerField(end) = size(v.edgeMatrix, 1);
     end
     
     function verifySameElemCountPerField()
@@ -128,9 +127,9 @@ function appState = getAppStateSub(v)
         appState.labelRadius = v.labelRadius;
     end
     
-    if isfield(v, 'links')
-        appState.links.edgeMatrix = v.links.edgeMatrix;
-        appState.links.threshold = v.links.threshold;
+    if isfield(v, 'edgeMatrix')
+        appState.edgeMatrix = v.edgeMatrix;
+        appState.edgeThreshold = v.edgeThreshold;
     end
 
 end
