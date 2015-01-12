@@ -11,13 +11,13 @@ function setCircularNodeColors(v, colorsFullPath)
     end
     valueColors=v.valueColors;
     
-    guidata(v.hMainFigure,v)
-    
     fprintf('Drawing circle with %d regions\n',numel(valueColors))
-    if isfield(v,'nodeSizes')
-        nodeSizes=v.nodeSizes;
-        drawing.drawCircle(v, nodeSizes); %sizes were previously selected
-    else
-        drawing.drawCircle(v, (ones(sizeValueColors))/4,valueColors)
+    if ~isfield(v,'nodeSizes')
+        v.nodeSizes = (ones(sizeValueColors))/4;
     end
+    
+    guidata(v.hMainFigure,v);
+    
+    drawing.drawCircle(v, valueColors);
+    
 % end select colors data

@@ -1,5 +1,5 @@
 % --- creates renderings
-function drawCircle(v,nodeSizes,nodeColors,colorscheme)
+function drawCircle(v,nodeColors,colorscheme)
 axis square
 delete(allchild(v.hAxes));%
 set(v.hMainFigure,'CurrentAxes',v.hAxes)
@@ -13,24 +13,24 @@ labels = v.labels;
 fprintf('Drawing circle with %d regions\n',numel(labels))
 numNodes=numel(labels);
 innerR = 1;
-if nargin<3;
-    nodeSizes(1:numNodes,1)=innerR*1.1;
+if ~isfield(v, 'nodeSizes')
+    v.nodeSizes(1:numNodes,1)=innerR*1.1;
+    nodeSizes = v.nodeSizes;
 else
-    tmp = nodeSizes;
+    tmp = v.nodeSizes;
     nodeSizes(1:numNodes/2,1)=tmp(1:end,1);
     nodeSizes(1:numNodes/2,2)=flipud(tmp(1:end,2));% flip the second column for sequential drawing of segments
     nodeSizes=nodeSizes+innerR;
 end
-if nargin>=4
+if nargin>1
     listColors(1:numNodes/2,1)=nodeColors(1:end,1);
     listColors(1:numNodes/2,2)=flipud(nodeColors(1:end,2));
     listColors=[listColors(1:numNodes/2,1); listColors(1:numNodes/2,2)]; % organized into one single column 
-
 else
     listColors=rand(numNodes,1);
     listColors(numNodes/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
 end
-if nargin<5
+if nargin<3
     colorscheme=hot;
 end
 
