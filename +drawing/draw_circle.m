@@ -41,12 +41,6 @@ if nargin<3;
         pause(0.01)
         hold on        
     end
-    % add colorbar
-    colormap(colorscheme)
-    cb=colorbar;
-    cbIm = findobj(cb,'Type','image');
-    alpha(cbIm,0.5)
-    % end add colorbar      
     R=max(node_sizes(:));
     axis([-2.3*R 2.3*R -2.3*R 2.3*R])
     axis square
