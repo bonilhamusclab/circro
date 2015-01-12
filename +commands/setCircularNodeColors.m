@@ -5,11 +5,11 @@ function setCircularNodeColors(v, colors_full_path)
     num_value_colors=numel(value_colors);
     size_value_colors=size(value_colors);
     
-    if isfield(v,'list_regions')
-        list_regions=v.list_regions; % nodes were previously selected
+    if isfield(v,'labels')
+        labels=v.labels; % nodes were previously selected
     else
         temp=[(1:num_value_colors/2)' flipud((((num_value_colors/2)+1):num_value_colors)')]; % nodes were not previously selected- assigning names
-        list_regions=(num2cell(temp));
+        labels=(num2cell(temp));
     end
     value_colors=v.value_colors;
     
@@ -18,11 +18,11 @@ function setCircularNodeColors(v, colors_full_path)
     fprintf('Drawing circle with %d regions\n',numel(value_colors))
     if isfield(v,'node_sizes')
         node_sizes=v.node_sizes;
-        drawing.draw_circle(v, list_regions,node_sizes); %sizes were previously selected
+        drawing.draw_circle(v, labels,node_sizes); %sizes were previously selected
     else
-        drawing.draw_circle(v, list_regions,(ones(size_value_colors))/4,value_colors)
+        drawing.draw_circle(v, labels,(ones(size_value_colors))/4,value_colors)
     end
-    if exist('list_regions','var')
-        drawing.write_names(list_regions,(1+max(value_colors(:))),pi/2);
+    if exist('labels','var')
+        drawing.write_names(labels,(1+max(value_colors(:))),pi/2);
     end
 % end select colors data

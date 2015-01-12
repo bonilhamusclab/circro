@@ -1,9 +1,9 @@
-function write_names(list_regions,radius,start_radian)
-    regions=[list_regions(:,1);flipud(list_regions(:,2))]; % flip right hemisphere regions
-    number_regions=size(regions,1);
-    for i=1:number_regions        
-        theta=  ( (start_radian + ( (i-1) *(2*pi/number_regions) ))...
-            + (start_radian + ( (i *(2*pi/number_regions) )) ))/2 ;       
+function write_names(labels,radius,start_radian)
+    regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
+    number_labels=size(regions,1);
+    for i=1:number_labels        
+        theta=  ( (start_radian + ( (i-1) *(2*pi/number_labels) ))...
+            + (start_radian + ( (i *(2*pi/number_labels) )) ))/2 ;       
         x = radius * cos(theta);
         y = radius * sin(theta);        
         if ischar(regions{i})
