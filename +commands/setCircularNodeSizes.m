@@ -14,5 +14,5 @@ guidata(v.hMainFigure,v)
 drawing.drawCircle(v, labels,nodeSizes);
 fprintf('Drawing circle with %d regions\n',numel(labels))
 if exist('labels','var')
-    drawing.writeNames(labels,(1+max(nodeSizes(:))),pi/2);
+    drawing.writeLabels(labels,(1+max(nodeSizes(:))),pi/2);
 end
