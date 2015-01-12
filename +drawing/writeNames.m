@@ -1,4 +1,4 @@
-function write_names(labels,radius,start_radian)
+function writeNames(labels,radius,start_radian)
     regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
     number_labels=size(regions,1);
     for i=1:number_labels        

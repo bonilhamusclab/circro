@@ -23,6 +23,6 @@ function setCircularNodeColors(v, colors_full_path)
         drawing.draw_circle(v, labels,(ones(size_value_colors))/4,value_colors)
     end
     if exist('labels','var')
-        drawing.write_names(labels,(1+max(value_colors(:))),pi/2);
+        drawing.writeNames(labels,(1+max(value_colors(:))),pi/2);
     end
 % end select colors data

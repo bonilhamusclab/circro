@@ -5,5 +5,5 @@ function setCircularNodeLabels(v, labelsFullPath)
     v.labels=labels;
     guidata(v.hMainFigure,v)
     drawing.draw_circle(v, labels); % write circle with the regions listed
-    drawing.write_names(labels,1.2,pi/2);
+    drawing.writeNames(labels,1.2,pi/2);
 end
