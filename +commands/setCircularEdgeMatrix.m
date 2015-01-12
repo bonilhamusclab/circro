@@ -9,7 +9,7 @@ radius = inputs.radius;
 
 
 guidata(v.hMainFigure,v);
-drawing.draw_links(matrix,threshold,startRadian,radius);
+drawing.drawLinks(matrix,threshold,startRadian,radius);
 
 function inputParams = parseInputParamsSub(args)
 p = inputParser;
