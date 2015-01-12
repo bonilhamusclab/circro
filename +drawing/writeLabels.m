@@ -1,5 +1,4 @@
-function writeLabels(v, radius,startRadian)
-    labels = v.labels;
+function writeLabels(labels, radius,startRadian)
     regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
     numberLabels=size(regions,1);
     for i=1:numberLabels        
