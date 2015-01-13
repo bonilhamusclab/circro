@@ -22,7 +22,7 @@ function varargout = filesSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 12-Jan-2015 21:02:01
+% Last Modified by GUIDE v2.5 12-Jan-2015 22:07:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -448,4 +448,36 @@ function figure1_CloseRequestFcn(hObject, ~, handles)
     end
     
     delete(hObject);
+end
+
+
+% --- Executes on button press in resetLabelsFile_pushbutton.
+function resetLabelsFile_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to resetLabelsFile_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+end
+
+
+% --- Executes on button press in resetColorsFile_pushbutton.
+function resetColorsFile_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to resetColorsFile_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+end
+
+function resetSizesFile_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to resetSizesFile_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+end
+
+function resetEdgeMatrixFile_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to resetEdgeMatrixFile_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
 end
