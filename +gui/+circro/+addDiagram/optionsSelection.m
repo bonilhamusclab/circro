@@ -365,7 +365,7 @@ function viewEdgeMatrixCdf_pushbutton_Callback(~, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-edges = fileUtils.loadMatrix(handles.edgeMatrixFile);
+edges = fileUtils.circro.loadMatrix(handles.edgeMatrixFile);
 figure;
 normplot(edges(:));
 

@@ -1,5 +1,5 @@
 function setEdgeMatrix(v, edgeMatrixFullPath, varargin)
-matrix = fileUtils.loadMatrix(edgeMatrixFullPath);
+matrix = fileUtils.circro.loadMatrix(edgeMatrixFullPath);
 
 inputs = parseInputParamsSub(varargin);
 threshold = inputs.threshold;

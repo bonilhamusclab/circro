@@ -1,5 +1,5 @@
 function setNodeColors(v, colorsFullPath)
-    v.nodeColors =fileUtils.loadColors(colorsFullPath);
+    v.nodeColors =fileUtils.circro.loadColors(colorsFullPath);
     
     guidata(v.hMainFigure,v);
     
