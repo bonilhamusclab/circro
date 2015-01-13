@@ -12,6 +12,7 @@ v.hAxes = axes('Parent', v.hMainFigure,'HandleVisibility','on','Units', 'normali
 %menus...
 v.hFileMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','File');
 v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Add Circro Diagram','HandleVisibility','callback', 'Callback', @gui.circro.AddDiagram_Callback); % to open the list of nodes
+v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Close Circro Diagrams','HandleVisibility','callback', 'Callback', @gui.circro.CloseDiagrams_Callback); % to open the list of nodes
 
 v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Edit');
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
