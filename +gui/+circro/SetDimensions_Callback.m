@@ -1,4 +1,4 @@
-function SetCircularDimensions_Callback(obj, ~)
+function SetDimensions_Callback(obj, ~)
 v=guidata(obj);
 
 prompt = {'Radius:', 'Label Radius:', 'Start Radian:'};

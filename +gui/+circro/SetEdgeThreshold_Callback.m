@@ -1,4 +1,4 @@
-function SetCircularEdgeThreshold_Callback(obj, ~)
+function SetEdgeThreshold_Callback(obj, ~)
 v=guidata(obj);
 
 prompt = {'Edge Threshold:'};

@@ -1,4 +1,4 @@
-function AddCircularDiagram_Callback(obj, ~)
+function AddDiagram_Callback(obj, ~)
 
     fields = {};
     function fn = setFieldFn(field)
@@ -26,7 +26,7 @@ function AddCircularDiagram_Callback(obj, ~)
     
     dimensionInputs = {'radius', 'labelRadius', 'startRadian'};
     
-    h = gui.circularDiagram.filesSelection(fns);
+    h = gui.circro.addDiagram.optionsSelection(fns);
     waitfor(h);
     
     function ret = emptyOrVal(field)

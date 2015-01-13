@@ -11,14 +11,14 @@ set(v.hMainFigure,'Renderer','OpenGL')
 v.hAxes = axes('Parent', v.hMainFigure,'HandleVisibility','on','Units', 'normalized','Position',[0.0 0.0 1 1]); %important: turn ON visibility
 %menus...
 v.hFileMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','File');
-v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Add Circular Diagram','HandleVisibility','callback', 'Callback', @gui.AddCircularDiagram_Callback); % to open the list of nodes
+v.hAddMenu = uimenu('Parent',v.hFileMenu,'Label','Add Circro Diagram','HandleVisibility','callback', 'Callback', @gui.circro.AddDiagram_Callback); % to open the list of nodes
 
 v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Edit');
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
 v.hFunctionMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Functions');
 v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','HandleVisibility','callback','Callback', @gui.ToolbarMenu_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set Circular Dimensions','HandleVisibility','callback','Callback', @gui.SetCircularDimensions_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set Circular Edge Threshold','HandleVisibility','callback','Callback', @gui.SetCircularEdgeThreshold_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set Circro Dimensions','HandleVisibility','callback','Callback', @gui.circro.SetDimensions_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Set Circro Edge Threshold','HandleVisibility','callback','Callback', @gui.circro.SetEdgeThreshold_Callback);
 v.hSaveBmpMenu = uimenu('Parent',v.hFileMenu,'Label','Save bitmap','HandleVisibility','callback', 'Callback', @gui.SaveBmpMenu_Callback);
 
 v.hHelpMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Help');

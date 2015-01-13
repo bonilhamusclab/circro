@@ -1,15 +1,15 @@
-function varargout = filesSelection(varargin)
-% FILESSELECTION MATLAB code for filesSelection.fig
-%      FILESSELECTION, by itself, creates a new FILESSELECTION or raises the existing
+function varargout = optionsSelection(varargin)
+% OPTIONSSELECTION MATLAB code for filesSelection.fig
+%      OPTIONSSELECTION, by itself, creates a new OPTIONSSELECTION or raises the existing
 %      singleton*.
 %
-%      H = FILESSELECTION returns the handle to a new FILESSELECTION or the handle to
+%      H = OPTIONSSELECTION returns the handle to a new OPTIONSSELECTION or the handle to
 %      the existing singleton*.
 %
-%      FILESSELECTION('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in FILESSELECTION.M with the given input arguments.
+%      OPTIONSSELECTION('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in OPTIONSSELECTION.M with the given input arguments.
 %
-%      FILESSELECTION('Property','Value',...) creates a new FILESSELECTION or raises the
+%      OPTIONSSELECTION('Property','Value',...) creates a new OPTIONSSELECTION or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
 %      applied to the GUI before filesSelection_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
@@ -26,7 +26,7 @@ function varargout = filesSelection(varargin)
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
-gui_State = struct('gui_Name',       '+gui/+circularDiagram/filesSelection.fig', ...
+gui_State = struct('gui_Name',       '+gui/+circro/+addDiagram/optionsSelection.fig', ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @filesSelection_OpeningFcn, ...
                    'gui_OutputFcn',  @filesSelection_OutputFcn, ...
@@ -65,11 +65,11 @@ function bind(h, field, fns)
     if ~isfield(handles, 'boundFns')
         handles.boundFns = {};
     end
-    orig_fns = {};
+    origFns = {};
     if isfield(handles.boundFns, field)
-        orig_fns = handles.boundFns.(field);
+        origFns = handles.boundFns.(field);
     end
-    handles.boundFns.(field) = [orig_fns fns];
+    handles.boundFns.(field) = [origFns fns];
     guidata(h, handles);
 end
 

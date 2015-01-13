@@ -1,4 +1,4 @@
-function SetCircularEdgeMatrix_Callback(obj, ~)
+function SetEdgeMatrix_Callback(obj, ~)
 v=guidata(obj);
 
 [matrix_filename, matrix_pathname] = uigetfile( ...
