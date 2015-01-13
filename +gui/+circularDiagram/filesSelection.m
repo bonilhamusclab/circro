@@ -22,7 +22,7 @@ function varargout = filesSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 10-Jan-2015 17:32:23
+% Last Modified by GUIDE v2.5 12-Jan-2015 19:59:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,11 +74,15 @@ function bind(h, field, fns)
 end
 
 %So that invoking function has caccess to data
-function callerSetters(h, setLabelsFn, setSizesFn, setEdgeMatrixFn, setColorsFn)
-    bind(h, 'labelsFile', {setLabelsFn});
-    bind(h, 'sizesFile', {setSizesFn});
-    bind(h, 'edgeMatrixFile', {setEdgeMatrixFn});
-    bind(h, 'colorsFile', {setColorsFn});
+function callerSetters(h, fns)
+    bind(h, 'labelsFile', {fns.setLabelsFn});
+    bind(h, 'sizesFile', {fns.setSizesFn});
+    bind(h, 'edgeMatrixFile', {fns.setEdgeMatrixFn});
+    bind(h, 'colorsFile', {fns.setColorsFn});
+    bind(h, 'edgeThreshold', {fns.setEdgeThresholdFn});
+    bind(h, 'radius', {fns.setRadiusFn});
+    bind(h, 'labelRadius', {fns.setLabelRadiusFn});
+    bind(h, 'startRadian', {fns.setStartRadianFn});
 end
 
 function bindTextBoxes(h)
@@ -96,7 +100,27 @@ function bindTextBoxes(h)
         'UniformOutput', 0);
 end
 
-function bindOkButtonEnabled(h)
+function anySet = anyFieldSet(handles)
+	fields = handles.fields;
+
+    function a = any(cells)
+        a = 0;
+        for i = 1:length(cells)
+            if cells{i}
+                a = 1;
+                break;
+            end
+        end
+    end
+
+    anySet = 0;
+    if any(cellfun(@(f) exist(handles.([f 'Path_txtbox']).String, 'file'), ...
+            fields, 'UniformOutput', 0));
+            anySet = 1;
+    end
+end
+
+function bindEnabledToAnyFieldSet(h, control)
     handles = guidata(h);
 	fields = handles.fields;
     
@@ -105,24 +129,30 @@ function bindOkButtonEnabled(h)
         
     function toggle(~)
         handles = guidata(h);
-        
-        function a = any(cells)
-            a = 0;
-            for i = 1:length(cells)
-                if cells{i}
-                    a = 1;
-                    break;
-                end
-            end
-        end
 
         Enable = 'off';
-        if any(cellfun(@(f) exist(handles.([f 'Path_txtbox']).String, 'file'), ...
-            fields, 'UniformOutput', 0));
+        if anyFieldSet(handles);
             Enable = 'on';
         end
-        handles.okPushbutton.Enable = Enable;
+        control.Enable = Enable;
     end
+end
+
+function bindOkButtonEnabled(h)
+    handles = guidata(h);
+    bindEnabledToAnyFieldSet(h, handles.okPushbutton);
+end
+
+function bindDimensionOptions(h)
+    handles = guidata(h);
+    bindEnabledToAnyFieldSet(h, handles.radius_edit);
+    bindEnabledToAnyFieldSet(h, handles.labelRadius_edit);
+end
+
+function bindEdgeMatrixOptions(h)
+    handles = guidata(h);
+    bindEnabledToAnyFieldSet(h, handles.edgeThreshold_edit);
+    bindEnabledToAnyFieldSet(h, handles.viewEdgeMatrixCdf_pushbutton);
 end
 
 % --- Executes just before filesSelection is made visible.
@@ -139,12 +169,17 @@ handles.fields = {'labelsFile', 'sizesFile', 'edgeMatrixFile', 'colorsFile'};
 
 % Update handles structure
 guidata(hObject, handles);
-    
-callerSetters(handles.output, varargin{:});
+
+setterFns = varargin{1};
+callerSetters(handles.output, setterFns);
 
 bindTextBoxes(handles.output);
 
 bindOkButtonEnabled(handles.output);
+
+bindDimensionOptions(handles.output);
+
+bindEdgeMatrixOptions(handles.output);
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -267,4 +302,88 @@ fields = handles.fields;
 h = handles.output;
 cellfun(@(f)setBoundField(h, f, ''), fields);
 close(handles.output);
+end
+
+
+
+function radius_edit_Callback(hObject, ~, handles)
+% hObject    handle to radius_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of radius_edit as text
+%        str2double(get(hObject,'String')) returns contents of radius_edit as a double
+
+setBoundField(handles.output, 'radius', get(hObject, String));
+
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function radius_edit_CreateFcn(hObject, ~, handles)
+% hObject    handle to radius_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+prepForWindowsOs();
+end
+
+
+
+% --- Executes during object creation, after setting all properties.
+function labelRadius_edit_CreateFcn(~, ~, ~)
+% hObject    handle to labelRadius_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+prepForWindowsOs();
+end
+
+
+function edgeThreshold_edit_Callback(hObject, ~, handles)
+% hObject    handle to edgeThreshold_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edgeThreshold_edit as text
+%        str2double(get(hObject,'String')) returns contents of edgeThreshold_edit as a double
+newThresh = str2double(get(hObject,'String'));
+setBoundField(handles.output, 'edgeThreshold', newThresh);
+end
+
+% --- Executes during object creation, after setting all properties.
+function edgeThreshold_edit_CreateFcn(hObject, ~, handles)
+% hObject    handle to edgeThreshold_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+prepForWindowsOs();
+end
+
+
+% --- Executes on button press in viewEdgeMatrixCdf_pushbutton.
+function viewEdgeMatrixCdf_pushbutton_Callback(~, ~, handles)
+% hObject    handle to viewEdgeMatrixCdf_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+edges = fileUtils.loadMatrix(handles.edgeMatrixFile);
+figure;
+normplot(edges(:));
+
+end
+
+
+function labelRadius_edit_Callback(hObject, ~, handles)
+% hObject    handle to labelRadius_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of labelRadius_edit as text
+%        str2double(get(hObject,'String')) returns contents of labelRadius_edit as a double
+
+setBoundField(handles.output, 'labelRadius', get(hObject, String));
+
 end

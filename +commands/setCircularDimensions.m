@@ -1,19 +1,39 @@
-function setCircularDimensions(v, radius, labelRadius, startRadian)
+function setCircularDimensions(v, varargin)
+    inputs = parseInputParamsSub(varargin);
+    radius = inputs.radius;
+    labelRadius = inputs.labelRadius;
+    startRadian = inputs.startRadian;
 
-if nargin > 1
-    validateattributes(radius, {'numeric'}, {'positive', 'real'});
-    v.radius = radius;
+    if radius > -inf
+        validateattributes(radius, {'numeric'}, {'positive', 'real'});
+        v.radius = radius;
+    end
+
+    if labelRadius > -inf
+        validateattributes(labelRadius, {'numeric'}, {'positive', 'real'});
+        v.labelRadius = labelRadius;
+    end
+
+    if startRadian > -inf
+        validateattributes(startRadian, {'numeric'}, {'real'});
+        v.startRadian = startRadian;
+    end
+
+    guidata(v.hMainFigure,v);
+    drawing.drawCircle(v);
 end
 
-if nargin > 2
-    validateattributes(labelRadius, {'numeric'}, {'positive', 'real'});
-    v.labelRadius = labelRadius;
-end
+function inputParams = parseInputParamsSub(args)
+    p = inputParser;
+    d.radius = -inf; d.labelRadius = -inf; d.startRadian = -inf;
 
-if nargin > 3
-    validateattributes(startRadian, {'numeric'}, {'real'});
-    v.startRadian = startRadian;
-end
+    p.addOptional('radius', d.radius, @(x) validateattributes(x, {'numeric'}, {'real'}));
+    p.addOptional('labelRadius', d.radius, @(x) validateattributes(x, {'numeric'}, {'real'}));
+    p.addOptional('startRadian', d.radius, @(x) validateattributes(x, {'numeric'}, {'real'}));
 
-guidata(v.hMainFigure,v);
-drawing.drawCircle(v);
+    p = utils.stringSafeParse(p, args, fieldnames(d), ...
+        d.radius, d.labelRadius, d.startRadian);
+
+    inputParams = p.Results;
+
+end
