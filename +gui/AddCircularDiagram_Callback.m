@@ -4,6 +4,10 @@ function AddCircularDiagram_Callback(obj, ~)
     function fn = setFieldFn(field)
         function setterFn(f)
             fields.(field) = f;
+            %empty signifies to ignore value
+            if isempty(f)
+                fields = rmfield(fields, field);
+            end
         end
         fn = @setterFn;
     end
@@ -33,14 +37,17 @@ function AddCircularDiagram_Callback(obj, ~)
         end
     end
     
-    inputs = cellfun(@emptyOrVal, fileInputs, 'UniformOutput', 0);
-    commands.addCircularDiagram(guidata(obj), inputs{:});
+    
+    if any(cellfun(@(f) isfield(fields, f), fileInputs))
+        inputs = cellfun(@emptyOrVal, fileInputs, 'UniformOutput', 0);
+        commands.addCircularDiagram(guidata(obj), inputs{:});
+    end
     
     if isfield(fields, 'edgeThreshold')
         commands.setCircularEdgeThreshold(guidata(obj), fields.edgeThreshold);
     end
     
-    if isfield(fields, 'radius') || isfield(fields, 'labelRadius') || isfield(fields, 'startRadian')
+    if any(cellfun(@(f) isfield(fields, f), dimensionInputs))
         inputs = {};
         %generate name value pair inputs
         %TODO: clean code w/ less repitition
@@ -48,10 +55,10 @@ function AddCircularDiagram_Callback(obj, ~)
             field = dimensionInputs{i};
             if isfield(fields, field)
                 inputs{end + 1} = field;
-                inputs{end + 2} = fields.field;
+                inputs{end + 1} = fields.(field);
             end
         end
-        commands.setCircularDimensions(inputs{:});
+        commands.setCircularDimensions(guidata(obj), inputs{:});
     end
     
 end
