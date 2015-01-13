@@ -7,12 +7,10 @@ v=guidata(obj);
                     '*.*',       'All Files (*.*)'},...
                     'Select an excel file');
 if isequal(matrix_filename,0), return; end;
-prompt = {'Threshold:','Start Radian:', 'Line Radius:'};
+prompt = {'Threshold:'};
 dlg_title = 'Matrix Options';
 num_lines = 1;
-def = {'.5','0', '1'};
+def = {'.5'};
 answer = inputdlg(prompt,dlg_title,num_lines,def);
 threshold = str2double(answer(1));
-start_radian = str2double(answer(2));
-radius = str2double(answer(3));
-commands.setCircularEdgeMatrix(v, [matrix_pathname matrix_filename], threshold, start_radian, radius);
+commands.setCircularEdgeMatrix(v, [matrix_pathname matrix_filename], threshold);

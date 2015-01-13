@@ -5,6 +5,12 @@ function addCircularDiagram(v, varargin)
     sizesFullPath = inputs.sizesFullPath;
     edgeMatrixFullPath = inputs.edgeMatrixFullPath;
     colorsFullPath = inputs.colorsFullPath;
+    edgeThreshold = inputs.edgeThreshold;
+    
+    if isempty(labelsFullPath) && isempty(sizesFullPath) && isempty(edgeMatrixFullPath) && isempty(colorsFullPath)
+        error('a labels, sizes, edge matrix, or colors file must be specified');
+    end
+    
     
     h = v.hMainFigure;
     
@@ -17,21 +23,18 @@ function addCircularDiagram(v, varargin)
     end
     
     if edgeMatrixFullPath
-        commands.setCircularEdgeMatrix(guidata(h), edgeMatrixFullPath);
+        commands.setCircularEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold);
     end
     
     if colorsFullPath
         commands.setCircularNodeColors(guidata(h), colorsFullPath);
-    end
-    
-    if ~(labelsFullPath || sizesFullPath || edgeMatrixFullPath || colorsFullPath)
-        error('a labels, sizes, edge matrix, or colors file must be specified');
     end
 end
 
 function inputParams = parseInputParamsSub(args)
 p = inputParser;
 d.labelsFullPath = ''; d.sizesFullPath = ''; d.edgeMatrixFullPath = ''; d.colorsFullPath = '';
+d.edgeThreshold = .5;
 
 validateChar = @(x) validateattributes(x, {'char'}, {});
 
@@ -39,9 +42,10 @@ p.addOptional('labelsFullPath', d.labelsFullPath, validateChar);
 p.addOptional('sizesFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeMatrixFullPath', d.labelsFullPath, validateChar);
 p.addOptional('colorsFullPath', d.labelsFullPath, validateChar);
+p.addOptional('edgeThreshold', d.edgeThreshold, @(x) validateattributes(x, {'numeric'}, {'real'}));
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
-    d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath);
+    d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath, d.edgeThreshold);
 
 inputParams = p.Results;
 

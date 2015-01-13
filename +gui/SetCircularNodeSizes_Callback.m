@@ -7,4 +7,4 @@ v=guidata(obj);
                     'Select an excel file');
 if isequal(sizes_filename,0), return; end;
 commands.setCircularNodeSizes(v, [sizes_pathname sizes_filename]);
-%end Add_sizes_Callback()
+%end
