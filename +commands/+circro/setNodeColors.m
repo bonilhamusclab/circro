@@ -1,4 +1,4 @@
-function setCircularNodeColors(v, colorsFullPath)
+function setNodeColors(v, colorsFullPath)
     v.nodeColors =fileUtils.loadColors(colorsFullPath);
     
     guidata(v.hMainFigure,v);

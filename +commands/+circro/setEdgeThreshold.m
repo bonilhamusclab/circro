@@ -1,4 +1,4 @@
-function setCircularEdgeThreshold(v, edgeThreshold)
+function setEdgeThreshold(v, edgeThreshold)
     v.edgeThreshold =edgeThreshold;
     
     guidata(v.hMainFigure,v);

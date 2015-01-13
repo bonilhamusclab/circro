@@ -40,11 +40,11 @@ function AddCircularDiagram_Callback(obj, ~)
     
     if any(cellfun(@(f) isfield(fields, f), fileInputs))
         inputs = cellfun(@emptyOrVal, fileInputs, 'UniformOutput', 0);
-        commands.addCircularDiagram(guidata(obj), inputs{:});
+        commands.circro.addDiagram(guidata(obj), inputs{:});
     end
     
     if isfield(fields, 'edgeThreshold')
-        commands.setCircularEdgeThreshold(guidata(obj), fields.edgeThreshold);
+        commands.circro.setEdgeThreshold(guidata(obj), fields.edgeThreshold);
     end
     
     if any(cellfun(@(f) isfield(fields, f), dimensionInputs))
@@ -58,7 +58,7 @@ function AddCircularDiagram_Callback(obj, ~)
                 inputs{end + 1} = fields.(field);
             end
         end
-        commands.setCircularDimensions(guidata(obj), inputs{:});
+        commands.circro.setDimensions(guidata(obj), inputs{:});
     end
     
 end

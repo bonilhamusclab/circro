@@ -1,4 +1,4 @@
-function setCircularNodeSizes(v, sizesFullPath)
+function setNodeSizes(v, sizesFullPath)
 v.nodeSizes = fileUtils.loadSizes(sizesFullPath);
 guidata(v.hMainFigure,v)
 drawing.drawCircle(v);

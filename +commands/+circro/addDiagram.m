@@ -1,4 +1,4 @@
-function addCircularDiagram(v, varargin)
+function addDiagram(v, varargin)
     
     inputs = parseInputParamsSub(varargin);
     labelsFullPath = inputs.labelsFullPath;
@@ -15,19 +15,19 @@ function addCircularDiagram(v, varargin)
     h = v.hMainFigure;
     
     if labelsFullPath
-        commands.setCircularNodeLabels(guidata(h), labelsFullPath);
+        commands.circro.setNodeLabels(guidata(h), labelsFullPath);
     end
     
     if sizesFullPath
-        commands.setCircularNodeSizes(guidata(h), sizesFullPath);
+        commands.circro.setNodeSizes(guidata(h), sizesFullPath);
     end
     
     if edgeMatrixFullPath
-        commands.setCircularEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold);
+        commands.circro.setEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold);
     end
     
     if colorsFullPath
-        commands.setCircularNodeColors(guidata(h), colorsFullPath);
+        commands.circro.setNodeColors(guidata(h), colorsFullPath);
     end
 end
 

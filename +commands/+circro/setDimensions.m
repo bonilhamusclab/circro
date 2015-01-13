@@ -1,4 +1,4 @@
-function setCircularDimensions(v, varargin)
+function setDimensions(v, varargin)
     inputs = parseInputParamsSub(varargin);
     radius = inputs.radius;
     labelRadius = inputs.labelRadius;

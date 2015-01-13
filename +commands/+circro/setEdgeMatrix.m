@@ -1,4 +1,4 @@
-function setCircularEdgeMatrix(v, edgeMatrixFullPath, varargin)
+function setEdgeMatrix(v, edgeMatrixFullPath, varargin)
 matrix = fileUtils.loadMatrix(edgeMatrixFullPath);
 
 inputs = parseInputParamsSub(varargin);
