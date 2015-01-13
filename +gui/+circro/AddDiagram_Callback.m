@@ -1,4 +1,4 @@
-function AddDiagram_Callback(obj, ~)
+function AddDiagram_Callback(~, ~)
 
     fields = {};
     function fn = setFieldFn(field)

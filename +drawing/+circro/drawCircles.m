@@ -1,13 +1,23 @@
 % --- creates renderings
-function drawCircle(v)
+function drawCircles(v)
     axis square
-    delete(allchild(v.hAxes));%
+    delete(allchild(v.hAxes));
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
     set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
     guidata(v.hMainFigure, v);
+    
+    if isfield(v, 'circles')
+        numCircles = length(v.circles);
+        for i = 1:numCircles
+            drawCircleSub(v.circles{i});
+        end
+    end
+end
+
+function drawCircleSub(circle)
 
     
-    appState = getAppStateSub(v);
+    appState = getCircleStateSub(circle);
     
     labels = appState.labels;
     sizes = appState.sizes;
@@ -40,7 +50,7 @@ function drawCircle(v)
 
     drawing.circro.writeLabels(labels, labelRadius, startRadian);
 
-    if isfield(v, 'edgeMatrix')
+    if isfield(circle, 'edgeMatrix')
         drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius);
     end
 
@@ -50,16 +60,16 @@ function seq = makeSequentialSub(twoD)
     seq = [twoD(:, 1); flipud(twoD(:, 2))];
 end
 
-function appState = getAppStateSub(v)
+function appState = getCircleStateSub(circle)
 %[labels, sizes, colors, radius, startRadian, labelRadius, links]
 
     fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'edgeMatrix'};
     
     indxs = 1:length(fields);
-    setFields = arrayfun(@(i) isfield(v, fields{i}), indxs);
-    elemCountPerField = arrayfun(@(i) numel(v.(fields{i})), indxs(setFields));
+    setFields = arrayfun(@(i) isfield(circle, fields{i}), indxs);
+    elemCountPerField = arrayfun(@(i) numel(circle.(fields{i})), indxs(setFields));
     if setFields(4)
-        elemCountPerField(end) = size(v.edgeMatrix, 1);
+        elemCountPerField(end) = size(circle.edgeMatrix, 1);
     end
     
     function verifySameElemCountPerField()
@@ -83,53 +93,53 @@ function appState = getAppStateSub(v)
     
     numNodes = elemCountPerField(1);
     
-    if ~isfield(v,'nodeLabels')
+    if ~isfield(circle,'nodeLabels')
         temp=[(1:numNodes/2)' flipud(((numNodes/2+1):numNodes)')];
         appState.labels=(num2cell(temp));
     else
-        appState.labels = v.nodeLabels;
+        appState.labels = circle.nodeLabels;
     end
     
-    if ~isfield(v, 'radius');
+    if ~isfield(circle, 'radius');
         appState.radius = 1;
     else
-        appState.radius = v.radius;
+        appState.radius = circle.radius;
     end
     
-    if ~isfield(v, 'nodeSizes')
+    if ~isfield(circle, 'nodeSizes')
         appState.sizes(1:numNodes) = appState.radius*1.1;
     else
-        appState.sizes=makeSequentialSub(v.nodeSizes) + appState.radius;
+        appState.sizes=makeSequentialSub(circle.nodeSizes) + appState.radius;
     end
     
-    if ~isfield(v, 'nodeColors')
+    if ~isfield(circle, 'nodeColors')
         appState.colors=rand(numNodes,1);
         appState.colors(numNodes/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
     else
-        appState.colors = makeSequentialSub(v.nodeColors);
+        appState.colors = makeSequentialSub(circle.nodeColors);
     end
     
-    if ~isfield(v, 'colorscheme')
+    if ~isfield(circle, 'colorscheme')
         appState.colorscheme=hot;
     else
-        appState.colorscheme = v.colorscheme;
+        appState.colorscheme = circle.colorscheme;
     end
     
-    if ~isfield(v, 'startRadian')
+    if ~isfield(circle, 'startRadian')
         appState.startRadian = pi/2;
     else
-        appState.startRadian = v.startRadian;
+        appState.startRadian = circle.startRadian;
     end
     
-    if ~isfield(v, 'labelRadius')
+    if ~isfield(circle, 'labelRadius')
         appState.labelRadius = max(appState.sizes(:)) * 1.1;
     else
-        appState.labelRadius = v.labelRadius;
+        appState.labelRadius = circle.labelRadius;
     end
     
-    if isfield(v, 'edgeMatrix')
-        appState.edgeMatrix = v.edgeMatrix;
-        appState.edgeThreshold = v.edgeThreshold;
+    if isfield(circle, 'edgeMatrix')
+        appState.edgeMatrix = circle.edgeMatrix;
+        appState.edgeThreshold = circle.edgeThreshold;
     end
 
 end

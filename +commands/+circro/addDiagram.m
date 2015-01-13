@@ -1,11 +1,12 @@
 function addDiagram(v, varargin)
     
-    inputs = parseInputParamsSub(varargin);
+    inputs = parseInputParamsSub(v, varargin);
     labelsFullPath = inputs.labelsFullPath;
     sizesFullPath = inputs.sizesFullPath;
     edgeMatrixFullPath = inputs.edgeMatrixFullPath;
     colorsFullPath = inputs.colorsFullPath;
     edgeThreshold = inputs.edgeThreshold;
+    circleIndex = inputs.circleIndex;
     
     if isempty(labelsFullPath) && isempty(sizesFullPath) && isempty(edgeMatrixFullPath) && isempty(colorsFullPath)
         error('a labels, sizes, edge matrix, or colors file must be specified');
@@ -15,7 +16,7 @@ function addDiagram(v, varargin)
     h = v.hMainFigure;
     
     if labelsFullPath
-        commands.circro.setNodeLabels(guidata(h), labelsFullPath);
+        commands.circro.setNodeLabels(guidata(h), labelsFullPath, circleIndex);
     end
     
     if sizesFullPath
@@ -23,7 +24,7 @@ function addDiagram(v, varargin)
     end
     
     if edgeMatrixFullPath
-        commands.circro.setEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold);
+        commands.circro.setEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold, circleIndex);
     end
     
     if colorsFullPath
@@ -31,10 +32,11 @@ function addDiagram(v, varargin)
     end
 end
 
-function inputParams = parseInputParamsSub(args)
+function inputParams = parseInputParamsSub(v, args)
 p = inputParser;
 d.labelsFullPath = ''; d.sizesFullPath = ''; d.edgeMatrixFullPath = ''; d.colorsFullPath = '';
 d.edgeThreshold = .5;
+d.circleIndex = utils.fieldIndex(v, 'circles');
 
 validateChar = @(x) validateattributes(x, {'char'}, {});
 
@@ -43,9 +45,10 @@ p.addOptional('sizesFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeMatrixFullPath', d.labelsFullPath, validateChar);
 p.addOptional('colorsFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeThreshold', d.edgeThreshold, @(x) validateattributes(x, {'numeric'}, {'real'}));
+p.addOptional('circleIndex', d.circleIndex, @(x) validateattributes(x, {'numeric'}, {'positive', 'integer'}));
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
-    d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath, d.edgeThreshold);
+    d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath, d.edgeThreshold, d.circleIndex);
 
 inputParams = p.Results;
 
