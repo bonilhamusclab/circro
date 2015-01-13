@@ -153,8 +153,15 @@ end
 
 function bindEdgeMatrixOptions(h)
     handles = guidata(h);
-    bindEnabledToAnyPathFieldSet(h, handles.edgeThreshold_edit);
-    bindEnabledToAnyPathFieldSet(h, handles.viewEdgeMatrixCdf_pushbutton);
+    function toggle(val)
+        Enable = 'off';
+        if val
+            Enable = 'on';
+        end
+        handles.edgeThreshold_edit.Enable = Enable;
+        handles.viewEdgeMatrixCdf_pshbutton.Enable = Enable;
+    end
+    bind(h, 'edgeMatrixFile', {@toggle});
 end
 
 % --- Executes just before filesSelection is made visible.
