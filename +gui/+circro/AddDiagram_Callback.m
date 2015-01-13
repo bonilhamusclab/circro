@@ -37,14 +37,13 @@ function AddDiagram_Callback(obj, ~)
         end
     end
     
-    
     if any(cellfun(@(f) isfield(fields, f), fileInputs))
         inputs = cellfun(@emptyOrVal, fileInputs, 'UniformOutput', 0);
-        commands.circro.addDiagram(guidata(obj), inputs{:});
+        Circro('circro.addDiagram', inputs{:});
     end
     
     if isfield(fields, 'edgeThreshold')
-        commands.circro.setEdgeThreshold(guidata(obj), fields.edgeThreshold);
+        Circro('circro.setEdgeThreshold', fields.edgeThreshold);
     end
     
     if any(cellfun(@(f) isfield(fields, f), dimensionInputs))
@@ -58,7 +57,7 @@ function AddDiagram_Callback(obj, ~)
                 inputs{end + 1} = fields.(field);
             end
         end
-        commands.circro.setDimensions(guidata(obj), inputs{:});
+        Circro('circro.setDimensions', inputs{:});
     end
     
 end

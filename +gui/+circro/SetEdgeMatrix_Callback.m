@@ -13,4 +13,4 @@ num_lines = 1;
 def = {'.5'};
 answer = inputdlg(prompt,dlg_title,num_lines,def);
 threshold = str2double(answer(1));
-commands.circro.setEdgeMatrix(v, [matrix_pathname matrix_filename], threshold);
+Circro('circro.setEdgeMatrix', [matrix_pathname matrix_filename], threshold);

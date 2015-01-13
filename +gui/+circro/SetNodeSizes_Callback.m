@@ -6,5 +6,5 @@ v=guidata(obj);
                     '*.*',       'All Files (*.*)'},...
                     'Select an excel file');
 if isequal(sizes_filename,0), return; end;
-commands.circro.setNodeSizes(v, [sizes_pathname sizes_filename]);
+Circro('circro.setNodeSizes', [sizes_pathname sizes_filename]);
 %end

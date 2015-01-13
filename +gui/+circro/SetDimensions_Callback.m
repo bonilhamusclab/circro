@@ -9,4 +9,4 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaults);
 radius = str2double(answer(1));
 labelRadius = str2double(answer(2));
 startRadian = str2double(answer(3));
-commands.circro.setDimensions(v, radius, labelRadius, startRadian);
+Circro('circro.setDimensions', radius, labelRadius, startRadian);

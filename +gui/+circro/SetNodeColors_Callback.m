@@ -7,5 +7,5 @@ function SetNodeColors_Callback(obj, ~)
                     'Select an excel file');
     if isequal(colors_filename,0), return; end;
     
-commands.circro.setNodeColors(guidata(obj), [colors_pathname colors_filename]);
+Circro('circro.setNodeColors', [colors_pathname colors_filename]);
 % end Add colors;

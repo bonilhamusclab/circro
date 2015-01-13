@@ -1,5 +1,5 @@
 % --- Declare and create all the user interface objects
-function [vFig] = makeGUI()
+function [vFig] = makeGui()
 sz = [980 680]; % figure width, height in pixels
 screensize = get(0,'ScreenSize');
 margin = [ceil((screensize(3)-sz(1))/2) ceil((screensize(4)-sz(2))/2)];
@@ -38,4 +38,4 @@ v.vprefs.el = 10; %camera elevation
 v.vprefs.color = [1 1 1]  ; %camera elevation
 guidata(v.hMainFigure,v);%store settings
 vFig = v.hMainFigure;
-%end makeGUI()
+%end makeGui()
