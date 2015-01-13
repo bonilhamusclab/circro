@@ -139,7 +139,7 @@ function bindEnabledToAnyPathFieldSet(h, control)
     end
 end
 
-function bindOkButtonEnabled(h)
+function bindOkButtonEnable(h)
     handles = guidata(h);
     bindEnabledToAnyPathFieldSet(h, handles.okPushbutton);
 end
@@ -151,17 +151,28 @@ function bindDimensionOptions(h)
     bindEnabledToAnyPathFieldSet(h, handles.startRadian_edit);
 end
 
-function bindEdgeMatrixOptions(h)
-    handles = guidata(h);
+function bindControlEnableToField(h, field, controlName)
     function toggle(val)
+        handles = guidata(h);
         Enable = 'off';
         if val
             Enable = 'on';
         end
-        handles.edgeThreshold_edit.Enable = Enable;
-        handles.viewEdgeMatrixCdf_pshbutton.Enable = Enable;
+        handles.(controlName).Enable = Enable;
     end
-    bind(h, 'edgeMatrixFile', {@toggle});
+    bind(h, field, {@toggle});
+end
+
+function bindEdgeMatrixOptions(h)
+    bindControlEnableToField(h, 'edgeMatrixFile', 'edgeThreshold_edit');
+    bindControlEnableToField(h, 'edgeMatrixFile', 'viewEdgeMatrixCdf_pushbutton');
+end
+
+function bindResetFilesEnable(h)
+    bindControlEnableToField(h, 'labelsFile', 'resetLabelsFile_pushbutton');
+    bindControlEnableToField(h, 'sizesFile', 'resetSizesFile_pushbutton');
+    bindControlEnableToField(h, 'colorsFile', 'resetColorsFile_pushbutton');
+    bindControlEnableToField(h, 'edgeMatrixFile', 'resetEdgeMatrixFile_pushbutton');
 end
 
 % --- Executes just before filesSelection is made visible.
@@ -187,11 +198,13 @@ callerSetters(handles.output, setterFns);
 
 bindTextBoxes(handles.output);
 
-bindOkButtonEnabled(handles.output);
+bindOkButtonEnable(handles.output);
 
 bindDimensionOptions(handles.output);
 
 bindEdgeMatrixOptions(handles.output);
+
+bindResetFilesEnable(handles.output);
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -452,32 +465,32 @@ end
 
 
 % --- Executes on button press in resetLabelsFile_pushbutton.
-function resetLabelsFile_pushbutton_Callback(hObject, eventdata, handles)
+function resetLabelsFile_pushbutton_Callback(~, ~, handles)
 % hObject    handle to resetLabelsFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+    setBoundField(handles.output, 'labelsFile', '');
 end
 
 
 % --- Executes on button press in resetColorsFile_pushbutton.
-function resetColorsFile_pushbutton_Callback(hObject, eventdata, handles)
+function resetColorsFile_pushbutton_Callback(~, ~, handles)
 % hObject    handle to resetColorsFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+    setBoundField(handles.output, 'colorsFile', '');
 end
 
-function resetSizesFile_pushbutton_Callback(hObject, eventdata, handles)
+function resetSizesFile_pushbutton_Callback(~, ~, handles)
 % hObject    handle to resetSizesFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+    setBoundField(handles.output, 'sizesFile', '');
 end
 
-function resetEdgeMatrixFile_pushbutton_Callback(hObject, eventdata, handles)
+function resetEdgeMatrixFile_pushbutton_Callback(~, ~, handles)
 % hObject    handle to resetEdgeMatrixFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+    setBoundField(handles.output, 'edgeMatrixFile', '');
 end
