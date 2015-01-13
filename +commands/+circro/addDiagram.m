@@ -20,7 +20,7 @@ function addDiagram(v, varargin)
     end
     
     if sizesFullPath
-        commands.circro.setNodeSizes(guidata(h), sizesFullPath);
+        commands.circro.setNodeSizes(guidata(h), sizesFullPath, circleIndex);
     end
     
     if edgeMatrixFullPath
@@ -28,7 +28,7 @@ function addDiagram(v, varargin)
     end
     
     if colorsFullPath
-        commands.circro.setNodeColors(guidata(h), colorsFullPath);
+        commands.circro.setNodeColors(guidata(h), colorsFullPath, circleIndex);
     end
 end
 
