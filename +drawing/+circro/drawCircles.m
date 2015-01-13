@@ -6,12 +6,35 @@ function drawCircles(v)
     set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
     guidata(v.hMainFigure, v);
     
+    runFnOnEachCircle(v, @drawCircleSub);
+    
+    R=getMaxRadiusSub(v, 1.2);
+    axis([-1.3*R 1.3*R -1.3*R 1.3*R])
+    axis square
+    axis off
+end
+
+function runFnOnEachCircle(v, fn)
     if isfield(v, 'circles')
         numCircles = length(v.circles);
         for i = 1:numCircles
-            drawCircleSub(v.circles{i});
+            fn(v.circles{i});
         end
     end
+end
+
+function R = getMaxRadiusSub(v, minR)
+    R = minR;
+    
+    function ifLargerSetR(circle)
+        circleState = getCircleStateSub(circle);
+        if circleState.labelRadius > R
+            R = circleState.labelRadius;
+        end
+    end
+    
+    runFnOnEachCircle(v, @ifLargerSetR);
+    
 end
 
 function drawCircleSub(circle)
@@ -42,11 +65,6 @@ function drawCircleSub(circle)
         pause(0.01)
         hold on        
     end
-    
-    R=labelRadius;
-    axis([-1.3*R 1.3*R -1.3*R 1.3*R])
-    axis square
-    axis off
 
     drawing.circro.writeLabels(labels, labelRadius, startRadian);
 
