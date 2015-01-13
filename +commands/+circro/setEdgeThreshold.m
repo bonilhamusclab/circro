@@ -3,6 +3,6 @@ function setEdgeThreshold(v, edgeThreshold)
     
     guidata(v.hMainFigure,v);
     
-    drawing.drawCircle(v);
+    drawing.circro.drawCircle(v);
     
 % end select colors data

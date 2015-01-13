@@ -8,7 +8,7 @@ v.edgeMatrix = matrix;
 v.edgeThreshold = threshold;
 
 guidata(v.hMainFigure,v);
-drawing.drawCircle(v);
+drawing.circro.drawCircle(v);
 
 function inputParams = parseInputParamsSub(args)
 p = inputParser;

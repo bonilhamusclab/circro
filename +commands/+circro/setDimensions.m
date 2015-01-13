@@ -20,7 +20,7 @@ function setDimensions(v, varargin)
     end
 
     guidata(v.hMainFigure,v);
-    drawing.drawCircle(v);
+    drawing.circro.drawCircle(v);
 end
 
 function inputParams = parseInputParamsSub(args)

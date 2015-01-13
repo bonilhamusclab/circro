@@ -27,7 +27,7 @@ function drawCircle(v)
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
-        drawing.drawSegment(nextStart,endRadian,sizes(segment),radius,color,[])
+        drawing.circro.drawSegment(nextStart,endRadian,sizes(segment),radius,color,[])
         
         pause(0.01)
         hold on        
@@ -38,10 +38,10 @@ function drawCircle(v)
     axis square
     axis off
 
-    drawing.writeLabels(labels, labelRadius, startRadian);
+    drawing.circro.writeLabels(labels, labelRadius, startRadian);
 
     if isfield(v, 'edgeMatrix')
-        drawing.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius);
+        drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius);
     end
 
 end
