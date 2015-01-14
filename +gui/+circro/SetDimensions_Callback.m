@@ -16,9 +16,11 @@ if circleIndex < 1
     return;
 end
 
+circleState = utils.circro.getCircleState(v.circles{circleIndex});
 
 prompt = {'Radius:', 'Label Radius:', 'Start Radian:'};
-defaults = {'1','1.2', num2str(pi/2)};
+defaults = {num2str(circleState.radius),num2str(circleState.labelRadius), ...
+    num2str(circleState.startRadian)};
 
 dlg_title = 'Dimension Options';
 num_lines = 1;
