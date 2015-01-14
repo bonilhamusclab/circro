@@ -1,7 +1,7 @@
 function circleIndex = promptCircleIndex(v, msg, availableIndices)
     maxCircleIndex = utils.circro.maxCircleIndex(v);
     if maxCircleIndex > 1
-        if nargin < 2
+        if nargin < 3
             availableIndices = [1:maxCircleIndex];
         end
         maxCircleIndex = max(availableIndices);
