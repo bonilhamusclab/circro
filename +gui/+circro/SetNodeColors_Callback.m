@@ -1,16 +1,19 @@
 function SetNodeColors_Callback(obj, ~)
 v = guidata(obj);
 
-if ~isfield(v, 'circles') || isempty(v.circles)
-    yes = createNewDiagramQuestSub();
-    if ~yes
+circleIndex = 1;
+if isfield(v, 'circles') && ~isempty(v.circles)
+    createNew = createNewOrUpdateQuestSub();
+    if createNew < 0
         return;
+    elseif createNew
+        circleIndex = length(v.circles) + 1;
+    else
+        circleIndex = gui.circro.promptCircleIndex(v, 'node colors');
+        if circleIndex < 1
+            return;
+        end
     end
-end
-
-circleIndex = gui.circro.promptCircleIndex(v, 'node colors');
-if circleIndex < 1
-    return;
 end
 
 [colors_filename, colors_pathname] = uigetfile( ...
@@ -23,8 +26,12 @@ end
 Circro('circro.setNodeColors', [colors_pathname colors_filename], circleIndex);
 end
 
-function yes = createNewDiagramQuestSub()
-    question = 'No Diagrams available to set colors to, render node colors as new Diagram?';
-    title = 'Create New Diagram';
-    yes = strcmpi(questdlg(question, title), 'yes');
+function createNew = createNewOrUpdateQuestSub()
+    question = 'Render node colors as new diagram or update current diagram?';
+    title = 'Create New Or Update';
+    answer = questdlg(question, title, 'New', 'Update', 'Update');
+    createNew = strcmpi(answer, 'new');
+    if strcmpi(answer, 'cancel')
+        createNew = -1;
+    end
 end
