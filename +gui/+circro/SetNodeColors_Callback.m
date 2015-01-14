@@ -1,19 +1,9 @@
 function SetNodeColors_Callback(obj, ~)
 v = guidata(obj);
 
-circleIndex = 1;
-if isfield(v, 'circles') && ~isempty(v.circles)
-    createNew = createNewOrUpdateQuestSub();
-    if createNew < 0
-        return;
-    elseif createNew
-        circleIndex = length(v.circles) + 1;
-    else
-        circleIndex = gui.circro.promptCircleIndex(v, 'node colors');
-        if circleIndex < 1
-            return;
-        end
-    end
+circleIndex = gui.circro.newOrUpdateCircleIndex(v, 'node colors');
+if circleIndex < 0
+    return;
 end
 
 [colors_filename, colors_pathname] = uigetfile( ...
