@@ -27,7 +27,7 @@ function R = getMaxRadiusSub(v, minR)
     R = minR;
     
     function ifLargerSetR(circle)
-        circleState = getCircleStateSub(circle);
+        circleState = utils.circro.getCircleState(circle);
         if circleState.labelRadius > R
             R = circleState.labelRadius;
         end
@@ -40,7 +40,7 @@ end
 function drawCircleSub(circle)
 
     
-    appState = getCircleStateSub(circle);
+    appState = utils.circro.getCircleState(circle);
     
     labels = appState.labels;
     sizes = appState.sizes;
@@ -76,88 +76,4 @@ end
 
 function seq = makeSequentialSub(twoD)
     seq = [twoD(:, 1); flipud(twoD(:, 2))];
-end
-
-function appState = getCircleStateSub(circle)
-%[labels, sizes, colors, radius, startRadian, labelRadius, links]
-
-    fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'edgeMatrix'};
-    
-    indxs = 1:length(fields);
-    setFields = arrayfun(@(i) isfield(circle, fields{i}), indxs);
-    elemCountPerField = arrayfun(@(i) numel(circle.(fields{i})), indxs(setFields));
-    if setFields(4)
-        elemCountPerField(end) = size(circle.edgeMatrix, 1);
-    end
-    
-    function verifySameElemCountPerField()
-        if range(elemCountPerField)
-            msg = '';
-            for i = 1:setFields
-                msg = [msg fields{i} ':' elemCountPerField(i) '  '];
-            end
-            error('every set field must have same number of elements \n%s', msg);
-        end 
-    end
-
-    function verifyAtLeastOneFieldSet()
-       if ~any(setFields)
-        error('can not draw without at least nodeLabels, nodeSizes, or nodeColors set');
-       end
-    end
-    
-    verifyAtLeastOneFieldSet();
-    verifySameElemCountPerField();
-    
-    numNodes = elemCountPerField(1);
-    
-    if ~isfield(circle,'nodeLabels')
-        temp=[(1:numNodes/2)' flipud(((numNodes/2+1):numNodes)')];
-        appState.labels=(num2cell(temp));
-    else
-        appState.labels = circle.nodeLabels;
-    end
-    
-    if ~isfield(circle, 'radius');
-        appState.radius = 1;
-    else
-        appState.radius = circle.radius;
-    end
-    
-    if ~isfield(circle, 'nodeSizes')
-        appState.sizes(1:numNodes) = appState.radius*1.1;
-    else
-        appState.sizes=makeSequentialSub(circle.nodeSizes) + appState.radius;
-    end
-    
-    if ~isfield(circle, 'nodeColors')
-        appState.colors=rand(numNodes,1);
-        appState.colors(numNodes/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
-    else
-        appState.colors = makeSequentialSub(circle.nodeColors);
-    end
-    
-    if ~isfield(circle, 'colorscheme')
-        appState.colorscheme=hot;
-    else
-        appState.colorscheme = circle.colorscheme;
-    end
-    
-    if ~isfield(circle, 'startRadian')
-        appState.startRadian = pi/2;
-    else
-        appState.startRadian = circle.startRadian;
-    end
-    
-    if ~isfield(circle, 'labelRadius')
-        appState.labelRadius = max(appState.sizes(:)) * 1.1;
-    else
-        appState.labelRadius = circle.labelRadius;
-    end
-    
-    if isfield(circle, 'edgeMatrix')
-        appState.edgeMatrix = circle.edgeMatrix;
-        appState.edgeThreshold = circle.edgeThreshold;
-    end
-
 end
