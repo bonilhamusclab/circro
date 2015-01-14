@@ -23,6 +23,7 @@ v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','Ha
 v.hFunctionCircroMenu = uimenu(v.hFunctionMenu, 'Label', 'Circro');
 v.hFunctionCircroSetDimensionsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set Dimensions','HandleVisibility','callback','Callback', @gui.circro.SetDimensions_Callback);
 v.hFunctionCircroSetEdgeThresholdMenu = uimenu(v.hFunctionCircroMenu,'Label','Set Edge Threshold','HandleVisibility','callback','Callback', @gui.circro.SetEdgeThreshold_Callback);
+v.hFunctionCircroSetNodeColorsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Add Node Colors','HandleVisibility','callback','Callback', @gui.circro.SetNodeColors_Callback);
 
 
 v.hHelpMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Help');

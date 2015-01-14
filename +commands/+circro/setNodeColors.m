@@ -1,9 +1,8 @@
 function setNodeColors(v, colorsFullPath, circleIndex)
     if nargin < 3
-        if isfield(v, 'circles')
+        circleIndex = 1;
+        if isfield(v, 'circles') && ~isempty(v.circles)
             circleIndex = length(v.circles);
-        else
-            circleIndex = 1;
         end
     end
     
