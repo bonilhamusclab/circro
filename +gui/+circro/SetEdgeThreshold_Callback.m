@@ -6,15 +6,15 @@ if ~isfield(v, 'circles')
     return;
 end
 
-availablleIndexes = find(cellfun(@(c) isfield(c, 'edgeMatrix'), v.circles));
+availableIndexes = find(cellfun(@(c) isfield(c, 'edgeMatrix'), v.circles));
 
-if isempty(availablleIndexes)
+if isempty(availableIndexes)
     noEdgesToThresholdPopUpSub()
     return;
 end
 
 
-circleIndex = gui.circro.promptCircleIndex(v, 'edge threshold', availablleIndexes);
+circleIndex = gui.circro.promptCircleIndex(v, 'edge threshold', availableIndexes);
 if circleIndex < 1
     return;
 end

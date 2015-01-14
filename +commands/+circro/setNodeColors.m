@@ -9,7 +9,7 @@ function setNodeColors(v, colorsFullPath, circleIndex)
     
     validateattributes(circleIndex, {'numeric'}, {'integer', 'positive'});
     
-    v.circles{circleIndex}.nodeColors =fileUtils.circro.loadColors(colorsFullPath);
+    v.circles{circleIndex}.nodeColors = fileUtils.circro.loadColors(colorsFullPath);
     
     guidata(v.hMainFigure,v);
     
