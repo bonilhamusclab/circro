@@ -1,11 +1,24 @@
 function SetDimensions_Callback(obj, ~)
 v=guidata(obj);
 
-circlesIndex = utils.circro.maxCirclesIndex(v);
+if ~isfield(v, 'circles')
+    noDimensionsToSetPopUpSub();
+    return;
+end
+
+if isempty(v.circles)
+    noDimensionsToSetPopUpSub();
+    return;
+end
+
+circleIndex = gui.circro.promptCircleIndex(v, 'dimensions');
+if circleIndex < 1
+    return;
+end
 
 
-prompt = {'Radius:', 'Label Radius:', 'Start Radian:', 'Circles Index:'};
-defaults = {'1','1.2', num2str(pi/2), num2str(circlesIndex)};
+prompt = {'Radius:', 'Label Radius:', 'Start Radian:'};
+defaults = {'1','1.2', num2str(pi/2)};
 
 dlg_title = 'Dimension Options';
 num_lines = 1;
@@ -15,6 +28,10 @@ if ~isempty(answer)
     radius = str2double(answer(1));
     labelRadius = str2double(answer(2));
     startRadian = str2double(answer(3));
-    circlesIndex = str2double(answer(4));
-    Circro('circro.setDimensions', radius, labelRadius, startRadian, circlesIndex);
+    Circro('circro.setDimensions', radius, labelRadius, startRadian, circleIndex);
+end
+end
+
+function noDimensionsToSetPopUpSub()
+    msgbox('No Diagrams available with dimensions to set');
 end

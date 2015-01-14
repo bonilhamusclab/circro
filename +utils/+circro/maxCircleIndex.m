@@ -1,4 +1,4 @@
-function maxIndex = maxCirclesIndex(v)
+function maxIndex = maxCircleIndex(v)
     maxIndex = 1;
     if isfield(v, 'circles')
         if ~isempty(v.circles)
