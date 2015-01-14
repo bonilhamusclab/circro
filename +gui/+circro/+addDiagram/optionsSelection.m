@@ -88,7 +88,7 @@ end
 function bindTextBoxes(h)
     handles = guidata(h);
     
-    function fn = updateTexBoxFnGen(field)
+    function fn = updateTextBoxFnGen(field)
         function updateTextBox(value)
             handles.([field 'Path_txtbox']).String = value;
         end
@@ -96,7 +96,7 @@ function bindTextBoxes(h)
     end
     
     pathFields = handles.pathFields;
-    cellfun(@(f) bind(h, f, {updateTexBoxFnGen(f)}), pathFields, ...
+    cellfun(@(f) bind(h, f, {updateTextBoxFnGen(f)}), pathFields, ...
         'UniformOutput', 0);
 end
 
@@ -175,6 +175,66 @@ function bindResetFilesEnable(h)
     bindControlEnableToField(h, 'edgeMatrixFile', 'resetEdgeMatrixFile_pushbutton');
 end
 
+function bindDimensions(h)
+    fnMap.labelsFile = @fileUtils.circro.loadLabels;
+    fnMap.sizesFile = @fileUtils.circro.loadSizes;
+    fnMap.colorsFile = @fileUtils.circro.loadColors;
+    fnMap.edgeMatrixFile = @fileUtils.circro.loadMatrix;
+    
+    fieldMap.labelsFile = 'nodeLabels';
+    fieldMap.sizesFile = 'nodeSizes';
+    fieldMap.colorsFile = 'nodeColors';
+    fieldMap.edgeMatrixFile = 'edgeMatrix';
+    
+    function circleState = mockCircleState()
+        handles = guidata(h);
+        pathFields = handles.pathFields;
+        for i = 1:length(pathFields)
+            field = pathFields{i};
+            if isfield(handles, field) && ~isempty(handles.(field))
+                loadFn = fnMap.(field);
+                circleField = fieldMap.(field);
+                filePath = handles.(field);
+                circle.(circleField) = loadFn(filePath);
+            end
+        end
+        circleState = utils.circro.getCircleState(circle);
+    end
+
+    function updateDimensions(~)
+        if anyPathFieldSet(guidata(h))
+            circleState = mockCircleState();
+        else
+            circleState.radius = '';
+            circleState.labelRadius = '';
+            circleState.startRadian = '';
+        end
+        setBoundField(h, 'radius', circleState.radius);
+        setBoundField(h, 'labelRadius', circleState.labelRadius);
+        setBoundField(h, 'startRadian', circleState.startRadian);
+    end
+
+    handles = guidata(h);
+
+    cellfun(@(f) bind(h, f, {@updateDimensions}), handles.pathFields, ...
+        'UniformOutput', 0);
+end
+
+function bindDimensionFields(h)
+    function fn = updateEditFnGen(field)
+        function updateEditFn(value)
+            handles = guidata(h);
+            handles.([field '_edit']).String = num2str(value);
+            guidata(h, handles);
+        end
+        fn = @updateEditFn;
+    end
+
+    bind(h, 'radius', {updateEditFnGen('radius')});
+    bind(h, 'labelRadius', {updateEditFnGen('labelRadius')});
+    bind(h, 'startRadian', {updateEditFnGen('startRadian')});
+end
+
 % --- Executes just before filesSelection is made visible.
 function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -205,6 +265,10 @@ bindDimensionOptions(handles.output);
 bindEdgeMatrixOptions(handles.output);
 
 bindResetFilesEnable(handles.output);
+
+bindDimensions(handles.output);
+
+bindDimensionFields(handles.output);
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);

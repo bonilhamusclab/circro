@@ -73,7 +73,3 @@ function drawCircleSub(circle)
     end
 
 end
-
-function seq = makeSequentialSub(twoD)
-    seq = [twoD(:, 1); flipud(twoD(:, 2))];
-end
