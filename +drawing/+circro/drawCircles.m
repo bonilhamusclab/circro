@@ -31,6 +31,9 @@ function R = getMaxRadiusSub(v, minR)
         if circleState.labelRadius > R
             R = circleState.labelRadius;
         end
+        if circleState.radius > R
+            R = circleState.radius;
+        end
     end
     
     runFnOnEachCircle(v, @ifLargerSetR);
