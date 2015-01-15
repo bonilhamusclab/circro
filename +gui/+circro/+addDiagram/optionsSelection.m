@@ -330,7 +330,7 @@ function selectColorsFile_button_Callback(~, ~, handles)
 % hObject    handle to selectColorsFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA
-    selectFile('Sizes', 'colorsFile', handles.output);
+    selectFile('Colors', 'colorsFile', handles.output);
 end
 
 function prepForWindowsOs(hObject)
