@@ -100,7 +100,7 @@ function bindTextBoxes(h)
         'UniformOutput', 0);
 end
 
-function anySet = anyPathFieldSet(handles)
+function anySet = anyPathFieldSetToFile(handles)
 	pathFields = handles.pathFields;
 
     anySet = 0;
@@ -132,7 +132,7 @@ function bindEnabledToAnyPathFieldSet(h, control)
         handles = guidata(h);
 
         Enable = 'off';
-        if anyPathFieldSet(handles);
+        if anyPathFieldSetToFile(handles);
             Enable = 'on';
         end
         control.Enable = Enable;
@@ -212,7 +212,7 @@ function bindDimensions(h)
     end
 
     function updateDimensions(~)
-        if anyPathFieldSet(guidata(h))
+        if anyPathFieldSetToFile(guidata(h))
             circleState = mockCircleState();
         else
             circleState.radius = '';
