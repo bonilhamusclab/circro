@@ -76,7 +76,11 @@ function circleState = getCircleState(circle)
     
     if isfield(circle, 'edgeMatrix')
         circleState.edgeMatrix = circle.edgeMatrix;
-        circleState.edgeThreshold = circle.edgeThreshold;
+        if isfield(circle, 'edgeThreshold')
+            circleState.edgeThreshold = circle.edgeThreshold;
+        else
+            circleState.edgeThreshold = .5;
+        end
     end
 
 end
