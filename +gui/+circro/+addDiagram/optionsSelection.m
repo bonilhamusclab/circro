@@ -60,7 +60,7 @@ function setBoundField(h, field, value)
     guidata(h, handles);
 end
 
-function bind(h, field, fns)
+function bind(h, field, fn)
     handles = guidata(h);
     if ~isfield(handles, 'boundFns')
         handles.boundFns = {};
@@ -69,20 +69,20 @@ function bind(h, field, fns)
     if isfield(handles.boundFns, field)
         origFns = handles.boundFns.(field);
     end
-    handles.boundFns.(field) = [origFns fns];
+    handles.boundFns.(field) = [origFns {fn}];
     guidata(h, handles);
 end
 
 %So that invoking function has caccess to data
 function callerSetters(h, fns)
-    bind(h, 'labelsFile', {fns.setLabelsFn});
-    bind(h, 'sizesFile', {fns.setSizesFn});
-    bind(h, 'edgeMatrixFile', {fns.setEdgeMatrixFn});
-    bind(h, 'colorsFile', {fns.setColorsFn});
-    bind(h, 'edgeThreshold', {fns.setEdgeThresholdFn});
-    bind(h, 'radius', {fns.setRadiusFn});
-    bind(h, 'labelRadius', {fns.setLabelRadiusFn});
-    bind(h, 'startRadian', {fns.setStartRadianFn});
+    bind(h, 'labelsFile', fns.setLabelsFn);
+    bind(h, 'sizesFile', fns.setSizesFn);
+    bind(h, 'edgeMatrixFile', fns.setEdgeMatrixFn);
+    bind(h, 'colorsFile', fns.setColorsFn);
+    bind(h, 'edgeThreshold', fns.setEdgeThresholdFn);
+    bind(h, 'radius', fns.setRadiusFn);
+    bind(h, 'labelRadius', fns.setLabelRadiusFn);
+    bind(h, 'startRadian', fns.setStartRadianFn);
 end
 
 function bindTextBoxes(h)
@@ -96,7 +96,7 @@ function bindTextBoxes(h)
     end
     
     pathFields = handles.pathFields;
-    cellfun(@(f) bind(h, f, {updateTextBoxFnGen(f)}), pathFields, ...
+    cellfun(@(f) bind(h, f, updateTextBoxFnGen(f)), pathFields, ...
         'UniformOutput', 0);
 end
 
@@ -125,7 +125,7 @@ function bindEnabledToAnyPathFieldSet(h, control)
     handles = guidata(h);
 	pathFields = handles.pathFields;
     
-    cellfun(@(f) bind(h, f, {@toggle}), pathFields, ...
+    cellfun(@(f) bind(h, f, @toggle), pathFields, ...
         'UniformOutput', 0);
         
     function toggle(~)
@@ -160,10 +160,20 @@ function bindControlEnableToField(h, field, controlName)
         end
         handles.(controlName).Enable = Enable;
     end
-    bind(h, field, {@toggle});
+    bind(h, field, @toggle);
+end
+
+function fn = updateEditFnGen(h, field)
+    function updateEditFn(value)
+        handles = guidata(h);
+        handles.([field '_edit']).String = num2str(value);
+        guidata(h, handles);
+    end
+    fn = @updateEditFn;
 end
 
 function bindEdgeMatrixOptions(h)
+    bind(h, 'edgeThreshold', updateEditFnGen(h, 'edgeThreshold'));
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeThreshold_edit');
     bindControlEnableToField(h, 'edgeMatrixFile', 'viewEdgeMatrixCdf_pushbutton');
 end
@@ -216,23 +226,15 @@ function bindDimensions(h)
 
     handles = guidata(h);
 
-    cellfun(@(f) bind(h, f, {@updateDimensions}), handles.pathFields, ...
+    cellfun(@(f) bind(h, f, @updateDimensions), handles.pathFields, ...
         'UniformOutput', 0);
 end
 
 function bindDimensionFields(h)
-    function fn = updateEditFnGen(field)
-        function updateEditFn(value)
-            handles = guidata(h);
-            handles.([field '_edit']).String = num2str(value);
-            guidata(h, handles);
-        end
-        fn = @updateEditFn;
-    end
 
-    bind(h, 'radius', {updateEditFnGen('radius')});
-    bind(h, 'labelRadius', {updateEditFnGen('labelRadius')});
-    bind(h, 'startRadian', {updateEditFnGen('startRadian')});
+    bind(h, 'radius', updateEditFnGen(h, 'radius'));
+    bind(h, 'labelRadius', updateEditFnGen(h, 'labelRadius'));
+    bind(h, 'startRadian', updateEditFnGen(h, 'startRadian'));
 end
 
 % --- Executes just before filesSelection is made visible.
