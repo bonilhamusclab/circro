@@ -59,7 +59,7 @@ function drawCircleSub(circle)
     axis square
     endRadian = startRadian;
     for segment=1:numNodes % draw the circle
-        color=utils.findColorInColorscheme(colors(segment),colors,colorscheme);
+        color=utils.valueToColor(colors(segment),colors,colorscheme);
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;

@@ -50,8 +50,7 @@ function circleState = getCircleState(circle)
     end
     
     if ~isfield(circle, 'nodeColors')
-        circleState.colors=rand(numNodes,1);
-        circleState.colors(numNodes/2,1)=0.5;% set the mid value as on (to set the color as the mid-value
+        circleState.colors=repmat(.5, numNodes, 1);
     else
         circleState.colors = makeSequentialSub(circle.nodeColors);
     end
