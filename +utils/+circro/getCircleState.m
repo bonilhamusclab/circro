@@ -46,9 +46,9 @@ function circleState = getCircleState(circle)
     end
     
     if ~isfield(circle, 'nodeSizes')
-        circleState.sizes(1:numNodes) = circleState.radius*1.1;
+        circleState.outerRadii(1:numNodes) = circleState.radius*1.1;
     else
-        circleState.sizes=makeSequentialSub(circle.nodeSizes) + circleState.radius;
+        circleState.outerRadii = makeSequentialSub(circle.nodeSizes) + circleState.radius;
     end
     
     if ~isfield(circle, 'nodeColors')
@@ -70,7 +70,7 @@ function circleState = getCircleState(circle)
     end
     
     if ~isfield(circle, 'labelRadius')
-        circleState.labelRadius = max(circleState.sizes(:)) * 1.1;
+        circleState.labelRadius = max(circleState.outerRadii(:)) * 1.1;
     else
         circleState.labelRadius = circle.labelRadius;
     end

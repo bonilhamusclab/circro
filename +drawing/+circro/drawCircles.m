@@ -28,11 +28,14 @@ function R = getMaxRadiusSub(v, minR)
     
     function ifLargerSetR(circle)
         circleState = utils.circro.getCircleState(circle);
-        if circleState.labelRadius > R && circleState.drawLabels
-            R = circleState.labelRadius;
+        thisR = max(circleState.outerRadii);
+        
+        if thisR < circleState.labelRadius && circleState.drawLabels
+            thisR = circleState.labelRadius;
         end
-        if circleState.radius > R
-            R = circleState.radius;
+        
+        if thisR > R
+            R = thisR;
         end
     end
     
@@ -46,14 +49,14 @@ function drawCircleSub(circle)
     appState = utils.circro.getCircleState(circle);
     
     labels = appState.labels;
-    sizes = appState.sizes;
+    outerRadii = appState.outerRadii;
     colors = appState.colors;
     colorscheme = appState.colorscheme;
     radius = appState.radius;
     startRadian = appState.startRadian;
     labelRadius = appState.labelRadius;
 
-    numNodes=numel(sizes);
+    numNodes=numel(outerRadii);
     fprintf('Drawing circle with %d regions\n',numNodes)
 
     axis square
@@ -63,7 +66,7 @@ function drawCircleSub(circle)
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
-        drawing.circro.drawSegment(nextStart,endRadian,radius,sizes(segment),color)
+        drawing.circro.drawSegment(nextStart,endRadian,radius,outerRadii(segment),color)
         
         pause(0.01)
         hold on        
