@@ -28,7 +28,7 @@ function R = getMaxRadiusSub(v, minR)
     
     function ifLargerSetR(circle)
         circleState = utils.circro.getCircleState(circle);
-        if circleState.labelRadius > R
+        if circleState.labelRadius > R && circleState.drawLabels
             R = circleState.labelRadius;
         end
         if circleState.radius > R
@@ -63,7 +63,7 @@ function drawCircleSub(circle)
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
-        drawing.circro.drawSegment(nextStart,endRadian,sizes(segment),radius,color,[])
+        drawing.circro.drawSegment(nextStart,endRadian,radius,sizes(segment),color)
         
         pause(0.01)
         hold on        
