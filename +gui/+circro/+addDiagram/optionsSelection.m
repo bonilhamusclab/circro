@@ -90,7 +90,7 @@ function bindTextBoxes(h)
     
     function fn = updateTextBoxFnGen(field)
         function updateTextBox(value)
-            handles.([field 'Path_txtbox']).String = value;
+            set(handles.([field 'Path_txtbox']), 'String', value);
         end
         fn = @updateTextBox;
     end
@@ -115,7 +115,7 @@ function anySet = anyPathFieldSetToFile(handles)
         end
 	end
 
-    if anyCells(cellfun(@(f) exist(handles.([f 'Path_txtbox']).String, 'file'), ...
+    if anyCells(cellfun(@(f) exist(get(handles.([f 'Path_txtbox']), 'String'), 'file'), ...
             pathFields, 'UniformOutput', 0));
             anySet = 1;
     end
@@ -135,7 +135,7 @@ function bindEnabledToAnyPathFieldSet(h, control)
         if anyPathFieldSetToFile(handles);
             Enable = 'on';
         end
-        control.Enable = Enable;
+        set(control, 'Enable', Enable);
     end
 end
 
@@ -158,7 +158,7 @@ function bindControlEnableToField(h, field, controlName)
         if val
             Enable = 'on';
         end
-        handles.(controlName).Enable = Enable;
+        set(handles.(controlName), 'Enable', Enable);
     end
     bind(h, field, @toggle);
 end
@@ -166,7 +166,7 @@ end
 function fn = updateEditFnGen(h, field)
     function updateEditFn(value)
         handles = guidata(h);
-        handles.([field '_edit']).String = num2str(value);
+        set(handles.([field '_edit']), 'String', num2str(value));
         guidata(h, handles);
     end
     fn = @updateEditFn;
