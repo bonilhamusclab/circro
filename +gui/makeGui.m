@@ -27,6 +27,7 @@ v.hFunctionCircroSetNodeSizesMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Ad
 v.hFunctionCircroSetEdgeMatrixMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Add Edge Matrix','HandleVisibility','callback','Callback', @gui.circro.SetEdgeMatrix_Callback);
 v.hFunctionCircroSetDimensionsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set Dimensions','HandleVisibility','callback','Callback', @gui.circro.SetDimensions_Callback);
 v.hFunctionCircroSetEdgeThresholdMenu = uimenu(v.hFunctionCircroMenu,'Label','Set Edge Threshold','HandleVisibility','callback','Callback', @gui.circro.SetEdgeThreshold_Callback);
+v.hFunctionCircroToggleLabelsMenu = uimenu(v.hFunctionCircroMenu,'Label','Toggle Labels','HandleVisibility','callback','Callback', @gui.circro.ToggleLabels_Callback);
 
 
 v.hHelpMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Help');

@@ -37,6 +37,8 @@ function circleState = getCircleState(circle)
         circleState.labels = circle.nodeLabels;
     end
     
+    circleState.drawLabels = ~isfield(circle, 'showLabels') || circle.showLabels;
+    
     if ~isfield(circle, 'radius');
         circleState.radius = 1;
     else

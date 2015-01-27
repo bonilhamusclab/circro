@@ -53,7 +53,7 @@ function drawCircleSub(circle)
     startRadian = appState.startRadian;
     labelRadius = appState.labelRadius;
 
-    numNodes=numel(labels);
+    numNodes=numel(sizes);
     fprintf('Drawing circle with %d regions\n',numNodes)
 
     axis square
@@ -69,7 +69,9 @@ function drawCircleSub(circle)
         hold on        
     end
 
-    drawing.circro.writeLabels(labels, labelRadius, startRadian);
+    if appState.drawLabels
+        drawing.circro.writeLabels(labels, labelRadius, startRadian);
+    end
 
     if isfield(circle, 'edgeMatrix')
         drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius);

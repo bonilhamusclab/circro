@@ -40,7 +40,7 @@ function inputParams = parseInputParamsSub(v, args)
     p.addOptional('circleIndex', d.circleIndex, @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
 
     p = utils.stringSafeParse(p, args, fieldnames(d), ...
-        d.radius, d.labelRadius, d.startRadian);
+        d.radius, d.labelRadius, d.startRadian, d.circleIndex);
 
     inputParams = p.Results;
 

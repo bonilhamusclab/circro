@@ -27,6 +27,6 @@ p.addOptional('circleIndex', d.circleIndex, ...
   @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
-    d.threshold);
+    d.threshold, d.circleIndex);
 
 inputParams = p.Results;

@@ -1,13 +1,24 @@
 function circleIndex = promptCircleIndex(v, msg, availableIndices)
+%function circleIndex = promptCircleIndex(v, msg, availableIndices)
+%prompts for circle index if more than 1 circle is present, 
+% else it does not prompt
+% returns -1 if no circles are yet rendered
+
     maxCircleIndex = utils.circro.maxCircleIndex(v);
+    
+    if nargin < 3
+        availableIndices = [1:maxCircleIndex];
+    end
+    
     if maxCircleIndex > 1
-        if nargin < 3
-            availableIndices = [1:maxCircleIndex];
-        end
         maxCircleIndex = max(availableIndices);
         circleIndex = promptIndexSub(availableIndices, maxCircleIndex, msg);
     else
-        circleIndex = 1;
+        if any(availableIndices == 1)
+            circleIndex = maxCircleIndex; %could be -1 if no circles rendered
+        else
+            circleIndex = -1;
+        end
     end 
 end
 
