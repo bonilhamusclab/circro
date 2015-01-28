@@ -1,65 +1,65 @@
-function drawLinks(edgeMatrix, threshold, startRadian, radius)
-
-    numberLinks=size(edgeMatrix,1);
+function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
 
     links=triu(edgeMatrix>threshold);%# this is a random list of connections
-    [ind1,ind2]=ind2sub(size(links),find(links(:)));
+    [startNodes,stopNodes]=ind2sub(size(links),find(links(:)));
     
-    for i=1:size(ind1,1);
-        if ind1(i)~=ind2(i)
+    numberNodes=size(edgeMatrix,1);
+    anglePerNode = 2 * pi/numberNodes;
+    
+    function theta = nodeTheta(node)
+        theta = startRadian + node * anglePerNode - anglePerNode/2;
+    end
+
+    weightRange = [max(edgeMatrix(links)) min(edgeMatrix(links))];
+    function color = getColor(weight)
+        if nargin > 4
+            color = utils.valueToColor(weight, weightRange, colorscheme);
+        else
+            color = [.5 .5 .5];
+        end
+    end
+    
+    for i=1:size(startNodes,1)
+        startNode = startNodes(i);
+        stopNode = stopNodes(i);
+        
+        if startNode~=stopNode
             
-           thetaInd1=  ( (startRadian + ( (ind1(i)-1) *(2*pi/numberLinks) ))...
-               + (startRadian + ( (ind1(i)) *(2*pi/numberLinks) )) )/2;
-           thetaInd2=  ( (startRadian + ( (ind2(i)-1) *(2*pi/numberLinks) ))...
-               + (startRadian + ( (ind2(i)) *(2*pi/numberLinks) )) )/2;
-                             
-           if thetaInd1>thetaInd2
-                largerTheta=thetaInd1;
-                smallerTheta=thetaInd2;
-            else
-                largerTheta=thetaInd2;
-                smallerTheta=thetaInd1;
-            end
-
-            if largerTheta-smallerTheta<pi
-
-                arc=linspace(smallerTheta,largerTheta,3);
-                interTheta=(arc(2));
-            else
-                tempTheta=smallerTheta+(2*pi);
-                arc=linspace(largerTheta,tempTheta,3);
-                interTheta=(arc(2));
-            end
+            thetaStart = nodeTheta(startNode);
+            thetaStop = nodeTheta(stopNode);
             
-            x1 = radius * cos(thetaInd1);
-            y1 = radius * sin(thetaInd1);
+            xStart = radius * cos(thetaStart);
+            yStart = radius * sin(thetaStart);
             
-            x2 = radius * cos(thetaInd2);
-            y2 = radius * sin(thetaInd2);
+            xStop = radius * cos(thetaStop);
+            yStop = radius * sin(thetaStop);
 
-            distance= sqrt(( x2-x1 )^2  + ( y2-y1 )^2);
+            distance= norm([xStart yStart] - [xStop yStop]);
 
-            if distance>=2*radius;
+            %occurs with links connecting opposite nodes of circle
+            if distance >= 2*radius
                 elevation=radius/2;
+            else
+                elevation=radius-(distance/2);
             end
 
-            if distance<2*radius
-               elevation=radius-(distance/2);
+            interTheta = (thetaStart + thetaStop)/2;
+            if abs(thetaStart - thetaStop) >= pi
+                interTheta = interTheta - pi;
             end
 
-            xInter = elevation * (cos(interTheta)) ;
-            yInter = elevation * (sin(interTheta)) ;
+            xInter = elevation * cos(interTheta);
+            yInter = elevation * sin(interTheta);
  
-            a=[x1;xInter;x2]'; % xs
-            b=[y1;yInter;y2]'; % ys
+            xs = [xStart xInter xStop];
+            ys = [yStart yInter yStop]; 
 
-            xx = pi*(0:1:2); 
-
-            yy=[a;b];
-
-            pp = spline(xx,yy);
-            yyy = ppval(pp, linspace(0,2*pi,100));
-            plot(yyy(1,:),yyy(2,:),'color',[0.5 0.5 0.5],'linewidth',1.5*edgeMatrix(ind1(i),ind2(i)) ); %,yy(1,2:3),yy(2,2:3),'or'), axis equal
+            pp = spline(pi * [0:2], [xs; ys]);
+            pts = ppval(pp, linspace(0, 2*pi, 100));
+            
+            weight = edgeMatrix(startNode,stopNode);
+            color = getColor(weight);
+            plot(pts(1,:), pts(2,:), 'color', color, 'linewidth', weight);
 
             %pause(0.8)
         end
