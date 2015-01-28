@@ -2,6 +2,7 @@
 function drawCircles(v)
     axis square
     delete(allchild(v.hAxes));
+    colorbar('off');
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
     set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
     guidata(v.hMainFigure, v);

@@ -570,6 +570,16 @@ function resetEdgeMatrixFile_pushbutton_Callback(~, ~, handles)
     setBoundField(handles.output, 'edgeMatrixFile', '');
 end
 
+function setFieldFromPopupMenu(hControl, h, field)
+    contents = cellstr(get(hControl, 'String'));
+    index = get(hControl, 'value');
+    if index > 1
+        value = contents{index};
+        setBoundField(h, field, value);
+    else
+        setBoundField(h, field, '');
+    end
+end
 
 % --- Executes on selection change in edgeMatrixColormap_popupmenu.
 function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
@@ -579,14 +589,7 @@ function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns edgeMatrixColormap_popupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from edgeMatrixColormap_popupmenu
-    contents = cellstr(get(hObject, 'String'));
-    index = get(hObject, 'value');
-    if index > 1
-        colorscheme = contents{index};
-        setBoundField(handles.output, 'edgeMatrixColorscheme', colorscheme);
-    else
-        setBoundField(handles.output, 'edgeMatrixColorscheme', '');
-    end
+    setFieldFromPopupMenu(hObject, handles.output, 'edgeMatrixColorscheme');
 end
 
 
@@ -611,15 +614,7 @@ function nodeColorsColormap_popupmenu_Callback(hObject, ~, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns nodeColorsColormap_popupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from nodeColorsColormap_popupmenu
-
-    contents = cellstr(get(hObject, 'String'));
-    index = get(hObject, 'value');
-    if index > 1
-        colorscheme = contents{index};
-        setBoundField(handles.output, 'nodeColorsColorscheme', colorscheme);
-    else
-        setBoundField(handles.output, 'nodeColorsColorscheme', '');
-    end
+    setFieldFromPopupMenu(hObject, handles.output, 'nodeColorsColorscheme');
 end
 
 
