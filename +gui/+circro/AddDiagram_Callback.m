@@ -24,6 +24,9 @@ function AddDiagram_Callback(~, ~)
     fns.setLabelRadiusFn = setFieldFn('labelRadius');
     fns.setStartRadianFn = setFieldFn('startRadian');
     
+    fns.setEdgeMatrixColorschemeFn = setFieldFn('edgeMatrixColorscheme');
+    fns.setNodeColorsColorschemeFn = setFieldFn('nodeColorsColorscheme');
+    
     dimensionInputs = {'radius', 'labelRadius', 'startRadian'};
     
     h = gui.circro.addDiagram.optionsSelection(fns);
@@ -44,6 +47,16 @@ function AddDiagram_Callback(~, ~)
     
     if isfield(fields, 'edgeThreshold')
         Circro('circro.setEdgeThreshold', fields.edgeThreshold);
+    end
+    
+    if isfield(fields, 'edgeMatrixColorscheme')
+        Circro('circro.setEdgeMatrixColorscheme', ...
+            fields.edgeMatrixColorscheme);
+    end
+    
+    if isfield(fields, 'nodeColorsColorscheme')
+        Circro('circro.setNodeColorsColorscheme', ...
+            fields.nodeColorsColorscheme);
     end
     
     if any(cellfun(@(f) isfield(fields, f), dimensionInputs))

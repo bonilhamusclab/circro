@@ -57,10 +57,10 @@ function circleState = getCircleState(circle)
         circleState.colors = makeSequentialSub(circle.nodeColors);
     end
     
-    if ~isfield(circle, 'colorscheme')
-        circleState.colorscheme=hot;
+    if ~isfield(circle, 'nodeColorsColorscheme')
+        circleState.nodeColorsColorscheme=[];
     else
-        circleState.colorscheme = circle.colorscheme;
+        circleState.nodeColorsColorscheme = circle.nodeColorsColorscheme;
     end
     
     if ~isfield(circle, 'startRadian')
@@ -81,6 +81,11 @@ function circleState = getCircleState(circle)
             circleState.edgeThreshold = circle.edgeThreshold;
         else
             circleState.edgeThreshold = .5;
+        end
+        if isfield(circle, 'edgeMatrixColorscheme')
+            circleState.edgeMatrixColorscheme = circle.edgeMatrixColorscheme;
+        else
+            circleState.edgeMatrixColorscheme = [];
         end
     end
 

@@ -22,7 +22,7 @@ function varargout = optionsSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 12-Jan-2015 22:07:17
+% Last Modified by GUIDE v2.5 27-Jan-2015 23:19:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,6 +83,8 @@ function callerSetters(h, fns)
     bind(h, 'radius', fns.setRadiusFn);
     bind(h, 'labelRadius', fns.setLabelRadiusFn);
     bind(h, 'startRadian', fns.setStartRadianFn);
+    bind(h, 'edgeMatrixColorscheme', fns.setEdgeMatrixColorschemeFn);
+    bind(h, 'nodeColorsColorscheme', fns.setNodeColorsColorschemeFn);
 end
 
 function bindTextBoxes(h)
@@ -176,6 +178,7 @@ function bindEdgeMatrixOptions(h)
     bind(h, 'edgeThreshold', updateEditFnGen(h, 'edgeThreshold'));
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeThreshold_edit');
     bindControlEnableToField(h, 'edgeMatrixFile', 'viewEdgeMatrixCdf_pushbutton');
+    bindControlEnableToField(h, 'edgeMatrixFile', 'edgeMatrixColormap_popupmenu');
 end
 
 function bindResetFilesEnable(h)
@@ -237,6 +240,10 @@ function bindDimensionFields(h)
     bind(h, 'startRadian', updateEditFnGen(h, 'startRadian'));
 end
 
+function bindNodeColorsFields(h)
+    bindControlEnableToField(h, 'colorsFile', 'nodeColorsColormap_popupmenu');
+end
+
 % --- Executes just before filesSelection is made visible.
 function filesSelection_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -271,6 +278,8 @@ bindResetFilesEnable(handles.output);
 bindDimensions(handles.output);
 
 bindDimensionFields(handles.output);
+
+bindNodeColorsFields(handles.output);
 
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -416,12 +425,12 @@ setBoundField(handles.output, 'edgeThreshold', newThresh);
 end
 
 % --- Executes during object creation, after setting all properties.
-function edgeThreshold_edit_CreateFcn(~, ~, ~)
+function edgeThreshold_edit_CreateFcn(hObject, ~, ~)
 % hObject    handle to edgeThreshold_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-prepForWindowsOs();
+prepForWindowsOs(hObject);
 end
 
 
@@ -439,14 +448,14 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function radius_edit_CreateFcn(~, ~, ~)
+function radius_edit_CreateFcn(hObject, ~, ~)
 % hObject    handle to radius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-prepForWindowsOs();
+prepForWindowsOs(hObject);
 end
 
 
@@ -464,12 +473,12 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function labelRadius_edit_CreateFcn(~, ~, ~)
+function labelRadius_edit_CreateFcn(hObject, ~, ~)
 % hObject    handle to labelRadius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-prepForWindowsOs();
+prepForWindowsOs(hObject);
 end
 
 
@@ -488,14 +497,14 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function startRadian_edit_CreateFcn(~, ~, ~)
+function startRadian_edit_CreateFcn(hObject, ~, ~)
 % hObject    handle to startRadian_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-prepForWindowsOs();
+prepForWindowsOs(hObject);
 
 end
 
@@ -559,4 +568,69 @@ function resetEdgeMatrixFile_pushbutton_Callback(~, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     setBoundField(handles.output, 'edgeMatrixFile', '');
+end
+
+
+% --- Executes on selection change in edgeMatrixColormap_popupmenu.
+function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
+% hObject    handle to edgeMatrixColormap_popupmenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns edgeMatrixColormap_popupmenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from edgeMatrixColormap_popupmenu
+    contents = cellstr(get(hObject, 'String'));
+    index = get(hObject, 'value');
+    if index > 1
+        colorscheme = contents{index};
+        setBoundField(handles.output, 'edgeMatrixColorscheme', colorscheme);
+    else
+        setBoundField(handles.output, 'edgeMatrixColorscheme', '');
+    end
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
+% hObject    handle to edgeMatrixColormap_popupmenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+prepForWindowsOs(hObject);
+set(hObject, 'String', ['Select Color Scheme' utils.colorMapNames]);
+end
+
+
+% --- Executes on selection change in nodeColorsColormap_popupmenu.
+function nodeColorsColormap_popupmenu_Callback(hObject, ~, handles)
+% hObject    handle to nodeColorsColormap_popupmenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns nodeColorsColormap_popupmenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from nodeColorsColormap_popupmenu
+
+    contents = cellstr(get(hObject, 'String'));
+    index = get(hObject, 'value');
+    if index > 1
+        colorscheme = contents{index};
+        setBoundField(handles.output, 'nodeColorsColorscheme', colorscheme);
+    else
+        setBoundField(handles.output, 'nodeColorsColorscheme', '');
+    end
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
+% hObject    handle to nodeColorsColormap_popupmenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+prepForWindowsOs(hObject);
+set(hObject, 'String', ['Select Color Scheme' utils.colorMapNames]);
 end

@@ -11,8 +11,11 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
     end
 
     weightRange = [max(edgeMatrix(links)) min(edgeMatrix(links))];
+    if nargin < 5
+        colorscheme = '';
+    end
     function color = getColor(weight)
-        if nargin > 4
+        if ~isempty(colorscheme)
             color = utils.valueToColor(weight, weightRange, colorscheme);
         else
             color = [.5 .5 .5];
