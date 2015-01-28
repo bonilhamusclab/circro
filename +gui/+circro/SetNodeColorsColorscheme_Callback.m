@@ -13,26 +13,12 @@ function SetNodeColorsColorscheme_Callback(obj, ~)
         return;
     end
 
-    circleIndex = gui.circro.promptCircleIndex(v, 'Colors Scheme', availableIndexes);
-
-    colorscheme = getColorSchemePromptSub();
+    [colorscheme, circleIndex] = gui.circro.colorschemePrompt(...
+        v, 'Node Colors', availableIndexes);
 
     if ~isempty(colorscheme)
         Circro('circro.setNodeColorsColorscheme', colorscheme, circleIndex);
     end
-end
-
-function colorscheme = getColorSchemePromptSub()
-    options = utils.colorMapNames();
-    optionsStr = options{end};
-    for i = (length(options) - 1): -1: 1
-        optionsStr = [options{i} ', ' optionsStr];
-    end
-    prompt = {sprintf('Enter Colorscheme (%s)', optionsStr)};
-    name = 'Colorscheme options for Node Colors';
-    answer = inputdlg(prompt, name);
-    
-    colorscheme = answer{1};
 end
 
 function noNodeColorsToApplyColorSchemeSub()
