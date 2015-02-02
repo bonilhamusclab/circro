@@ -24,6 +24,11 @@ function SetEdgeMatrix_Callback(obj, ~)
     uiwait(f);
 
     if ~isempty(threshold)
-        Circro('circro.setEdgeMatrix', matrixFullPath, threshold, circleIndex);
+        colorscheme = '';
+        setColorscheme = questdlg('Set Color Scheme For Edge Weights?');
+        if strcmpi(setColorscheme, 'yes')
+            colorscheme = gui.circro.colorschemePrompt(guidata(obj), 'Edge Matrix', '', circleIndex);
+        end
+        Circro('circro.setEdgeMatrix', matrixFullPath, threshold, circleIndex, colorscheme);
     end
 end

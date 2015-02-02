@@ -1,8 +1,10 @@
-function [colorscheme, circleIndex] = colorschemePrompt(v, msg, availableIndexes)
-    circleIndex = gui.circro.promptCircleIndex(v, 'Colors Scheme', availableIndexes);
-    if circleIndex < 0
-        colorscheme = '';
-        return;
+function [colorscheme, circleIndex] = colorschemePrompt(v, msg, availableIndexes, circleIndex)
+    if nargin < 4
+        circleIndex = gui.circro.promptCircleIndex(v, 'Colors Scheme', availableIndexes);
+        if circleIndex < 0
+            colorscheme = '';
+            return;
+        end
     end
     
     options = utils.colorMapNames();
