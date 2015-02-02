@@ -6,6 +6,9 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
     numberNodes=size(edgeMatrix,1);
     anglePerNode = 2 * pi/numberNodes;
     
+    drawWeights = zeros(size(links));
+    drawWeights(links) = utils.normalize(edgeMatrix(links), 1, 5);
+    
     %must be declared before drawLink is invoked
     function theta = nodeTheta(node)
         theta = startRadian + node * anglePerNode - anglePerNode/2;
@@ -76,7 +79,8 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
 
         weight = edgeMatrix(startNode,stopNode);
         color = getColor(weight);
-        plot(pts(1,:), pts(2,:), 'color', color, 'linewidth', weight);
+        width = drawWeights(startNode, stopNode);
+        plot(pts(1,:), pts(2,:), 'color', color, 'linewidth', width);
     end
     
 end
