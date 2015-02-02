@@ -19,16 +19,10 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     
-    if isfield(v, 'circles') && ~isempty(v.circles)
-        d.circleIndex = length(v.circles);
-    else
-        d.circleIndex = 1;
-    end
+    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
     
     d.colorscheme = '';
 
-    p.addOptional('circleIndex', d.circleIndex, ...
-      @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
     p.addOptional('colorscheme', d.colorscheme, ...
         utils.validOrEmptyFnGen(utils.colorMapNames, 'setNodeColors', 'colorscheme'));
 

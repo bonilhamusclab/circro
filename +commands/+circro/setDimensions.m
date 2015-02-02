@@ -27,17 +27,12 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     d.radius = -inf; d.labelRadius = -inf; d.startRadian = -inf;
-    if isfield(v, 'circles')
-        d.circleIndex = length(v.circles);
-    else
-        d.circleIndex = 1;
-    end
+    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
         
 
     p.addOptional('radius', d.radius, @(x) validateattributes(x, {'numeric'}, {'real'}));
     p.addOptional('labelRadius', d.labelRadius, @(x) validateattributes(x, {'numeric'}, {'real'}));
     p.addOptional('startRadian', d.startRadian, @(x) validateattributes(x, {'numeric'}, {'real'}));
-    p.addOptional('circleIndex', d.circleIndex, @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
 
     p = utils.stringSafeParse(p, args, fieldnames(d), ...
         d.radius, d.labelRadius, d.startRadian, d.circleIndex);

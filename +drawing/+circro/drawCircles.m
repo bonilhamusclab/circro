@@ -80,13 +80,8 @@ function drawCircleSub(circle)
     maxColors = max(colors(:));
     minColors = min(colors(:));
     if maxColors - minColors > eps
-        c = colorbar('WestOutside');
-        pos = get(c, 'Position');
-        pos(2) = .1;
-        pos(4) = .5;
-        set(c, 'Position', pos);
-        caxis([minColors, maxColors]);
-        colormap(c, nodeColorsColorscheme);
+        drawing.utils.circro.addColorBar('nodecolors', nodeColorsColorscheme,...
+            minColors, maxColors);
     end
 
     if appState.drawLabels

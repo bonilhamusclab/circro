@@ -70,7 +70,7 @@ function circleState = getCircleState(circle)
     end
     
     if ~isfield(circle, 'labelRadius')
-        circleState.labelRadius = max(circleState.outerRadii(:)) * 1.1;
+        circleState.labelRadius = max(circleState.outerRadii(:)) * 1.01;
     else
         circleState.labelRadius = circle.labelRadius;
     end

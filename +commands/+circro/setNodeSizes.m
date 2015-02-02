@@ -10,17 +10,9 @@ drawing.circro.drawCircles(v);
 end
 
 function inputParams = parseInputParamsSub(v, args)
-    d = {};
-    if isfield(v, 'circles')
-        d.circleIndex = length(v.circles);
-    else
-        d.circleIndex = 1;
-    end
-    
     p = inputParser;
     
-    p.addOptional('circleIndex', d.circleIndex, ...
-        @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
+    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
     
     p = utils.stringSafeParse(p, args, fieldnames(d), d.circleIndex);
     

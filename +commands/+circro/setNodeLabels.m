@@ -9,14 +9,8 @@ end
 
 function inputParams = parseInputsSub(v, args)
     p = inputParser;
-    if isfield(v, 'circles')
-        d.circleIndex = length(v.circles);
-    else
-        d.circleIndex = 1;
-    end
     
-    p.addOptional('circleIndex', d.circleIndex, ...
-        @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
+    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
     
     p = utils.stringSafeParse(p, args, fieldnames(d), d.circleIndex);
     

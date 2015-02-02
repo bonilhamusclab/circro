@@ -23,15 +23,9 @@ p = inputParser;
 d.threshold = .5;
 d.colorscheme = '';
 
-if isfield(v, 'circles')
-    d.circleIndex = length(v.circles);
-else
-    d.circleIndex = 1;
-end
+d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
 p.addOptional('threshold', d.threshold, @(x) validateattributes(x, {'numeric'},{'real'}));
-p.addOptional('circleIndex', d.circleIndex, ...
-  @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
 p.addOptional('colorscheme', d.colorscheme, ...
     utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
 

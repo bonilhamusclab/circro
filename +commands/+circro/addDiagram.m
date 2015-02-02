@@ -36,7 +36,7 @@ function inputParams = parseInputParamsSub(v, args)
 p = inputParser;
 d.labelsFullPath = ''; d.sizesFullPath = ''; d.edgeMatrixFullPath = ''; d.colorsFullPath = '';
 d.edgeThreshold = .5;
-d.circleIndex = utils.fieldIndex(v, 'circles');
+d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
 validateChar = @(x) validateattributes(x, {'char'}, {});
 
@@ -45,7 +45,6 @@ p.addOptional('sizesFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeMatrixFullPath', d.labelsFullPath, validateChar);
 p.addOptional('colorsFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeThreshold', d.edgeThreshold, @(x) validateattributes(x, {'numeric'}, {'real'}));
-p.addOptional('circleIndex', d.circleIndex, @(x) validateattributes(x, {'numeric'}, {'positive', 'integer'}));
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
     d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath, d.edgeThreshold, d.circleIndex);
