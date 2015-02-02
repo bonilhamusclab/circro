@@ -1,6 +1,6 @@
 function addColorBar(type, colorscheme, minColors, maxColors)
 
-position.edgeMatrix = @setEdgeMatrixColorBarPosition;
+position.edgematrix = @setEdgeMatrixColorBarPosition;
 position.nodecolors = @setNodeColorBarPosition;
     
 c = colorbar;
@@ -17,7 +17,7 @@ colormap(c, colorscheme);
 end
 
 function setEdgeMatrixColorBarPosition(c)
-    set(c, 'Location', 'EastOustside');
+    set(c, 'Location', 'eastoutside');
     pos = get(c, 'Position');
     pos(2) = .1;
     pos(4) = .5;
@@ -25,21 +25,21 @@ function setEdgeMatrixColorBarPosition(c)
 end
 
 function setNodeColorBarPosition(c)
-    location = 'WestOutside';
+    location = 'westoutside';
     h = gui.getGuiHandle();
     currentColorBars = findall(h.Children, 'Type', 'ColorBar');
     if ~isempty(currentColorBars)
         nodeColorBarCount = sum(...
-            arrayfun(@(c) ~strcmpi(get(c, 'Location'), 'EastOutside'), ...
+            arrayfun(@(c) ~strcmpi(get(c, 'Location'), 'eastoutside'), ...
             currentColorBars));
         if nodeColorBarCount > 3
             warning('Will Overwrite Current Node Colorbar plot, can currently only support 3');
         end
         nodeColorBarCount = mod(nodeColorBarCount, 3);
         if nodeColorBarCount == 1
-            location = 'NorthOutside';
+            location = 'northoutside';
         elseif nodeColorBarCount == 2
-            location = 'SouthOutside';
+            location = 'southoutside';
         end
     end
     set(c, 'Location', location);

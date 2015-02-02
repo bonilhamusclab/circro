@@ -23,13 +23,12 @@ p = inputParser;
 d.threshold = .5;
 d.colorscheme = '';
 
-d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
-
 p.addOptional('threshold', d.threshold, @(x) validateattributes(x, {'numeric'},{'real'}));
 p.addOptional('colorscheme', d.colorscheme, ...
     utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
+d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
-    d.threshold, d.circleIndex, d.colorscheme);
+    d.threshold, d.colorscheme, d.circleIndex);
 
 inputParams = p.Results;

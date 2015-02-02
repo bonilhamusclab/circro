@@ -29,6 +29,6 @@ function SetEdgeMatrix_Callback(obj, ~)
         if strcmpi(setColorscheme, 'yes')
             colorscheme = gui.circro.colorschemePrompt(guidata(obj), 'Edge Matrix', '', circleIndex);
         end
-        Circro('circro.setEdgeMatrix', matrixFullPath, threshold, circleIndex, colorscheme);
+        Circro('circro.setEdgeMatrix', matrixFullPath, threshold, colorscheme, circleIndex);
     end
 end

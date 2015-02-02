@@ -27,12 +27,11 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     d.radius = -inf; d.labelRadius = -inf; d.startRadian = -inf;
-    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
-        
 
     p.addOptional('radius', d.radius, @(x) validateattributes(x, {'numeric'}, {'real'}));
     p.addOptional('labelRadius', d.labelRadius, @(x) validateattributes(x, {'numeric'}, {'real'}));
     p.addOptional('startRadian', d.startRadian, @(x) validateattributes(x, {'numeric'}, {'real'}));
+    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
     p = utils.stringSafeParse(p, args, fieldnames(d), ...
         d.radius, d.labelRadius, d.startRadian, d.circleIndex);

@@ -24,7 +24,7 @@ function addDiagram(v, varargin)
     end
     
     if edgeMatrixFullPath
-        commands.circro.setEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold, circleIndex);
+        commands.circro.setEdgeMatrix(guidata(h), edgeMatrixFullPath, edgeThreshold, '', circleIndex);
     end
     
     if colorsFullPath
@@ -36,7 +36,6 @@ function inputParams = parseInputParamsSub(v, args)
 p = inputParser;
 d.labelsFullPath = ''; d.sizesFullPath = ''; d.edgeMatrixFullPath = ''; d.colorsFullPath = '';
 d.edgeThreshold = .5;
-d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
 validateChar = @(x) validateattributes(x, {'char'}, {});
 
@@ -45,6 +44,7 @@ p.addOptional('sizesFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeMatrixFullPath', d.labelsFullPath, validateChar);
 p.addOptional('colorsFullPath', d.labelsFullPath, validateChar);
 p.addOptional('edgeThreshold', d.edgeThreshold, @(x) validateattributes(x, {'numeric'}, {'real'}));
+d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
     d.labelsFullPath, d.sizesFullPath, d.edgeMatrixFullPath, d.colorsFullPath, d.edgeThreshold, d.circleIndex);
