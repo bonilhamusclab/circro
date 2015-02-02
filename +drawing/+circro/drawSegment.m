@@ -9,8 +9,8 @@ function drawSegment(startRadian, endRadian, innerR, outerR, color)
     innerY = innerR * sin(radialSteps);
     
     % flip inner rim
-    innerX=flipdim(innerX,2);
-    innerY=flipdim(innerY,2);
+    innerX=flip(innerX,2);
+    innerY=flip(innerY,2);
 
     X=[outerX innerX];
     Y=[outerY innerY];
