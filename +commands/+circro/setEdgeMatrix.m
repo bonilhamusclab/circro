@@ -33,11 +33,9 @@ p.addOptional('threshold', d.threshold, @(x) validateattributes(x, {'numeric'},{
 p.addOptional('circleIndex', d.circleIndex, ...
   @(x) validateattributes(x, {'numeric'}, {'integer', 'positive'}));
 p.addOptional('colorscheme', d.colorscheme, ...
-    @(x) validateattributes(x, {'char'}, {}));
+    utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
 
 p = utils.stringSafeParse(p, args, fieldnames(d), ...
     d.threshold, d.circleIndex, d.colorscheme);
 
 inputParams = p.Results;
-
-validatestring(inputParams.colorscheme, ['' utils.colorMapNames]);
