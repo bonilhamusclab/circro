@@ -9,6 +9,8 @@ function drawCircles(v)
     
     runFnOnEachCircle(v, @drawCircleSub);
     
+    placeNodeColorBarsSub();
+    
     R=getMaxRadiusSub(v, 1.2);
     axis([-1.3*R 1.3*R -1.3*R 1.3*R])
     axis square
@@ -92,4 +94,30 @@ function drawCircleSub(circle)
         drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius, appState.edgeMatrixColorscheme);
     end
 
+end
+
+function placeNodeColorBarsSub()
+    h = gui.getGuiHandle();
+    currentColorBars = findall(h.Children, 'Type', 'ColorBar');
+    
+    nodeColorBars = currentColorBars(arrayfun(...
+        @(c) strcmpi(get(c, 'Location'), 'westoutside'), ...
+        currentColorBars));
+    
+    numNodeColorBars = length(nodeColorBars);
+    if numNodeColorBars
+        c = nodeColorBars(1);
+        pos = get(c, 'Position');
+        width = pos(3);
+        right = 2.3 * width * numNodeColorBars;
+
+        for i = 1:numNodeColorBars
+            pos(1) = right * i/numNodeColorBars;
+            pos(2) = .1;
+            pos(4) = .5;
+            c = nodeColorBars(i);
+            set(c, 'Position', pos);
+        end
+    end
+    
 end
