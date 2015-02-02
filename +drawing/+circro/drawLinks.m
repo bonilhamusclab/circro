@@ -37,13 +37,13 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
     if ~isempty(colorscheme)
         minWeight = min(edgeMatrix(links));
         maxWeight = max(edgeMatrix(links));
-        colormap(colorscheme);
         c = colorbar;
         pos = get(c, 'Position');
         pos(2) = .1;
         pos(4) = .5;
         set(c, 'Position', pos);
         caxis([minWeight, maxWeight]);
+        colormap(c, colorscheme);        
     end
     
     function drawLink(startNode, stopNode)

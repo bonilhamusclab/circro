@@ -76,6 +76,18 @@ function drawCircleSub(circle)
         pause(0.01)
         hold on        
     end
+    
+    maxColors = max(colors(:));
+    minColors = min(colors(:));
+    if maxColors - minColors > eps
+        c = colorbar('WestOutside');
+        pos = get(c, 'Position');
+        pos(2) = .1;
+        pos(4) = .5;
+        set(c, 'Position', pos);
+        caxis([minColors, maxColors]);
+        colormap(c, nodeColorsColorscheme);
+    end
 
     if appState.drawLabels
         drawing.circro.writeLabels(labels, labelRadius, startRadian);
