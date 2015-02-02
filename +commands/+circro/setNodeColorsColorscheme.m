@@ -16,7 +16,7 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     
-    if isfield(v, 'circles')
+    if isfield(v, 'circles') && ~isempty(v.circles)
         d.circleIndex = length(v.circles);
     else
         d.circleIndex = 1;

@@ -13,15 +13,11 @@ end
                     'Select an excel file');
     if isequal(colors_filename,0), return; end;
     
-Circro('circro.setNodeColors', [colors_pathname colors_filename], circleIndex);
+colorscheme = '';
+setColorscheme = questdlg('Set Color Scheme For Node Colors?');
+if strcmpi(setColorscheme, 'yes')
+    colorscheme = gui.circro.colorschemePrompt(guidata(obj), 'Node Colors', '', circleIndex);
 end
-
-function createNew = createNewOrUpdateQuestSub()
-    question = 'Render node colors as new diagram or update current diagram?';
-    title = 'Create New Or Update';
-    answer = questdlg(question, title, 'New', 'Update', 'Update');
-    createNew = strcmpi(answer, 'new');
-    if strcmpi(answer, 'cancel')
-        createNew = -1;
-    end
+    
+Circro('circro.setNodeColors', [colors_pathname colors_filename], circleIndex, colorscheme);
 end
