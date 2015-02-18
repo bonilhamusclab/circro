@@ -1,9 +1,23 @@
 % --- Save screenshot as bitmap image
-function saveBitmap(v,varargin)
-% inputs: filename
-%MATcro('saveBitmap',{'myPicture.png'});
-if (length(varargin) < 1), return; end;
-filename = char(varargin{1});
-%saveas(v.hAxes, filename,'png'); %<- save as 150dpi
-print (v.hMainFigure, '-r600', '-dpng', filename); %<- save as 600dpi , '-noui'
-%end saveBitmap()
+function saveBitmap(v, filename, varargin)
+% inputs: filename, dpi (optional, defaults to 900)
+
+inputParams = parseInputParamsSub(varargin);
+
+dpi = sprintf('-r%d', inputParams.dpi);
+
+print(v.hMainFigure, dpi, '-dpng', filename);
+
+end
+
+function inputParams = parseInputParamsSub(args)
+    p = inputParser;
+    
+    d.dpi = 900;
+    
+    p.addOptional('dpi', d.dpi, @(x) validateattributes(x, {'numeric'}, {'real'}));
+    
+    p = utils.stringSafeParse(p, args, fieldnames(d), d.dpi);
+    
+    inputParams = p.Results;
+end
