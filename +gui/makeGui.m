@@ -3,7 +3,7 @@ function [vFig] = makeGui()
 sz = [980 680]; % figure width, height in pixels
 screensize = get(0,'ScreenSize');
 margin = [ceil((screensize(3)-sz(1))/2) ceil((screensize(4)-sz(2))/2)];
-v.hMainFigure = figure('MenuBar','none','Toolbar','none','HandleVisibility','on', ...
+v.hMainFigure = figure('MenuBar','none','Toolbar', 'figure', 'HandleVisibility','on', ...
   'position',[margin(1), margin(2), sz(1), sz(2)], ... 
     'Tag', mfilename,'Name', mfilename, 'NumberTitle','off', ...
  'Color', [1 1 1]);
@@ -11,7 +11,6 @@ set(v.hMainFigure,'Renderer','OpenGL')
 v.hAxes = axes('Parent', v.hMainFigure,'HandleVisibility','on','Units', 'normalized','Position',[0.0 0.0 1 1]); %important: turn ON visibility
 %menus...
 v.hFileMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','File');
-v.hSaveBmpMenu = uimenu('Parent',v.hFileMenu,'Label','Save bitmap','HandleVisibility','callback', 'Callback', @gui.SaveBmpMenu_Callback);
 v.hFileCircoMenu = uimenu(v.hFileMenu, 'Label', 'Circro');
 v.hFileCircoAddMenu = uimenu('Parent',v.hFileCircoMenu,'Label','Add Diagram','HandleVisibility','callback', 'Callback', @gui.circro.AddDiagram_Callback); % to open the list of nodes
 v.hFileCircoCloseMenu = uimenu('Parent',v.hFileCircoMenu,'Label','Close Diagrams','HandleVisibility','callback', 'Callback', @gui.circro.CloseDiagrams_Callback); % to open the list of nodes
