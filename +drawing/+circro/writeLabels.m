@@ -10,7 +10,19 @@ function writeLabels(labels, radius,startRadian)
             name=regions{i};
         else
             name=num2str(regions{i});
-        end        
-        text(x*(1.1), y*(1.1), name, 'HorizontalAlignment','center','FontSize',10)               
+        end
+        
+        %%Special Thanks to JC Mosher for the text alignment
+        %%https://github.com/bonilhamusclab/circro/issues/1
+        textRotation = theta/pi * 180;
+        alignment = 'right';
+        if cos(theta) < 0
+            textRotation = textRotation + 180;
+            alignment = 'left';
+        end
+        %%
+        
+        text(x*(1.1), y*(1.1), name, 'FontSize',10, ...
+            'HorizontalAlignment', alignment, 'Rotation', textRotation);
     end    
-% end write labels
+end
