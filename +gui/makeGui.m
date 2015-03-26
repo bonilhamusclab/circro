@@ -18,6 +18,7 @@ v.hFileCircoCloseMenu = uimenu('Parent',v.hFileCircoMenu,'Label','Close Diagrams
 v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Edit');
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
 v.hFunctionMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Functions');
+v.viewHistoryMenu = uimenu('Parent',v.hFunctionMenu, 'Label', 'Echo instructions to command window', 'HandleVisibility', 'callback', 'Callback', @gui.EchoHistory_Callback);
 v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','HandleVisibility','callback','Callback', @gui.ToolbarMenu_Callback);
 v.hFunctionCircroMenu = uimenu(v.hFunctionMenu, 'Label', 'Circro');
 v.hFunctionCircroSetNodeLabelsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Add Node Labels','HandleVisibility','callback','Callback', @gui.circro.SetNodeLabels_Callback);
