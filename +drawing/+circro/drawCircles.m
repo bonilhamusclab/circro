@@ -1,7 +1,8 @@
 % --- creates renderings
 function drawCircles(v)
     axis square
-    delete(allchild(v.hAxes));
+    drawing.utils.circro.eraseRenderedObjects(v);
+    %delete(allchild(v.hAxes));
     colorbar('off');
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
     set(0, 'CurrentFigure', v.hMainFigure);  %# for figures
