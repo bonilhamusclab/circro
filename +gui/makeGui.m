@@ -49,4 +49,5 @@ v.vprefs.el = 10; %camera elevation
 v.vprefs.color = [1 1 1]  ; %camera elevation
 guidata(v.hMainFigure,v);%store settings
 vFig = v.hMainFigure;
+set(vFig,'name','Circro');
 %end makeGui()
