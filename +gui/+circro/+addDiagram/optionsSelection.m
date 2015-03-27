@@ -440,9 +440,11 @@ function viewEdgeMatrixCdf_pushbutton_Callback(~, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-edges = fileUtils.circro.loadMatrix(handles.edgeMatrixFile);
-figure;
-normplot(edges(:));
+    function setEdgeThreshold(value)
+        setBoundField(handles.output, 'edgeThreshold', value);
+    end
+
+    gui.circro.edgeThresholdPrompt(handles.edgeMatrixFile, @setEdgeThreshold);
 
 end
 
