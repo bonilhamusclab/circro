@@ -37,5 +37,6 @@ function f = edgeThresholdPrompt(edges, thresholdSetterFn, defThresh)
         edges = fileUtils.circro.loadMatrix(edges);
     end
     
-    normplot(edges(:));
+    upperIndexes = logical(triu(ones(size(edges)), 1));
+    normplot(edges(upperIndexes));
 end
