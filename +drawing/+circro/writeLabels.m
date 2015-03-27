@@ -1,9 +1,9 @@
 function writeLabels(labels, radius,startRadian)
     regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
     numberLabels=size(regions,1);
-    for i=1:numberLabels        
-        theta=  ( (startRadian + ( (i-1) *(2*pi/numberLabels) ))...
-            + (startRadian + ( (i *(2*pi/numberLabels) )) ))/2 ;       
+    radiansPerLabel = 2 * pi/numberLabels;
+    for i=1:numberLabels
+        theta = startRadian + (i-1)*radiansPerLabel + radiansPerLabel/2;
         x = radius * cos(theta);
         y = radius * sin(theta);        
         if ischar(regions{i})
