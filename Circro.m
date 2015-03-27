@@ -17,7 +17,6 @@ if (nargin) && (ischar(varargin{1}))
  v.history(histIx) = {varargin};
  guidata(h, v);
  
- %fprintf('%s (''%s'', ''%s'')\n', mfilename, funcName,  varargin{2});
  
  f(v, varargin{2:nargin})
 end
