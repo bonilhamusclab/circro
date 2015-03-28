@@ -123,7 +123,7 @@ Functions => Circro => Set Edge Threshold (should automatically set the index to
 All GUI functionality can be scripted.
 
 ####Code Architecture
-The GUI callbacks just obtain user input and than invoke a command in the [+commands folder](https://github.com/bonilhamusclab/circro/tree/master/+commands/).
+The [GUI callbacks](https://github.com/bonilhamusclab/circro/tree/master/+gui/) just obtain user input and than invoke a command in the [+commands folder](https://github.com/bonilhamusclab/circro/tree/master/+commands/).
 
 However, the GUI callback does not invoke the command directly, instead the command name & paramaters are passed to the "Circro" command.
 
@@ -132,7 +132,7 @@ For example, the Set/Add Node Labels Callback invokes commands.circro.setNodeLab
 Circro('circro.setNodeLabels', labelsFile, circleIndex);
 ```
 
-Invoking a command through "Circro" ensures that the command history is tracked.
+Invoking a command through "Circro" ensures that the command history is recorded.
 
 ####Viewing Code History
 
