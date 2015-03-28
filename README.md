@@ -6,7 +6,7 @@ Built with a code architecture similar to [MRIcroS](http://www.nitrc.org/project
 ![4colorBars](readmeImgs/4colorBars.png)
 
 ##Requirements
-Matlab 2014 and above.
+Tested on Matlab 2014.
 
 ##Installation
  1. Download
