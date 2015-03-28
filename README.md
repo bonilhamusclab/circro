@@ -19,7 +19,9 @@ Circro;
 ```
 ###Render Node Labels
 Functions => Circro => Set/Add Node Labels => Choose labels file (example file at data/labels.xlsx)
+
 ![labels](readmeImgs/labels.png)
+
 ###Render Node Sizes
 Now we shall add node sizes to diagram from above
 
@@ -202,6 +204,10 @@ Sample files may be found in the [data folder](https://github.com/bonilhamusclab
   - matrix of size n x n (n is number of nodes)
   - the value corresponds to the edge strength between the nodes
   - only upper triangle of matrix is analyzed
+
+##To Do List
+1. Add Support for plain-text CSV
+2. Add documentation for each of the commands
 
 ##Contributions
 - [Dr. Bonilha Lab at MUSC](http://academicdepartments.musc.edu/neurosciences/neurology/research/bonilha/)
