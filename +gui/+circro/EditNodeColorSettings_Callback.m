@@ -13,11 +13,11 @@ function EditNodeColorSettings_Callback(obj, ~)
         return;
     end
 
-    [colorscheme, circleIndex] = gui.circro.colorschemePrompt(...
-        v, 'Node Colors', availableIndexes);
+    [colorscheme, alpha, circleIndex] = gui.circro.colorschemePrompt(...
+        v, 'node', availableIndexes);
 
     if ~isempty(colorscheme)
-        Circro('circro.editNodeColorSettings', colorscheme, circleIndex);
+        Circro('circro.editNodeColorSettings', colorscheme, alpha, circleIndex);
     end
 end
 

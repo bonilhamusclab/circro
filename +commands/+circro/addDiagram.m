@@ -28,7 +28,7 @@ function addDiagram(v, varargin)
     end
     
     if colorsFullPath
-        commands.circro.setNodeColors(guidata(h), colorsFullPath, circleIndex);
+        commands.circro.setNodeColors(guidata(h), colorsFullPath, 'circleIndex', circleIndex);
     end
 end
 

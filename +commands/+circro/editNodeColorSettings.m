@@ -1,14 +1,12 @@
-function editNodeColorSettings(v, colorscheme, varargin)
-    validatestring(colorscheme, utils.colorMapNames);
+function editNodeColorSettings(v, varargin)
     
     inputs = parseInputParamsSub(v, varargin);
     circleIndex = inputs.circleIndex;
-	nodeAlpha = inputs.nodeAlpha;
+	alpha = inputs.alpha;
+    colorscheme = inputs.colorscheme;
     
-    colorscheme = str2func(colorscheme);
-    
-    v.circles{circleIndex}.nodeColorsColorscheme = colorscheme();
-	v.circles{circleIndex}.nodeAlpha = nodeAlpha;
+    v.circles{circleIndex}.nodeColorscheme = colorscheme;
+	v.circles{circleIndex}.nodeAlpha = alpha;
     
     guidata(v.hMainFigure,v);
     
@@ -17,29 +15,26 @@ end
 
 function inputParams = parseInputParamsSub(v, args)
 
-    function p = runParser(circleIndex)
-        if nargin > 0
-            if circleIndex > utils.circro.maxCircleIndex(v)
-                d.nodeAlpha = utils.circro.getCircleState().nodeAlpha;
-            else
-                d.nodeAlpha = utils.circro.getCircleState(v.circles{circleIndex}).nodeAlpha;
-            end
-        else
-            d.nodeAlpha = .5;
-        end
+    function p = runParser(circleState, ~)
+        
+        d.nodeAlpha = circleState.nodeAlpha;
+        d.colorscheme = circleState.nodeColorscheme;
         
         p = inputParser;
         
+        p.addOptional('colorscheme', d.colorscheme, ...
+            utils.validOrEmptyFnGen(utils.colorMapNames, 'editNodeColorSettings', 'colorscheme'));
+        
         nodeAlphaValidateFn = @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0});
-        p.addOptional('nodeAlpha', d.nodeAlpha, nodeAlphaValidateFn);
+        p.addOptional('alpha', d.nodeAlpha, nodeAlphaValidateFn);
     
         d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
         p = utils.stringSafeParse(p, args, fieldnames(d), ...
-            d.nodeAlpha, d.circleIndex);
+            d.colorscheme, d.nodeAlpha, d.circleIndex);
     end
 
-    p = utils.circro.circleIndexParser(@runParser);
+    p = utils.circro.circleIndexParser(@runParser, v);
     
     inputParams = p.Results;
 end

@@ -55,10 +55,8 @@ function drawCircleSub(circle)
     labels = appState.labels;
     outerRadii = appState.outerRadii;
     colors = appState.colors;
-    nodeColorsColorscheme = appState.nodeColorsColorscheme;
-    if isempty(nodeColorsColorscheme)
-        nodeColorsColorscheme = hot;
-    end
+    
+    nodeColorscheme = str2func(appState.nodeColorscheme);
     nodeAlpha = appState.nodeAlpha;
     
     radius = appState.radius;
@@ -71,7 +69,7 @@ function drawCircleSub(circle)
     axis square
     endRadian = startRadian;
     for segment=1:numNodes % draw the circle
-        color=utils.valueToColor(colors(segment),colors,nodeColorsColorscheme);
+        color=utils.valueToColor(colors(segment),colors,nodeColorscheme());
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
@@ -84,7 +82,7 @@ function drawCircleSub(circle)
     maxColors = max(colors(:));
     minColors = min(colors(:));
     if maxColors - minColors > eps
-        drawing.utils.circro.addColorBar('nodecolors', nodeColorsColorscheme,...
+        drawing.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
             minColors, maxColors);
     end
 
@@ -93,7 +91,9 @@ function drawCircleSub(circle)
     end
 
     if isfield(circle, 'edgeMatrix')
-        drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, startRadian, radius, appState.edgeMatrixColorscheme);
+		colorscheme = str2func(appState.edgeColorscheme);
+        drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, ...
+            startRadian, radius, colorscheme(), appState.edgeAlpha);
     end
 
 end

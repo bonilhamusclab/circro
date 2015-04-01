@@ -13,11 +13,11 @@ function SetEdgeMatrixColorscheme_Callback(obj, ~)
         return;
     end
 
-    [colorscheme, circleIndex] = gui.circro.colorschemePrompt(...
-        v, 'Edge Matrix', availableIndexes);
+    [colorscheme, alpha, circleIndex] = gui.circro.colorschemePrompt(...
+        v, 'edge', availableIndexes);
 
     if ~isempty(colorscheme)
-        Circro('circro.setEdgeMatrixColorscheme', colorscheme, circleIndex);
+        Circro('circro.setEdgeMatrixColorscheme', colorscheme, alpha, circleIndex);
     end
 end
 

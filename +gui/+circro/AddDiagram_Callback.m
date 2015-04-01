@@ -24,8 +24,8 @@ function AddDiagram_Callback(~, ~)
     fns.setLabelRadiusFn = setFieldFn('labelRadius');
     fns.setStartRadianFn = setFieldFn('startRadian');
     
-    fns.setEdgeMatrixColorschemeFn = setFieldFn('edgeMatrixColorscheme');
-    fns.setNodeColorsColorschemeFn = setFieldFn('nodeColorsColorscheme');
+    fns.setEdgeColorschemeFn = setFieldFn('edgeColorscheme');
+    fns.setNodeColorschemeFn = setFieldFn('nodeColorscheme');
 	fns.setNodeColorsAlphaFn = setFieldFn('nodeColorsAlpha');
     
     dimensionInputs = {'radius', 'labelRadius', 'startRadian'};
@@ -50,14 +50,14 @@ function AddDiagram_Callback(~, ~)
         Circro('circro.setEdgeThreshold', fields.edgeThreshold);
     end
     
-    if isfield(fields, 'edgeMatrixColorscheme')
-        Circro('circro.setEdgeMatrixColorscheme', ...
-            fields.edgeMatrixColorscheme);
+    if isfield(fields, 'edgeColorscheme')
+        Circro('circro.setEdgeColorscheme', ...
+            fields.edgeColorscheme);
     end
     
-    if isfield(fields, 'nodeColorsColorscheme')
-        Circro('circro.setNodeColorsColorscheme', ...
-            fields.nodeColorsColorscheme);
+    if isfield(fields, 'nodeColorscheme')
+        Circro('circro.editNodeColorSettings', ...
+            fields.nodeColorscheme);
     end
     
     if any(cellfun(@(f) isfield(fields, f), dimensionInputs))

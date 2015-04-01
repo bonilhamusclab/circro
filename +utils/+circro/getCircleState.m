@@ -67,10 +67,10 @@ function circleState = getCircleState(circle)
         circleState.colors = makeSequentialSub(circle.nodeColors);
     end
     
-    if ~isfield(circle, 'nodeColorsColorscheme')
-        circleState.nodeColorsColorscheme=[];
+    if ~isfield(circle, 'nodeColorscheme')
+        circleState.nodeColorscheme = 'hot';
     else
-        circleState.nodeColorsColorscheme = circle.nodeColorsColorscheme;
+        circleState.nodeColorscheme = circle.nodeColorscheme;
     end
     
     if ~isfield(circle, 'nodeAlpha')
@@ -93,16 +93,21 @@ function circleState = getCircleState(circle)
     
     if isfield(circle, 'edgeMatrix')
         circleState.edgeMatrix = circle.edgeMatrix;
-        if isfield(circle, 'edgeThreshold')
-            circleState.edgeThreshold = circle.edgeThreshold;
-        else
-            circleState.edgeThreshold = .5;
-        end
-        if isfield(circle, 'edgeMatrixColorscheme')
-            circleState.edgeMatrixColorscheme = circle.edgeMatrixColorscheme;
-        else
-            circleState.edgeMatrixColorscheme = [];
-        end
+    end
+    if isfield(circle, 'edgeThreshold')
+        circleState.edgeThreshold = circle.edgeThreshold;
+    else
+        circleState.edgeThreshold = .5;
+    end
+    if isfield(circle, 'edgeColorscheme')
+        circleState.edgeColorscheme = circle.edgeColorscheme;
+    else
+        circleState.edgeColorscheme = 'jet';
+    end
+    if isfield(circle, 'edgeAlpha')
+        circleState.edgeAlpha = circle.edgeAlpha;
+    else
+        circleState.edgeAlpha = .7;
     end
 
 end

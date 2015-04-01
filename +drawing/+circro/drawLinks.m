@@ -1,4 +1,4 @@
-function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
+function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alpha)
 
     links=triu(edgeMatrix>threshold);%# this is a random list of connections
     [startNodes,stopNodes]=ind2sub(size(links),find(links(:)));
@@ -80,7 +80,7 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme)
         weight = edgeMatrix(startNode,stopNode);
         color = getColor(weight);
         width = drawWeights(startNode, stopNode);
-        plot(pts(1,:), pts(2,:), 'color', color, 'linewidth', width);
+        plot(pts(1,:), pts(2,:), 'color', [color alpha], 'linewidth', width);
     end
     
 end

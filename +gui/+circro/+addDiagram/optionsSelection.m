@@ -83,8 +83,8 @@ function callerSetters(h, fns)
     bind(h, 'radius', fns.setRadiusFn);
     bind(h, 'labelRadius', fns.setLabelRadiusFn);
     bind(h, 'startRadian', fns.setStartRadianFn);
-    bind(h, 'edgeMatrixColorscheme', fns.setEdgeMatrixColorschemeFn);
-    bind(h, 'nodeColorsColorscheme', fns.setNodeColorsColorschemeFn);
+    bind(h, 'edgeColorscheme', fns.setEdgeColorschemeFn);
+    bind(h, 'nodeColorscheme', fns.setNodeColorschemeFn);
     bind(h, 'nodeColorsAlpha', fns.setNodeColorsAlphaFn);
 end
 
@@ -592,7 +592,7 @@ function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns edgeMatrixColormap_popupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from edgeMatrixColormap_popupmenu
-    setFieldFromPopupMenu(hObject, handles.output, 'edgeMatrixColorscheme');
+    setFieldFromPopupMenu(hObject, handles.output, 'edgeColorscheme');
 end
 
 
@@ -617,7 +617,7 @@ function nodeColorsColormap_popupmenu_Callback(hObject, ~, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns nodeColorsColormap_popupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from nodeColorsColormap_popupmenu
-    setFieldFromPopupMenu(hObject, handles.output, 'nodeColorsColorscheme');
+    setFieldFromPopupMenu(hObject, handles.output, 'nodeColorscheme');
 end
 
 

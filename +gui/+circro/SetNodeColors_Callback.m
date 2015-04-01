@@ -14,10 +14,10 @@ end
     if isequal(colors_filename,0), return; end;
     
 colorscheme = '';
-setColorscheme = questdlg('Set Color Scheme For Node Colors?');
+setColorscheme = questdlg('Set Color Settings For Nodes?');
 if strcmpi(setColorscheme, 'yes')
-    colorscheme = gui.circro.colorschemePrompt(guidata(obj), 'Node Colors', '', circleIndex);
+    [colorscheme, alpha, circleIndex] = gui.circro.colorschemePrompt(guidata(obj), 'node', '', circleIndex);
 end
     
-Circro('circro.setNodeColors', [colors_pathname colors_filename], circleIndex, colorscheme);
+Circro('circro.setNodeColors', [colors_pathname colors_filename], colorscheme, alpha, circleIndex);
 end
