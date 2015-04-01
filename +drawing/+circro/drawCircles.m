@@ -59,6 +59,7 @@ function drawCircleSub(circle)
     if isempty(nodeColorsColorscheme)
         nodeColorsColorscheme = hot;
     end
+    nodeAlpha = appState.nodeAlpha;
     
     radius = appState.radius;
     startRadian = appState.startRadian;
@@ -74,7 +75,7 @@ function drawCircleSub(circle)
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
-        drawing.circro.drawSegment(nextStart,endRadian,radius,outerRadii(segment),color)
+        drawing.circro.drawSegment(nextStart, endRadian, radius, outerRadii(segment), color, nodeAlpha);
         
         pause(0.01)
         hold on        

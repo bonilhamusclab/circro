@@ -1,4 +1,4 @@
-function SetNodeColorsColorscheme_Callback(obj, ~)
+function EditNodeColorSettings_Callback(obj, ~)
     v=guidata(obj);
     
     if ~isfield(v, 'circles')
@@ -17,7 +17,7 @@ function SetNodeColorsColorscheme_Callback(obj, ~)
         v, 'Node Colors', availableIndexes);
 
     if ~isempty(colorscheme)
-        Circro('circro.setNodeColorsColorscheme', colorscheme, circleIndex);
+        Circro('circro.editNodeColorSettings', colorscheme, circleIndex);
     end
 end
 

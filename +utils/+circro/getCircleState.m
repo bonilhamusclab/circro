@@ -1,4 +1,11 @@
 function circleState = getCircleState(circle)
+%function circleState = getCircleState(circle)
+%if no inputs returns default state, else returns state for the circle
+
+    circleInput = nargin > 0;
+    if ~circleInput
+        circle = {};
+    end
 
     fields = {'nodeLabels', 'nodeSizes', 'nodeColors', 'edgeMatrix'};
     
@@ -25,10 +32,13 @@ function circleState = getCircleState(circle)
        end
     end
     
-    verifyAtLeastOneFieldSet();
-    verifySameElemCountPerField();
-    
-    numNodes = elemCountPerField(1);
+    if circleInput
+        verifyAtLeastOneFieldSet();
+        verifySameElemCountPerField();
+        numNodes = elemCountPerField(1);
+    else
+        numNodes = 0;
+    end
     
     if ~isfield(circle,'nodeLabels')
         temp=[(1:numNodes/2)' flipud(((numNodes/2+1):numNodes)')];
@@ -61,6 +71,12 @@ function circleState = getCircleState(circle)
         circleState.nodeColorsColorscheme=[];
     else
         circleState.nodeColorsColorscheme = circle.nodeColorsColorscheme;
+    end
+    
+    if ~isfield(circle, 'nodeAlpha')
+        circleState.nodeAlpha = .4;
+    else
+        circleState.nodeAlpha = circle.nodeAlpha;
     end
     
     if ~isfield(circle, 'startRadian')

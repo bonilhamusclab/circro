@@ -26,6 +26,7 @@ function AddDiagram_Callback(~, ~)
     
     fns.setEdgeMatrixColorschemeFn = setFieldFn('edgeMatrixColorscheme');
     fns.setNodeColorsColorschemeFn = setFieldFn('nodeColorsColorscheme');
+	fns.setNodeColorsAlphaFn = setFieldFn('nodeColorsAlpha');
     
     dimensionInputs = {'radius', 'labelRadius', 'startRadian'};
     

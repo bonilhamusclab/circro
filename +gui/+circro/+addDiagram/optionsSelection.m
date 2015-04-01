@@ -85,6 +85,7 @@ function callerSetters(h, fns)
     bind(h, 'startRadian', fns.setStartRadianFn);
     bind(h, 'edgeMatrixColorscheme', fns.setEdgeMatrixColorschemeFn);
     bind(h, 'nodeColorsColorscheme', fns.setNodeColorsColorschemeFn);
+    bind(h, 'nodeColorsAlpha', fns.setNodeColorsAlphaFn);
 end
 
 function bindTextBoxes(h)

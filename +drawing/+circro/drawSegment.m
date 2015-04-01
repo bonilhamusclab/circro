@@ -1,4 +1,4 @@
-function drawSegment(startRadian, endRadian, innerR, outerR, color)
+function drawSegment(startRadian, endRadian, innerR, outerR, color, alpha)
     
     radialSteps = linspace(startRadian, endRadian, 100);
 
@@ -17,12 +17,9 @@ function drawSegment(startRadian, endRadian, innerR, outerR, color)
 
     pol=fill(X,Y,'r');
     
-    if ~isempty(color)
-        set(pol,'FaceColor',color)
-    end
-    
-    set(pol,'EdgeColor','k')
-    set(pol,'FaceAlpha',0.4)
+    set(pol, 'FaceColor', color);
+    set(pol, 'EdgeColor', 'k');
+    set(pol, 'FaceAlpha', alpha);
 
 end % drawSegment
 
