@@ -1,4 +1,4 @@
-function [colorscheme, alpha, circleIndex] = colorschemePrompt(v, type, availableIndexes, circleIndex)
+function [colorscheme, alpha, circleIndex] = colorSettingsPrompt(v, type, availableIndexes, circleIndex)
     if nargin < 4
         circleIndex = gui.circro.promptCircleIndex(v, 'Colors Scheme', availableIndexes);
         if circleIndex < 0

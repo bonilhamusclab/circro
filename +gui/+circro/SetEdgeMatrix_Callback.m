@@ -27,7 +27,7 @@ function SetEdgeMatrix_Callback(obj, ~)
         colorscheme = '';
         setColorscheme = questdlg('Set Color Scheme For Edge Weights?');
         if strcmpi(setColorscheme, 'yes')
-            [colorscheme, alpha] = gui.circro.colorschemePrompt(guidata(obj), 'edge', '', circleIndex);
+            [colorscheme, alpha] = gui.circro.colorSettingsPrompt(guidata(obj), 'edge', '', circleIndex);
             Circro('circro.setEdgeMatrix', matrixFullPath, threshold, colorscheme, alpha, circleIndex);
         else
             Circro('circro.setEdgeMatrix', matrixFullPath, threshold, 'circleIndex', circleIndex);

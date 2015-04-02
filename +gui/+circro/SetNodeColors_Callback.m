@@ -16,7 +16,7 @@ end
 colorscheme = '';
 setColorscheme = questdlg('Set Color Settings For Nodes?');
 if strcmpi(setColorscheme, 'yes')
-    [colorscheme, alpha, circleIndex] = gui.circro.colorschemePrompt(guidata(obj), 'node', '', circleIndex);
+    [colorscheme, alpha, circleIndex] = gui.circro.colorSettingsPrompt(guidata(obj), 'node', '', circleIndex);
 end
     
 Circro('circro.setNodeColors', [colors_pathname colors_filename], colorscheme, alpha, circleIndex);

@@ -1,4 +1,4 @@
-function setEdgeMatrixColorscheme(v, varargin)
+function editEdgeColorSettings(v, varargin)
     
     inputs = parseInputParamsSub(v, varargin);
     circleIndex = inputs.circleIndex;
