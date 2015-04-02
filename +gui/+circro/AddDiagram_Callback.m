@@ -12,8 +12,6 @@ function AddDiagram_Callback(~, ~)
         fn = @setterFn;
     end
 
-    fileInputs = {'labels', 'sizes', 'edgeMatrix', 'colors'};
-    
     fns.setLabelsFn = setFieldFn('labels');
     fns.setSizesFn = setFieldFn('sizes');
     fns.setEdgeMatrixFn = setFieldFn('edgeMatrix');
@@ -25,53 +23,68 @@ function AddDiagram_Callback(~, ~)
     fns.setStartRadianFn = setFieldFn('startRadian');
     
     fns.setEdgeColorschemeFn = setFieldFn('edgeColorscheme');
+    fns.setEdgeAlphaFn = setFieldFn('edgeAlpha');
+
     fns.setNodeColorschemeFn = setFieldFn('nodeColorscheme');
-	fns.setNodeColorsAlphaFn = setFieldFn('nodeColorsAlpha');
-    
-    dimensionInputs = {'radius', 'labelRadius', 'startRadian'};
+	fns.setNodeAlphaFn = setFieldFn('nodeAlpha');
     
     h = gui.circro.addDiagram.optionsSelection(fns);
     waitfor(h);
     
-    function ret = emptyOrVal(field)
-        if ~isfield(fields, field)
-            ret = '';
+
+	cmdMap.setNodeLabels.required = {'labels'};
+	cmdMap.setNodeSizes.required = {'sizes'};
+	cmdMap.setNodeColors.required = {'colors'};
+	cmdMap.setEdgeMatrix.required = {'edgeMatrix'};
+	cmdMap.setEdgeThreshold.required = {'edgeThreshold'};
+	cmdMap.setDimensions.named = {'radius', 'labelRadius', 'startRadian'};
+	cmdMap.editEdgeColorSettings.named = {'edgeColorscheme', 'edgeAlpha'};
+	cmdMap.editNodeColorSettings.named = {'nodeColorscheme', 'nodeAlpha'};
+    
+    function val = safeGet(f, default)
+        if nargin < 2
+            default = {};
+        end
+        
+        if isfield(fields, f)
+            val = fields.(f);
         else
-            ret = fields.(field);
+            val = default;
         end
     end
-    
-    if any(cellfun(@(f) isfield(fields, f), fileInputs))
-        inputs = cellfun(@emptyOrVal, fileInputs, 'UniformOutput', 0);
-        Circro('circro.addDiagram', inputs{:});
-    end
-    
-    if isfield(fields, 'edgeThreshold')
-        Circro('circro.setEdgeThreshold', fields.edgeThreshold);
-    end
-    
-    if isfield(fields, 'edgeColorscheme')
-        Circro('circro.setEdgeColorscheme', ...
-            fields.edgeColorscheme);
-    end
-    
-    if isfield(fields, 'nodeColorscheme')
-        Circro('circro.editNodeColorSettings', ...
-            fields.nodeColorscheme);
-    end
-    
-    if any(cellfun(@(f) isfield(fields, f), dimensionInputs))
-        inputs = {};
-        %generate name value pair inputs
-        %TODO: clean code w/ less repitition
-        for i = 1:length(dimensionInputs)
-            field = dimensionInputs{i};
-            if isfield(fields, field)
-                inputs{end + 1} = field;
-                inputs{end + 1} = fields.(field);
+
+	function inputs = getInputs(cmd)
+        required = {};
+        if isfield(cmdMap.(cmd), 'required')
+            requiredParams = cmdMap.(cmd).required;
+            setIndxs = cellfun(@(p) ~isempty(safeGet(p)), requiredParams);
+            required = cellfun(@(p) fields.(p), requiredParams(setIndxs), 'UniformOutput', 0);
+            if isempty(required)
+                inputs = {};
+                return;
             end
         end
-        Circro('circro.setDimensions', inputs{:});
-    end
-    
+   
+        named = {};
+        function updateNamed(f)
+            v = fields.(f);
+            named = [named {f, v}];
+        end
+        if isfield(cmdMap.(cmd), 'named')
+            namedParams = cmdMap.(cmd).named;
+            setNamedIndxs = cellfun(@(p) ~isempty(safeGet(p)), namedParams);
+            cellfun(@updateNamed, namedParams(setNamedIndxs), 'UniformOutput', 0);
+        end
+		inputs = [required, named];
+	end
+
+	function runIfSet(cmd)
+		inputs = getInputs(cmd);
+		if ~isempty(inputs)
+			Circro(['circro.' cmd], inputs{:});
+		end
+	end
+
+	cellfun(@(c) runIfSet(c), fieldnames(cmdMap), 'UniformOutput', 0);
+
 end

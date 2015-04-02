@@ -2,11 +2,11 @@ function editNodeColorSettings(v, varargin)
     
     inputs = parseInputParamsSub(v, varargin);
     circleIndex = inputs.circleIndex;
-	alpha = inputs.alpha;
-    colorscheme = inputs.colorscheme;
+	nodeAlpha = inputs.nodeAlpha;
+    nodeColorscheme = inputs.nodeColorscheme;
     
-    v.circles{circleIndex}.nodeColorscheme = colorscheme;
-	v.circles{circleIndex}.nodeAlpha = alpha;
+    v.circles{circleIndex}.nodeColorscheme = nodeColorscheme;
+	v.circles{circleIndex}.nodeAlpha = nodeAlpha;
     
     guidata(v.hMainFigure,v);
     
@@ -18,20 +18,20 @@ function inputParams = parseInputParamsSub(v, args)
     function p = runParser(circleState, ~)
         
         d.nodeAlpha = circleState.nodeAlpha;
-        d.colorscheme = circleState.nodeColorscheme;
+        d.nodeColorscheme = circleState.nodeColorscheme;
         
         p = inputParser;
         
-        p.addOptional('colorscheme', d.colorscheme, ...
-            utils.validOrEmptyFnGen(utils.colorMapNames, 'editNodeColorSettings', 'colorscheme'));
+        p.addOptional('nodeColorscheme', d.nodeColorscheme, ...
+            utils.validOrEmptyFnGen(utils.colorMapNames, 'editNodeColorSettings', 'nodeColorscheme'));
         
         nodeAlphaValidateFn = @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0});
-        p.addOptional('alpha', d.nodeAlpha, nodeAlphaValidateFn);
+        p.addOptional('nodeAlpha', d.nodeAlpha, nodeAlphaValidateFn);
     
         d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
         p = utils.stringSafeParse(p, args, fieldnames(d), ...
-            d.colorscheme, d.nodeAlpha, d.circleIndex);
+            d.nodeColorscheme, d.nodeAlpha, d.circleIndex);
     end
 
     p = utils.circro.circleIndexParser(@runParser, v);

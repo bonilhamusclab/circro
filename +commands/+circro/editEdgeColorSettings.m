@@ -3,8 +3,8 @@ function editEdgeColorSettings(v, varargin)
     inputs = parseInputParamsSub(v, varargin);
     circleIndex = inputs.circleIndex;
     
-    v.circles{circleIndex}.edgeColorscheme = inputs.colorscheme;
-    v.circles{circleIndex}.edgeAlpha = inputs.alpha;
+    v.circles{circleIndex}.edgeColorscheme = inputs.edgeColorscheme;
+    v.circles{circleIndex}.edgeAlpha = inputs.edgeAlpha;
     
     guidata(v.hMainFigure,v);
     
@@ -16,18 +16,18 @@ function inputParams = parseInputParamsSub(v, args)
     function p = runParser(circleState, ~)
         p = inputParser;
         
-        d.colorscheme = circleState.edgeColorscheme;
-        d.alpha = circleState.edgeAlpha;
+        d.edgeColorscheme = circleState.edgeColorscheme;
+        d.edgeAlpha = circleState.edgeAlpha;
         
-        p.addOptional('colorscheme', d.colorscheme, ...
+        p.addOptional('edgeColorscheme', d.edgeColorscheme, ...
             utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrixColorSettings', 'colorscheme'));
-        p.addOptional('alpha', d.alpha, ...
+        p.addOptional('edgeAlpha', d.edgeAlpha, ...
             @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0}));
 
         d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
 
         p = utils.stringSafeParse(p, args, fieldnames(d), ...
-            d.colorscheme, d.alpha, d.circleIndex);
+            d.edgeColorscheme, d.edgeAlpha, d.circleIndex);
     end
 
     p = utils.circro.circleIndexParser(@runParser, v);

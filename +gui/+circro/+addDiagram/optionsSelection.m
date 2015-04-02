@@ -22,7 +22,7 @@ function varargout = optionsSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 27-Jan-2015 23:19:20
+% Last Modified by GUIDE v2.5 02-Apr-2015 08:50:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,8 +84,9 @@ function callerSetters(h, fns)
     bind(h, 'labelRadius', fns.setLabelRadiusFn);
     bind(h, 'startRadian', fns.setStartRadianFn);
     bind(h, 'edgeColorscheme', fns.setEdgeColorschemeFn);
+    bind(h, 'edgeAlpha', fns.setEdgeAlphaFn);
     bind(h, 'nodeColorscheme', fns.setNodeColorschemeFn);
-    bind(h, 'nodeColorsAlpha', fns.setNodeColorsAlphaFn);
+    bind(h, 'nodeAlpha', fns.setNodeAlphaFn);
 end
 
 function bindTextBoxes(h)
@@ -104,9 +105,14 @@ function bindTextBoxes(h)
 end
 
 function anySet = anyPathFieldSetToFile(handles)
-	pathFields = handles.pathFields;
 
     anySet = 0;
+
+    if ~isfield(handles, 'pathFields')
+        return;
+    end
+    
+	pathFields = handles.pathFields;
 
     function a = anyCells(cells)
         a = 0;
@@ -179,6 +185,7 @@ function bindEdgeMatrixOptions(h)
     bind(h, 'edgeThreshold', updateEditFnGen(h, 'edgeThreshold'));
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeThreshold_edit');
     bindControlEnableToField(h, 'edgeMatrixFile', 'viewEdgeMatrixCdf_pushbutton');
+    bindControlEnableToField(h, 'edgeMatrixFile', 'edgeAlpha_edit');
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeMatrixColormap_popupmenu');
 end
 
@@ -189,7 +196,8 @@ function bindResetFilesEnable(h)
     bindControlEnableToField(h, 'edgeMatrixFile', 'resetEdgeMatrixFile_pushbutton');
 end
 
-function bindDimensions(h)
+function circleState = mockCircleState(h)
+
     fnMap.labelsFile = @fileUtils.circro.loadLabels;
     fnMap.sizesFile = @fileUtils.circro.loadSizes;
     fnMap.colorsFile = @fileUtils.circro.loadColors;
@@ -199,30 +207,31 @@ function bindDimensions(h)
     fieldMap.sizesFile = 'nodeSizes';
     fieldMap.colorsFile = 'nodeColors';
     fieldMap.edgeMatrixFile = 'edgeMatrix';
-    
-    function circleState = mockCircleState()
-        handles = guidata(h);
-        pathFields = handles.pathFields;
-        for i = 1:length(pathFields)
-            field = pathFields{i};
-            if isfield(handles, field) && ~isempty(handles.(field))
-                loadFn = fnMap.(field);
-                circleField = fieldMap.(field);
-                filePath = handles.(field);
-                circle.(circleField) = loadFn(filePath);
-            end
-        end
-        circleState = utils.circro.getCircleState(circle);
+
+    if ~anyPathFieldSetToFile(h)
+        circleState = utils.circro.getCircleState();
+        return;
     end
 
-    function updateDimensions(~)
-        if anyPathFieldSetToFile(guidata(h))
-            circleState = mockCircleState();
-        else
-            circleState.radius = '';
-            circleState.labelRadius = '';
-            circleState.startRadian = '';
+    handles = guidata(h);
+    pathFields = handles.pathFields;
+    for i = 1:length(pathFields)
+        field = pathFields{i};
+        if isfield(handles, field) && ~isempty(handles.(field))
+            loadFn = fnMap.(field);
+            circleField = fieldMap.(field);
+            filePath = handles.(field);
+            circle.(circleField) = loadFn(filePath);
         end
+    end
+    circleState = utils.circro.getCircleState(circle);
+end
+
+function bindDimensions(h)
+    
+    function updateDimensions(~)
+        circleState = mockCircleState(h);
+        
         setBoundField(h, 'radius', circleState.radius);
         setBoundField(h, 'labelRadius', circleState.labelRadius);
         setBoundField(h, 'startRadian', circleState.startRadian);
@@ -243,6 +252,7 @@ end
 
 function bindNodeColorsFields(h)
     bindControlEnableToField(h, 'colorsFile', 'nodeColorsColormap_popupmenu');
+    bindControlEnableToField(h, 'colorsFile', 'nodeAlpha_edit');
 end
 
 % --- Executes just before filesSelection is made visible.
@@ -459,6 +469,7 @@ function radius_edit_CreateFcn(hObject, ~, ~)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
+set(hObject, 'String', num2str(utils.circro.getCircleState().radius));
 end
 
 
@@ -482,6 +493,7 @@ function labelRadius_edit_CreateFcn(hObject, ~, ~)
 % handles    empty - handles not created until after all CreateFcns called
 
 prepForWindowsOs(hObject);
+set(hObject, 'String', num2str(utils.circro.getCircleState().labelRadius));
 end
 
 
@@ -508,6 +520,7 @@ function startRadian_edit_CreateFcn(hObject, ~, ~)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
+set(hObject, 'String', num2str(utils.circro.getCircleState().startRadian));
 
 end
 
@@ -631,4 +644,58 @@ function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
 set(hObject, 'String', ['Select Color Scheme' utils.colorMapNames]);
+end
+
+
+
+function edgeAlpha_edit_Callback(hObject, ~, handles)
+% hObject    handle to edgeAlpha_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edgeAlpha_edit as text
+%        str2double(get(hObject,'String')) returns contents of edgeAlpha_edit as a double
+
+    edgeAlpha = str2double(get(hObject, 'String'));
+    setBoundField(handles.output, 'edgeAlpha', edgeAlpha);
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function edgeAlpha_edit_CreateFcn(hObject, ~, ~)
+% hObject    handle to edgeAlpha_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+prepForWindowsOs(hObject);
+set(hObject, 'String', num2str(utils.circro.getCircleState().edgeAlpha));
+end
+
+
+
+function nodeAlpha_edit_Callback(hObject, ~, handles)
+% hObject    handle to nodeAlpha_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of nodeAlpha_edit as text
+%        str2double(get(hObject,'String')) returns contents of nodeAlpha_edit as a double
+
+    nodeAlpha = str2double(get(hObject, 'String'));
+    setBoundField(handles.output, 'nodeAlpha', nodeAlpha);
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function nodeAlpha_edit_CreateFcn(hObject, ~, ~)
+% hObject    handle to nodeAlpha_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+prepForWindowsOs(hObject);
+
 end
