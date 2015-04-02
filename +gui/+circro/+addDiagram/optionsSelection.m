@@ -198,6 +198,11 @@ end
 
 function circleState = mockCircleState(h)
 
+    if nargin < 1
+        circleState = utils.circro.getCircleState();
+        return;
+    end
+
     fnMap.labelsFile = @fileUtils.circro.loadLabels;
     fnMap.sizesFile = @fileUtils.circro.loadSizes;
     fnMap.colorsFile = @fileUtils.circro.loadColors;
@@ -440,7 +445,8 @@ function edgeThreshold_edit_CreateFcn(hObject, ~, ~)
 % hObject    handle to edgeThreshold_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
+circleState = mockCircleState();
+set(hObject, 'String', num2str(circleState.edgeThreshold));
 prepForWindowsOs(hObject);
 end
 
@@ -608,6 +614,12 @@ function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
     setFieldFromPopupMenu(hObject, handles.output, 'edgeColorscheme');
 end
 
+function setPopupMenuToDefaultState(hControl, field)
+    circleState = mockCircleState();
+    val = circleState.(field);
+    valIndx = find(cellfun(@(c) strcmpi(c, val), get(hControl, 'String')));
+    set(hControl, 'Value', valIndx);
+end
 
 % --- Executes during object creation, after setting all properties.
 function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
@@ -617,8 +629,8 @@ function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-prepForWindowsOs(hObject);
-set(hObject, 'String', ['Select Color Scheme' utils.colorMapNames]);
+    prepForWindowsOs(hObject);
+    setPopupMenuToDefaultState(hObject, 'edgeColorscheme');
 end
 
 
@@ -642,8 +654,8 @@ function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-prepForWindowsOs(hObject);
-set(hObject, 'String', ['Select Color Scheme' utils.colorMapNames]);
+    prepForWindowsOs(hObject);
+    setPopupMenuToDefaultState(hObject, 'nodeColorscheme');
 end
 
 
@@ -670,7 +682,8 @@ function edgeAlpha_edit_CreateFcn(hObject, ~, ~)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
-set(hObject, 'String', num2str(utils.circro.getCircleState().edgeAlpha));
+circleState = mockCircleState();
+set(hObject, 'String', num2str(circleState.edgeAlpha));
 end
 
 
@@ -696,6 +709,8 @@ function nodeAlpha_edit_CreateFcn(hObject, ~, ~)
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
+circleState = mockCircleState();
+set(hObject, 'String', num2str(circleState.nodeAlpha));
 prepForWindowsOs(hObject);
 
 end
