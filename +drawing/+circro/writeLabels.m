@@ -15,10 +15,10 @@ function writeLabels(labels, radius,startRadian)
         %%Special Thanks to JC Mosher for the text alignment
         %%https://github.com/bonilhamusclab/circro/issues/1
         textRotation = theta/pi * 180;
-        alignment = 'right';
+        alignment = 'left';
         if cos(theta) < 0
             textRotation = textRotation + 180;
-            alignment = 'left';
+            alignment = 'right';
         end
         %%
         
