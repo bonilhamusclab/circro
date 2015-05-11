@@ -40,6 +40,10 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alph
     if ~isempty(colorscheme)
         minWeight = min(edgeMatrix(links));
         maxWeight = max(edgeMatrix(links));
+        if(minWeight == maxWeight)
+            minWeight = minWeight - 1;
+            maxWeight = maxWeight + 1;
+        end
         drawing.utils.circro.addColorBar('edgematrix', colorscheme, ...
             minWeight, maxWeight);
     end
