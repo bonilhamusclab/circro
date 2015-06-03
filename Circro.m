@@ -9,8 +9,8 @@ else % instance already running
 end;
 if (nargin) && (ischar(varargin{1})) 
  funcName = varargin{1};
- %fnPath = strcat('commands.',funcName);
- f = str2func(strcat('commands.', funcName));
+ %fnPath = strcat('circro.commands.',funcName);
+ f = str2func(strcat('circro.commands.', funcName));
  v = guidata(h);
  
  histIx = circro.utils.fieldIndex(v, 'history');

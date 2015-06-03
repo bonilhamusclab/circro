@@ -123,11 +123,11 @@ Functions => Circro => Set Edge Threshold (should automatically set the index to
 All GUI functionality can be scripted.
 
 ####Code Architecture
-The [GUI callbacks](https://github.com/bonilhamusclab/circro/tree/master/+gui/) just obtain user input and than invoke a command in the [+commands folder](https://github.com/bonilhamusclab/circro/tree/master/+commands/).
+The [GUI callbacks](https://github.com/bonilhamusclab/circro/tree/mricros_conflict/+circro/+gui/) just obtain user input and than invoke a command in the [+circro/+commands folder](https://github.com/bonilhamusclab/circro/tree/mricros_conflict/+circro/+commands/).
 
 However, the GUI callback does not invoke the command directly, instead the command name & paramaters are passed to the "Circro" command.
 
-For example, the Set/Add Node Labels Callback invokes commands.circro.setNodeLabels via:
+For example, the Set/Add Node Labels Callback invokes circro.commands.circro.setNodeLabels via:
 ```
 Circro('circro.setNodeLabels', labelsFile, circleIndex);
 ```
@@ -157,7 +157,7 @@ Circro('circro.setEdgeThreshold',0.92,2);
 %%%%
 ```
 
-On the to-do list is to create documentation for each of the commands. Until then, the inputs each command takes can be viewed by the command's associated code or by viewing the history output.
+On the to-do list is to create documentation for each of the circro.commands. Until then, the inputs each command takes can be viewed by the command's associated code or by viewing the history output.
 
 ####Editing Graphics Via Code
 Circro is rendered as a Matlab figure, therefore features associated with Matlab plotting are available (data point selection, image export, adding text, etc..)  
@@ -207,7 +207,7 @@ Sample files may be found in the [data folder](https://github.com/bonilhamusclab
 
 ##To Do List
 1. Add Support for plain-text CSV
-2. Add documentation for each of the commands
+2. Add documentation for each of the circro.commands
 
 ##Contributions
 - [Dr. Bonilha Lab at MUSC](http://academicdepartments.musc.edu/neurosciences/neurology/research/bonilha/)
