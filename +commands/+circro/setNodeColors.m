@@ -11,7 +11,7 @@ function setNodeColors(v, colorsFullPath, varargin)
     
     guidata(v.hMainFigure,v);
     
-    drawing.circro.drawCircles(v);
+    circro.drawing.circro.drawCircles(v);
     
 end
 

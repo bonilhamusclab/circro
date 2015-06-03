@@ -3,5 +3,5 @@ function closeDiagrams(v)
         v = rmfield(v, 'circles');
     end
     guidata(v.hMainFigure,v);
-    drawing.circro.drawCircles(v);
+    circro.drawing.circro.drawCircles(v);
 end

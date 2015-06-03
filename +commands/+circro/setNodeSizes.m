@@ -5,7 +5,7 @@ circleIndex = inputParams.circleIndex;
 v.circles{circleIndex}.nodeSizes = circro.fileUtils.circro.loadSizes(sizesFullPath);
 
 guidata(v.hMainFigure,v)
-drawing.circro.drawCircles(v);
+circro.drawing.circro.drawCircles(v);
 
 end
 

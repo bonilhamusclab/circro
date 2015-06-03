@@ -14,7 +14,7 @@ function setEdgeMatrix(v, edgeMatrixFullPath, varargin)
     end
 
     guidata(v.hMainFigure,v);
-    drawing.circro.drawCircles(v);
+    circro.drawing.circro.drawCircles(v);
 end
 
 

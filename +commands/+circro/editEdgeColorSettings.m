@@ -8,7 +8,7 @@ function editEdgeColorSettings(v, varargin)
     
     guidata(v.hMainFigure,v);
     
-    drawing.circro.drawCircles(v);
+    circro.drawing.circro.drawCircles(v);
 end
 
 function inputParams = parseInputParamsSub(v, args)

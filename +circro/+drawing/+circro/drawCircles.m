@@ -1,7 +1,7 @@
 % --- creates renderings
 function drawCircles(v)
     axis square
-    drawing.circro.utils.circro.eraseRenderedObjects(v);
+    circro.drawing.circro.utils.circro.eraseRenderedObjects(v);
     %delete(allchild(v.hAxes));
     colorbar('off');
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
@@ -73,7 +73,7 @@ function drawCircleSub(circle)
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
-        drawing.circro.drawSegment(nextStart, endRadian, radius, outerRadii(segment), color, nodeAlpha);
+        circro.drawing.circro.drawSegment(nextStart, endRadian, radius, outerRadii(segment), color, nodeAlpha);
         
         pause(0.01)
         hold on        
@@ -82,17 +82,17 @@ function drawCircleSub(circle)
     maxColors = max(colors(:));
     minColors = min(colors(:));
     if maxColors - minColors > eps
-        drawing.circro.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
+        circro.drawing.circro.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
             minColors, maxColors);
     end
 
     if appState.drawLabels
-        drawing.circro.writeLabels(labels, labelRadius, startRadian);
+        circro.drawing.circro.writeLabels(labels, labelRadius, startRadian);
     end
 
     if isfield(circle, 'edgeMatrix')
 		colorscheme = str2func(appState.edgeColorscheme);
-        drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, ...
+        circro.drawing.circro.drawLinks(appState.edgeMatrix, appState.edgeThreshold, ...
             startRadian, radius, colorscheme(), appState.edgeAlpha);
     end
 
