@@ -1,9 +1,9 @@
 function varargout = Circro(varargin)
 
 mOutputArgs = {}; % Variable for storing output when GUI returns
-h = gui.getGuiHandle(); 
+h = gui.circro.getGuiHandle(); 
 if (isempty(h)) % new instance
-    h = gui.makeGui(); %set up user interface
+    h = gui.makeCircroGui(); %set up user interface
 else % instance already running
    figure(h);  %Figure exists so bring Figure to the focus
 end;

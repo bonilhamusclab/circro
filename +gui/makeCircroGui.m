@@ -1,5 +1,5 @@
 % --- Declare and create all the user interface objects
-function [vFig] = makeGui()
+function [vFig] = makeCircroGui()
 sz = [980 680]; % figure width, height in pixels
 screensize = get(0,'ScreenSize');
 margin = [ceil((screensize(3)-sz(1))/2) ceil((screensize(4)-sz(2))/2)];
@@ -18,8 +18,8 @@ v.hFileCircoCloseMenu = uimenu('Parent',v.hFileCircoMenu,'Label','Close Diagrams
 v.hEditMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Edit');
 v.hCopyMenu = uimenu('Parent',v.hEditMenu,'Label','Copy','HandleVisibility','callback','Callback', @gui.CopyMenu_Callback);
 v.hFunctionMenu = uimenu('Parent',v.hMainFigure,'HandleVisibility','callback','Label','Functions');
-v.viewHistoryMenu = uimenu('Parent',v.hFunctionMenu, 'Label', 'Echo instructions to command window', 'HandleVisibility', 'callback', 'Callback', @gui.EchoHistory_Callback);
-v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','HandleVisibility','callback','Callback', @gui.ToolbarMenu_Callback);
+v.viewHistoryMenu = uimenu('Parent',v.hFunctionMenu, 'Label', 'Echo instructions to command window', 'HandleVisibility', 'callback', 'Callback', @gui.circro.EchoHistory_Callback);
+v.hToolbarMenu = uimenu('Parent',v.hFunctionMenu,'Label','Show/hide toolbar','HandleVisibility','callback','Callback', @gui.circro.ToolbarMenu_Callback);
 v.hFunctionCircroMenu = uimenu(v.hFunctionMenu, 'Label', 'Circro');
 v.hFunctionCircroSetNodeLabelsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Add Node Labels','HandleVisibility','callback','Callback', @gui.circro.SetNodeLabels_Callback);
 v.hFunctionCircroSetNodeColorsMenu = uimenu(v.hFunctionCircroMenu,'Label','Set/Add Node Colors','HandleVisibility','callback','Callback', @gui.circro.SetNodeColors_Callback);
@@ -50,4 +50,4 @@ v.vprefs.color = [1 1 1]  ; %camera elevation
 guidata(v.hMainFigure,v);%store settings
 vFig = v.hMainFigure;
 set(vFig,'name','Circro');
-%end makeGui()
+%end makeCircroGui()

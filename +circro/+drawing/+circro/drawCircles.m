@@ -99,7 +99,7 @@ function drawCircleSub(circle)
 end
 
 function placeNodeColorBarsSub()
-    h = gui.getGuiHandle();
+    h = gui.circro.getGuiHandle();
     currentColorBars = findall(h.Children, 'Type', 'ColorBar');
     
     nodeColorBars = currentColorBars(arrayfun(...
