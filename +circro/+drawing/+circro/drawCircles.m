@@ -1,7 +1,7 @@
 % --- creates renderings
 function drawCircles(v)
     axis square
-    circro.drawing.circro.utils.circro.eraseRenderedObjects(v);
+    circro.drawing.utils.circro.eraseRenderedObjects(v);
     %delete(allchild(v.hAxes));
     colorbar('off');
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
@@ -82,7 +82,7 @@ function drawCircleSub(circle)
     maxColors = max(colors(:));
     minColors = min(colors(:));
     if maxColors - minColors > eps
-        circro.drawing.circro.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
+        circro.drawing.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
             minColors, maxColors);
     end
 
