@@ -14,9 +14,9 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     
-    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
+    d.circleIndex = circro.utils.circro.addCircleIndexInputCheck(v, p);
 
-    p = utils.stringSafeParse(p, args, fieldnames(d), ...
+    p = circro.utils.stringSafeParse(p, args, fieldnames(d), ...
         d.circleIndex);
 
     inputParams = p.Results;

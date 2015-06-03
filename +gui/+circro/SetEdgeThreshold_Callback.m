@@ -24,7 +24,7 @@ function SetEdgeThreshold_Callback(obj, ~)
         edgeThreshold = value;
     end
 
-    circleState = utils.circro.getCircleState(v.circles{circleIndex});
+    circleState = circro.utils.circro.getCircleState(v.circles{circleIndex});
     currentEdgeThreshold = circleState.edgeThreshold;
 
     f = gui.circro.edgeThresholdPrompt(v.circles{circleIndex}.edgeMatrix, ...

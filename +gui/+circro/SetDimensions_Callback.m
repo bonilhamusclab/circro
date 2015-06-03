@@ -16,7 +16,7 @@ if circleIndex < 1
     return;
 end
 
-circleState = utils.circro.getCircleState(v.circles{circleIndex});
+circleState = circro.utils.circro.getCircleState(v.circles{circleIndex});
 
 prompt = {'Radius:', 'Label Radius:', 'Start Radian:'};
 defaults = {num2str(circleState.radius),num2str(circleState.labelRadius), ...

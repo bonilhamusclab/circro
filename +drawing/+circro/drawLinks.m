@@ -7,7 +7,7 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alph
     anglePerNode = 2 * pi/numberNodes;
     
     drawWeights = zeros(size(links));
-    drawWeights(links) = utils.normalize(edgeMatrix(links), 1, 5);
+    drawWeights(links) = circro.utils.normalize(edgeMatrix(links), 1, 5);
     
     %must be declared before drawLink is invoked
     function theta = nodeTheta(node)
@@ -20,7 +20,7 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alph
     %must be declared before drawLink is invoked
     function color = getColor(weight)
         if ~isempty(colorscheme)
-            color = utils.valueToColor(weight, edgeMatrix(links), colorscheme);
+            color = circro.utils.valueToColor(weight, edgeMatrix(links), colorscheme);
         else
             color = [.5 .5 .5];
         end
@@ -44,7 +44,7 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alph
             minWeight = minWeight - 1;
             maxWeight = maxWeight + 1;
         end
-        drawing.utils.circro.addColorBar('edgematrix', colorscheme, ...
+        drawing.circro.utils.circro.addColorBar('edgematrix', colorscheme, ...
             minWeight, maxWeight);
     end
     

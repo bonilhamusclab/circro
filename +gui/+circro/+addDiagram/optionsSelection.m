@@ -199,7 +199,7 @@ end
 function circleState = mockCircleState(h)
 
     if nargin < 1
-        circleState = utils.circro.getCircleState();
+        circleState = circro.utils.circro.getCircleState();
         return;
     end
 
@@ -214,7 +214,7 @@ function circleState = mockCircleState(h)
     fieldMap.edgeMatrixFile = 'edgeMatrix';
 
     if ~anyPathFieldSetToFile(h)
-        circleState = utils.circro.getCircleState();
+        circleState = circro.utils.circro.getCircleState();
         return;
     end
 
@@ -229,7 +229,7 @@ function circleState = mockCircleState(h)
             circle.(circleField) = loadFn(filePath);
         end
     end
-    circleState = utils.circro.getCircleState(circle);
+    circleState = circro.utils.circro.getCircleState(circle);
 end
 
 function bindDimensions(h)
@@ -475,7 +475,7 @@ function radius_edit_CreateFcn(hObject, ~, ~)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
-set(hObject, 'String', num2str(utils.circro.getCircleState().radius));
+set(hObject, 'String', num2str(circro.utils.circro.getCircleState().radius));
 end
 
 
@@ -499,7 +499,7 @@ function labelRadius_edit_CreateFcn(hObject, ~, ~)
 % handles    empty - handles not created until after all CreateFcns called
 
 prepForWindowsOs(hObject);
-set(hObject, 'String', num2str(utils.circro.getCircleState().labelRadius));
+set(hObject, 'String', num2str(circro.utils.circro.getCircleState().labelRadius));
 end
 
 
@@ -526,7 +526,7 @@ function startRadian_edit_CreateFcn(hObject, ~, ~)
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 prepForWindowsOs(hObject);
-set(hObject, 'String', num2str(utils.circro.getCircleState().startRadian));
+set(hObject, 'String', num2str(circro.utils.circro.getCircleState().startRadian));
 
 end
 

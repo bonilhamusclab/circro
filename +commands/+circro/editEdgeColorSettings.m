@@ -20,17 +20,17 @@ function inputParams = parseInputParamsSub(v, args)
         d.edgeAlpha = circleState.edgeAlpha;
         
         p.addOptional('edgeColorscheme', d.edgeColorscheme, ...
-            utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrixColorSettings', 'colorscheme'));
+            circro.utils.validOrEmptyFnGen(circro.utils.colorMapNames, 'setEdgeMatrixColorSettings', 'colorscheme'));
         p.addOptional('edgeAlpha', d.edgeAlpha, ...
             @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0}));
 
-        d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
+        d.circleIndex = circro.utils.circro.addCircleIndexInputCheck(v, p);
 
-        p = utils.stringSafeParse(p, args, fieldnames(d), ...
+        p = circro.utils.stringSafeParse(p, args, fieldnames(d), ...
             d.edgeColorscheme, d.edgeAlpha, d.circleIndex);
     end
 
-    p = utils.circro.circleIndexParser(@runParser, v);
+    p = circro.utils.circro.circleIndexParser(@runParser, v);
 
     inputParams = p.Results;
 end

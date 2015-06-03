@@ -3,7 +3,7 @@ function toggleLabels(v, varargin)
     
     circleIndex = inputs.circleIndex;
     
-    circleState = utils.circro.getCircleState(v.circles{circleIndex});
+    circleState = circro.utils.circro.getCircleState(v.circles{circleIndex});
     
     v.circles{circleIndex}.showLabels = ~circleState.drawLabels;
 
@@ -14,9 +14,9 @@ end
 function inputParams = parseInputParamsSub(v, args)
     p = inputParser;
     
-    d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
+    d.circleIndex = circro.utils.circro.addCircleIndexInputCheck(v, p);
 
-    p = utils.stringSafeParse(p, args, fieldnames(d), d.circleIndex);
+    p = circro.utils.stringSafeParse(p, args, fieldnames(d), d.circleIndex);
 
     inputParams = p.Results;
 

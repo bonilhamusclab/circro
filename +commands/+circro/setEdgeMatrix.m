@@ -28,17 +28,17 @@ function inputParams = parseInputParamsSub(v, args)
 
         p.addOptional('threshold', d.threshold, @(x) validateattributes(x, {'numeric'},{'real'}));
         p.addOptional('colorscheme', d.colorscheme, ...
-            utils.validOrEmptyFnGen(utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
+            circro.utils.validOrEmptyFnGen(circro.utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
         p.addOptional('alpha', d.alpha, ...
             @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0}));
         
-        d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
+        d.circleIndex = circro.utils.circro.addCircleIndexInputCheck(v, p);
 
-        p = utils.stringSafeParse(p, args, fieldnames(d), ...
+        p = circro.utils.stringSafeParse(p, args, fieldnames(d), ...
             d.threshold, d.colorscheme, d.circleIndex);
     end
 
-    p = utils.circro.circleIndexParser(@runParser, v);
+    p = circro.utils.circro.circleIndexParser(@runParser, v);
 
     inputParams = p.Results;
 end

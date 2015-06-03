@@ -4,7 +4,7 @@ function circleIndex = promptCircleIndex(v, msg, availableIndices)
 % else it does not prompt
 % returns -1 if no circles are yet rendered
 
-    maxCircleIndex = utils.circro.maxCircleIndex(v);
+    maxCircleIndex = circro.utils.circro.maxCircleIndex(v);
     
     if nargin < 3
         availableIndices = 1:maxCircleIndex;

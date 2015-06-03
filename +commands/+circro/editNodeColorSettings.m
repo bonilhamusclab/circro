@@ -23,18 +23,18 @@ function inputParams = parseInputParamsSub(v, args)
         p = inputParser;
         
         p.addOptional('nodeColorscheme', d.nodeColorscheme, ...
-            utils.validOrEmptyFnGen(utils.colorMapNames, 'editNodeColorSettings', 'nodeColorscheme'));
+            circro.utils.validOrEmptyFnGen(circro.utils.colorMapNames, 'editNodeColorSettings', 'nodeColorscheme'));
         
         nodeAlphaValidateFn = @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0});
         p.addOptional('nodeAlpha', d.nodeAlpha, nodeAlphaValidateFn);
     
-        d.circleIndex = utils.circro.addCircleIndexInputCheck(v, p);
+        d.circleIndex = circro.utils.circro.addCircleIndexInputCheck(v, p);
 
-        p = utils.stringSafeParse(p, args, fieldnames(d), ...
+        p = circro.utils.stringSafeParse(p, args, fieldnames(d), ...
             d.nodeColorscheme, d.nodeAlpha, d.circleIndex);
     end
 
-    p = utils.circro.circleIndexParser(@runParser, v);
+    p = circro.utils.circro.circleIndexParser(@runParser, v);
     
     inputParams = p.Results;
 end

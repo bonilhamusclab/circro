@@ -1,7 +1,7 @@
 % --- creates renderings
 function drawCircles(v)
     axis square
-    drawing.utils.circro.eraseRenderedObjects(v);
+    drawing.circro.utils.circro.eraseRenderedObjects(v);
     %delete(allchild(v.hAxes));
     colorbar('off');
     set(v.hMainFigure,'CurrentAxes',v.hAxes)
@@ -31,7 +31,7 @@ function R = getMaxRadiusSub(v, minR)
     R = minR;
     
     function ifLargerSetR(circle)
-        circleState = utils.circro.getCircleState(circle);
+        circleState = circro.utils.circro.getCircleState(circle);
         thisR = max(circleState.outerRadii);
         
         if thisR < circleState.labelRadius && circleState.drawLabels
@@ -50,7 +50,7 @@ end
 function drawCircleSub(circle)
 
     
-    appState = utils.circro.getCircleState(circle);
+    appState = circro.utils.circro.getCircleState(circle);
     
     labels = appState.labels;
     outerRadii = appState.outerRadii;
@@ -69,7 +69,7 @@ function drawCircleSub(circle)
     axis square
     endRadian = startRadian;
     for segment=1:numNodes % draw the circle
-        color=utils.valueToColor(colors(segment),colors,nodeColorscheme());
+        color=circro.utils.valueToColor(colors(segment),colors,nodeColorscheme());
         
         nextStart=endRadian;
         endRadian=nextStart+(2*pi)/numNodes;
@@ -82,7 +82,7 @@ function drawCircleSub(circle)
     maxColors = max(colors(:));
     minColors = min(colors(:));
     if maxColors - minColors > eps
-        drawing.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
+        drawing.circro.utils.circro.addColorBar('nodecolors', nodeColorscheme(),...
             minColors, maxColors);
     end
 

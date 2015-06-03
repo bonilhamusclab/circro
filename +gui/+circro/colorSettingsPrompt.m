@@ -14,17 +14,17 @@ function [colorscheme, alpha, circleIndex] = colorSettingsPrompt(v, type, availa
         msg = 'Edge Color Settings';
     end
     
-    if circleIndex > utils.circro.maxCircleIndex(v)
-        circleState = utils.circro.getCircleState();
+    if circleIndex > circro.utils.circro.maxCircleIndex(v)
+        circleState = circro.utils.circro.getCircleState();
     else
-        circleState = utils.circro.getCircleState(v.circles{circleIndex});
+        circleState = circro.utils.circro.getCircleState(v.circles{circleIndex});
     end
     
     colorscheme = circleState.([type 'Colorscheme']);
     alpha = circleState.([type 'Alpha']);
     
     
-    options = utils.colorMapNames();
+    options = circro.utils.colorMapNames();
     optionsStr = options{end};
     for i = (length(options) - 1): -1: 1
         optionsStr = [options{i} ', ' optionsStr];

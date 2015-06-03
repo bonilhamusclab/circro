@@ -13,7 +13,7 @@ if (nargin) && (ischar(varargin{1}))
  f = str2func(strcat('commands.', funcName));
  v = guidata(h);
  
- histIx = utils.fieldIndex(v, 'history');
+ histIx = circro.utils.fieldIndex(v, 'history');
  v.history(histIx) = {varargin};
  guidata(h, v);
  

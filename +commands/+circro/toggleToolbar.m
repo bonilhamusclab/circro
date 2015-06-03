@@ -26,7 +26,7 @@ function inputParams = parseInputParamsSub(args)
     p.addOptional('toolbar', d.toolbar, ...
         @(x) validatestring(x, {'auto', 'none', 'figure'}));
 
-    p = utils.stringSafeParse(p, args, fieldnames(d), d.toolbar);
+    p = circro.utils.stringSafeParse(p, args, fieldnames(d), d.toolbar);
 
     inputParams = p.Results;
 
