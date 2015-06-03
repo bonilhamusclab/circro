@@ -2,7 +2,7 @@ function setNodeSizes(v, sizesFullPath, varargin)
 inputParams = parseInputParamsSub(v, varargin);
 circleIndex = inputParams.circleIndex;
 
-v.circles{circleIndex}.nodeSizes = fileUtils.circro.loadSizes(sizesFullPath);
+v.circles{circleIndex}.nodeSizes = circro.fileUtils.circro.loadSizes(sizesFullPath);
 
 guidata(v.hMainFigure,v)
 drawing.circro.drawCircles(v);

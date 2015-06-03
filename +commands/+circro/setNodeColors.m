@@ -4,7 +4,7 @@ function setNodeColors(v, colorsFullPath, varargin)
     colorscheme = inputs.colorscheme;
     alhpa = inputs.alpha;
     
-    v.circles{circleIndex}.nodeColors = fileUtils.circro.loadColors(colorsFullPath);
+    v.circles{circleIndex}.nodeColors = circro.fileUtils.circro.loadColors(colorsFullPath);
     
     v.circles{circleIndex}.nodeColorscheme = colorscheme;
     v.circles{circleIndex}.nodeAlpha = alhpa;

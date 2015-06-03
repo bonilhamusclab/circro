@@ -2,7 +2,7 @@ function setNodeLabels(v, labelsFullPath, varargin)
     inputs = parseInputsSub(v, varargin);
     circleIndex = inputs.circleIndex;
     
-    v.circles{circleIndex}.nodeLabels=fileUtils.circro.loadLabels(labelsFullPath);
+    v.circles{circleIndex}.nodeLabels=circro.fileUtils.circro.loadLabels(labelsFullPath);
     guidata(v.hMainFigure,v)
     drawing.circro.drawCircles(v);
 end

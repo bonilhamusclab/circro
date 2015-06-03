@@ -34,7 +34,7 @@ function f = edgeThresholdPrompt(edges, thresholdSetterFn, defThresh)
     f.Visible = 'on';
 
     if ischar(edges)
-        edges = fileUtils.circro.loadMatrix(edges);
+        edges = circro.fileUtils.circro.loadMatrix(edges);
     end
     
     upperIndexes = logical(triu(ones(size(edges)), 1));

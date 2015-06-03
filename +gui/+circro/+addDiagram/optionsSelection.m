@@ -203,10 +203,10 @@ function circleState = mockCircleState(h)
         return;
     end
 
-    fnMap.labelsFile = @fileUtils.circro.loadLabels;
-    fnMap.sizesFile = @fileUtils.circro.loadSizes;
-    fnMap.colorsFile = @fileUtils.circro.loadColors;
-    fnMap.edgeMatrixFile = @fileUtils.circro.loadMatrix;
+    fnMap.labelsFile = @circro.fileUtils.circro.loadLabels;
+    fnMap.sizesFile = @circro.fileUtils.circro.loadSizes;
+    fnMap.colorsFile = @circro.fileUtils.circro.loadColors;
+    fnMap.edgeMatrixFile = @circro.fileUtils.circro.loadMatrix;
     
     fieldMap.labelsFile = 'nodeLabels';
     fieldMap.sizesFile = 'nodeSizes';
