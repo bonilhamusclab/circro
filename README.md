@@ -123,7 +123,7 @@ Functions => Circro => Set Edge Threshold (should automatically set the index to
 All GUI functionality can be scripted.
 
 ####Code Architecture
-The [GUI callbacks](https://github.com/bonilhamusclab/circro/tree/mricros_conflict/+circro/+gui/) just obtain user input and than invoke a command in the [+circro/+commands folder](https://github.com/bonilhamusclab/circro/tree/mricros_conflict/+circro/+commands/).
+The [GUI callbacks](https://github.com/bonilhamusclab/circro/tree/master/+circro/+gui/) just obtain user input and than invoke a command in the [+circro/+commands folder](https://github.com/bonilhamusclab/circro/tree/master/+circro/+commands/).
 
 However, the GUI callback does not invoke the command directly, instead the command name & paramaters are passed to the "Circro" command.
 
