@@ -1,5 +1,5 @@
 function writeLabels(labels, radius,startRadian)
-    regions=[labels(:,1);flipud(labels(:,2))]; % flip right hemisphere regions
+    regions=[labels(:,1); flipud(labels(:,2))];
     numberLabels=size(regions,1);
     radiansPerLabel = 2 * pi/numberLabels;
     for i=1:numberLabels

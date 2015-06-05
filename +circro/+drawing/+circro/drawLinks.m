@@ -11,6 +11,10 @@ function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alph
     
     %must be declared before drawLink is invoked
     function theta = nodeTheta(node)
+        mid = numberNodes/2;
+        if node > mid
+            node = numberNodes - node + mid + 1;
+        end
         theta = startRadian + node * anglePerNode - anglePerNode/2;
     end
 

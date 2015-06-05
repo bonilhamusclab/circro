@@ -41,7 +41,7 @@ function circleState = getCircleState(circle)
     end
     
     if ~isfield(circle,'nodeLabels')
-        temp=[(1:numNodes/2)' flipud(((numNodes/2+1):numNodes)')];
+        temp= [(1:numNodes/2)' ((numNodes/2+1):numNodes)'];
         circleState.labels=(num2cell(temp));
     else
         circleState.labels = circle.nodeLabels;
