@@ -1,6 +1,6 @@
 function drawLinks(edgeMatrix, threshold, startRadian, radius, colorscheme, alpha)
 
-    links=triu(edgeMatrix>threshold);%# this is a random list of connections
+    links=triu(edgeMatrix>threshold);
     [startNodes,stopNodes]=ind2sub(size(links),find(links(:)));
     
     numberNodes=size(edgeMatrix,1);
