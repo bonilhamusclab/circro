@@ -1,0 +1,1 @@
+Circro('circro.setEdgeMatrix','testData/binaryMatrix.xlsx', 0.5, 'jet', 0.7, 1);
