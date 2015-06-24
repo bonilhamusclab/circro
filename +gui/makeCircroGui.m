@@ -47,6 +47,8 @@ v.vprefs.camLight = [];
 v.vprefs.az = 45; %camera azimuth
 v.vprefs.el = 10; %camera elevation
 v.vprefs.color = [1 1 1]  ; %camera elevation
+v.colorMapNames = circro.utils.colorMapNames;
+
 guidata(v.hMainFigure,v);%store settings
 vFig = v.hMainFigure;
 set(vFig,'name','Circro');

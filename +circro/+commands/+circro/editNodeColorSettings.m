@@ -23,7 +23,7 @@ function inputParams = parseInputParamsSub(v, args)
         p = inputParser;
         
         p.addOptional('nodeColorscheme', d.nodeColorscheme, ...
-            circro.utils.validOrEmptyFnGen(circro.utils.colorMapNames, 'editNodeColorSettings', 'nodeColorscheme'));
+            circro.utils.validOrEmptyFnGen(v.colorMapNames, 'editNodeColorSettings', 'nodeColorscheme'));
         
         nodeAlphaValidateFn = @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0});
         p.addOptional('nodeAlpha', d.nodeAlpha, nodeAlphaValidateFn);

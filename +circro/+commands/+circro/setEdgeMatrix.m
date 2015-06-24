@@ -28,7 +28,7 @@ function inputParams = parseInputParamsSub(v, args)
 
         p.addOptional('threshold', d.threshold, @(x) validateattributes(x, {'numeric'},{'real'}));
         p.addOptional('colorscheme', d.colorscheme, ...
-            circro.utils.validOrEmptyFnGen(circro.utils.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
+            circro.utils.validOrEmptyFnGen(v.colorMapNames, 'setEdgeMatrix', 'colorscheme'));
         p.addOptional('alpha', d.alpha, ...
             @(x) validateattributes(x, {'numeric'}, {'<=' 1, '>=', 0}));
         

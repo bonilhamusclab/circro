@@ -24,11 +24,10 @@ function [colorscheme, alpha, circleIndex] = colorSettingsPrompt(v, type, availa
     alpha = circleState.([type 'Alpha']);
     
     
-    options = circro.utils.colorMapNames();
-    optionsStr = options{end};
-    for i = (length(options) - 1): -1: 1
-        optionsStr = [options{i} ', ' optionsStr];
-    end
+    options = v.colorMapNames;
+    options{end + 1} = 'Or Custom Function';
+    optionsStr = strjoin(options, ', ');
+    
     prompt = {sprintf('Colorscheme (%s)', optionsStr), ...
         'Alpha (0 - 1)'};
     name = sprintf('Color Settings for %s', msg);
@@ -36,6 +35,12 @@ function [colorscheme, alpha, circleIndex] = colorSettingsPrompt(v, type, availa
     
     if ~isempty(answer)
         colorscheme = answer{1};
+        [~, status] = gui.circro.utils.addColorMapNameIfCustom(v, colorscheme);
+        if strcmpi(status, 'cancelled')
+            [colorscheme, alpha, circleIndex] = ...
+                gui.circro.colorSettingsPrompt(v, type, availableIndexes, circleIndex);
+            return;
+        end
         alpha = str2double(answer{2});
     else
         colorscheme = '';

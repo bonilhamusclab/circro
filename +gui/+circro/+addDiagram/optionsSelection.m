@@ -621,6 +621,11 @@ function setPopupMenuToDefaultState(hControl, field)
     set(hControl, 'Value', valIndx);
 end
 
+function setPopupColorMapOptions(hObject)
+    names = circro.utils.colorMapNames;
+    set(hObject, 'String', names);
+end
+
 % --- Executes during object creation, after setting all properties.
 function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
 % hObject    handle to edgeMatrixColormap_popupmenu (see GCBO)
@@ -630,6 +635,7 @@ function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
     prepForWindowsOs(hObject);
+    setPopupColorMapOptions(hObject);
     setPopupMenuToDefaultState(hObject, 'edgeColorscheme');
 end
 
@@ -655,6 +661,7 @@ function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
     prepForWindowsOs(hObject);
+    setPopupColorMapOptions(hObject);
     setPopupMenuToDefaultState(hObject, 'nodeColorscheme');
 end
 
