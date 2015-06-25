@@ -22,6 +22,8 @@ function AddDiagram_Callback(~, ~)
     fns.setLabelRadiusFn = setFieldFn('labelRadius');
     fns.setStartRadianFn = setFieldFn('startRadian');
     
+    fns.addColorschemesFn = setFieldFn('colorschemes');
+    
     fns.setEdgeColorschemeFn = setFieldFn('edgeColorscheme');
     fns.setEdgeAlphaFn = setFieldFn('edgeAlpha');
 
@@ -32,6 +34,7 @@ function AddDiagram_Callback(~, ~)
     waitfor(h);
     
 
+    cmdMap.addColorschemes.required = {'colorschemes'};
 	cmdMap.setNodeLabels.required = {'labels'};
 	cmdMap.setNodeSizes.required = {'sizes'};
 	cmdMap.setNodeColors.required = {'colors'};

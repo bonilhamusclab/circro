@@ -35,7 +35,7 @@ function [colorscheme, alpha, circleIndex] = colorSettingsPrompt(v, type, availa
     
     if ~isempty(answer)
         colorscheme = answer{1};
-        [~, status] = gui.circro.utils.addColorMapNameIfCustom(v, colorscheme);
+        [~, status] = gui.circro.utils.addColorschemeIfCustom(v, colorscheme);
         if strcmpi(status, 'cancelled')
             [colorscheme, alpha, circleIndex] = ...
                 gui.circro.colorSettingsPrompt(v, type, availableIndexes, circleIndex);

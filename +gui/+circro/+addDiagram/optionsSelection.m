@@ -22,7 +22,7 @@ function varargout = optionsSelection(varargin)
 
 % Edit the above text to modify the response to help filesSelection
 
-% Last Modified by GUIDE v2.5 02-Apr-2015 08:50:56
+% Last Modified by GUIDE v2.5 24-Jun-2015 17:13:53
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -61,6 +61,10 @@ function setBoundField(h, field, value)
 end
 
 function bind(h, field, fn)
+    if ischar(fn) %fn is just a field to set
+        fn = @(v) setBoundField(h, fn, v);
+    end
+
     handles = guidata(h);
     if ~isfield(handles, 'boundFns')
         handles.boundFns = {};
@@ -87,6 +91,7 @@ function callerSetters(h, fns)
     bind(h, 'edgeAlpha', fns.setEdgeAlphaFn);
     bind(h, 'nodeColorscheme', fns.setNodeColorschemeFn);
     bind(h, 'nodeAlpha', fns.setNodeAlphaFn);
+    bind(h, 'customColorschemes', fns.addColorschemesFn);
 end
 
 function bindTextBoxes(h)
@@ -172,6 +177,18 @@ function bindControlEnableToField(h, field, controlName)
     bind(h, field, @toggle);
 end
 
+function bindControlVisibleToField(h, field, controlName)
+    function toggle(val)
+        handles = guidata(h);
+        Visible = 'off';
+        if val
+            Visible = 'on';
+        end
+        set(handles.(controlName), 'Visible', Visible);
+    end
+    bind(h, field, @toggle);
+end
+
 function fn = updateEditFnGen(h, field)
     function updateEditFn(value)
         handles = guidata(h);
@@ -187,6 +204,7 @@ function bindEdgeMatrixOptions(h)
     bindControlEnableToField(h, 'edgeMatrixFile', 'viewEdgeMatrixCdf_pushbutton');
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeAlpha_edit');
     bindControlEnableToField(h, 'edgeMatrixFile', 'edgeMatrixColormap_popupmenu');
+    bindControlEnableToField(h, 'edgeMatrixFile', 'isCustomEdgeColorscheme_Checkbox');
 end
 
 function bindResetFilesEnable(h)
@@ -258,6 +276,7 @@ end
 function bindNodeColorsFields(h)
     bindControlEnableToField(h, 'colorsFile', 'nodeColorsColormap_popupmenu');
     bindControlEnableToField(h, 'colorsFile', 'nodeAlpha_edit');
+    bindControlEnableToField(h, 'colorsFile', 'isCustomNodeColorscheme_Checkbox');
 end
 
 % --- Executes just before filesSelection is made visible.
@@ -297,6 +316,59 @@ bindDimensionFields(handles.output);
 
 bindNodeColorsFields(handles.output);
 
+    function setCustomColorschemes(colorscheme, type)
+        other = 'Node';
+        if strcmpi(type, 'node')
+            other = 'Edge';
+        end
+        other = ['custom' other 'Colorscheme'];
+        
+        hObj = guidata(handles.output);
+        if isfield(hObj, other)
+            other = hObj.(other);
+        else
+            other = '';
+        end
+        
+        customColorschemes = {};
+        
+        if ~isempty(colorscheme)
+            customColorschemes = {colorscheme};
+        end
+        if ~isempty(other)
+            numColorschemes = length(customColorschemes);
+            customColorschemes{numColorschemes + 1} = other;
+        end
+        
+        setBoundField(handles.output, 'customColorschemes', customColorschemes);
+    end
+
+bind(handles.output, 'isCustomEdgeColorscheme', ...
+    @(v) setBoundField(handles.output, 'isNotCustomEdgeColorscheme', ~v));
+bindControlVisibleToField(handles.output, ...
+    'isNotCustomEdgeColorscheme', 'edgeMatrixColormap_popupmenu');
+bindControlVisibleToField(handles.output, ...
+    'isCustomEdgeColorscheme', 'customEdgeColorscheme_edit');
+bind(handles.output, 'customEdgeColorscheme', ...
+    @(v) setBoundField(handles.output, 'edgeColorscheme', v));
+bind(handles.output, 'isNotCustomEdgeColorscheme', ...
+    @(v) setBoundField(handles.output, 'customEdgeColorscheme', ''));
+bind(handles.output, 'customEdgeColorscheme', ...
+    @(v) setCustomColorschemes(v, 'edge'));
+
+bind(handles.output, 'isCustomNodeColorscheme', ...
+    @(v) setBoundField(handles.output, 'isNotCustomNodeColorscheme', ~v));
+bindControlVisibleToField(handles.output, ...
+    'isNotCustomNodeColorscheme', 'nodeColorsColormap_popupmenu');
+bindControlVisibleToField(handles.output, ...
+    'isCustomNodeColorscheme', 'customNodeColorscheme_edit');
+bind(handles.output, 'customNodeColorscheme', ...
+    @(v) setBoundField(handles.output, 'nodeColorscheme', v));
+bind(handles.output, 'isNotCustomNodeColorscheme', ...
+    @(v) setBoundField(handles.output, 'customNodeColorscheme', ''));
+bind(handles.output, 'customNodeColorscheme', ...
+    @(v) setCustomColorschemes(v, 'node'));
+
 % UIWAIT makes filesSelection wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 end
@@ -327,7 +399,7 @@ function selectFile(fileType, handleField, h)
 end
 
 % --- Executes on button press in selectSizesFile_button.
-function selectLabelsFile_button_Callback(~, ~, handles)
+function selectLabelsFile_button_Callback(~, ~, handles) %#ok
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -335,7 +407,7 @@ function selectLabelsFile_button_Callback(~, ~, handles)
 end
 
 % --- Executes on button press in selectSizesFile_button.
-function selectSizesFile_button_Callback(~, ~, handles)
+function selectSizesFile_button_Callback(~, ~, handles) %#ok
 % hObject    handle to selectSizesFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -344,7 +416,7 @@ end
 
 
 % --- Executes on button press in selectEdgeMatrixFile_button.
-function selectEdgeMatrixFile_button_Callback(~, ~, handles)
+function selectEdgeMatrixFile_button_Callback(~, ~, handles) %#ok
 % hObject    handle to selectEdgeMatrixFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -353,7 +425,7 @@ end
 
 
 % --- Executes on button press in selectColorsFile_button.
-function selectColorsFile_button_Callback(~, ~, handles)
+function selectColorsFile_button_Callback(~, ~, handles) %#ok
 % hObject    handle to selectColorsFile_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA
@@ -369,7 +441,7 @@ function prepForWindowsOs(hObject)
 end
 
 % --- Executes during object creation, after setting all properties.
-function labelsFilePath_txtbox_CreateFcn(hObject, ~, ~)
+function labelsFilePath_txtbox_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to sizesFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -377,7 +449,7 @@ function labelsFilePath_txtbox_CreateFcn(hObject, ~, ~)
 end
 
 % --- Executes during object creation, after setting all properties.
-function sizesFilePath_txtbox_CreateFcn(hObject, ~, ~)
+function sizesFilePath_txtbox_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to sizesFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -385,7 +457,7 @@ function sizesFilePath_txtbox_CreateFcn(hObject, ~, ~)
 end
 
 % --- Executes during object creation, after setting all properties.
-function colorsFilePath_txtbox_CreateFcn(hObject, ~, ~)
+function colorsFilePath_txtbox_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to colorsFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -393,7 +465,7 @@ function colorsFilePath_txtbox_CreateFcn(hObject, ~, ~)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edgeMatrixFilePath_txtbox_CreateFcn(hObject, ~, ~)
+function edgeMatrixFilePath_txtbox_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to edgeMatrixFilePath_txtbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -402,7 +474,7 @@ end
 
 
 % --- Executes on button press in okPushbutton.
-function okPushbutton_Callback(~, ~, handles)
+function okPushbutton_Callback(~, ~, handles)  %#ok
 % hObject    handle to okPushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -418,7 +490,7 @@ function clearAllFields(handles)
 end
 
 % --- Executes on button press in cancelPushbutton.
-function cancelPushbutton_Callback(~, ~, handles)
+function cancelPushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to cancelPushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -429,7 +501,7 @@ close(handles.output);
 end
 
 
-function edgeThreshold_edit_Callback(hObject, ~, handles)
+function edgeThreshold_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to edgeThreshold_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -441,7 +513,7 @@ setBoundField(handles.output, 'edgeThreshold', newThresh);
 end
 
 % --- Executes during object creation, after setting all properties.
-function edgeThreshold_edit_CreateFcn(hObject, ~, ~)
+function edgeThreshold_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to edgeThreshold_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -452,7 +524,7 @@ end
 
 
 % --- Executes on button press in viewEdgeMatrixCdf_pushbutton.
-function viewEdgeMatrixCdf_pushbutton_Callback(~, ~, handles)
+function viewEdgeMatrixCdf_pushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to viewEdgeMatrixCdf_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -467,7 +539,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function radius_edit_CreateFcn(hObject, ~, ~)
+function radius_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to radius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -479,7 +551,7 @@ set(hObject, 'String', num2str(circro.utils.circro.getCircleState().radius));
 end
 
 
-function radius_edit_Callback(hObject, ~, handles)
+function radius_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to radius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -493,7 +565,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function labelRadius_edit_CreateFcn(hObject, ~, ~)
+function labelRadius_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to labelRadius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -503,7 +575,7 @@ set(hObject, 'String', num2str(circro.utils.circro.getCircleState().labelRadius)
 end
 
 
-function labelRadius_edit_Callback(hObject, ~, handles)
+function labelRadius_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to labelRadius_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -518,7 +590,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function startRadian_edit_CreateFcn(hObject, ~, ~)
+function startRadian_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to startRadian_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -531,7 +603,7 @@ set(hObject, 'String', num2str(circro.utils.circro.getCircleState().startRadian)
 end
 
 
-function startRadian_edit_Callback(hObject, ~, handles)
+function startRadian_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to startRadian_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -545,7 +617,7 @@ end
 
 
 % --- Executes when user attempts to close figure1.
-function figure1_CloseRequestFcn(hObject, ~, handles)
+function figure1_CloseRequestFcn(hObject, ~, handles) %#ok
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -562,7 +634,7 @@ end
 
 
 % --- Executes on button press in resetLabelsFile_pushbutton.
-function resetLabelsFile_pushbutton_Callback(~, ~, handles)
+function resetLabelsFile_pushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to resetLabelsFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -571,21 +643,21 @@ end
 
 
 % --- Executes on button press in resetColorsFile_pushbutton.
-function resetColorsFile_pushbutton_Callback(~, ~, handles)
+function resetColorsFile_pushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to resetColorsFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     setBoundField(handles.output, 'colorsFile', '');
 end
 
-function resetSizesFile_pushbutton_Callback(~, ~, handles)
+function resetSizesFile_pushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to resetSizesFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     setBoundField(handles.output, 'sizesFile', '');
 end
 
-function resetEdgeMatrixFile_pushbutton_Callback(~, ~, handles)
+function resetEdgeMatrixFile_pushbutton_Callback(~, ~, handles) %#ok
 % hObject    handle to resetEdgeMatrixFile_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -604,7 +676,7 @@ function setFieldFromPopupMenu(hControl, h, field)
 end
 
 % --- Executes on selection change in edgeMatrixColormap_popupmenu.
-function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles)
+function edgeMatrixColormap_popupmenu_Callback(hObject, ~, handles) %#ok
 % hObject    handle to edgeMatrixColormap_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -627,7 +699,7 @@ function setPopupColorMapOptions(hObject)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~)
+function edgeMatrixColormap_popupmenu_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to edgeMatrixColormap_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -641,7 +713,7 @@ end
 
 
 % --- Executes on selection change in nodeColorsColormap_popupmenu.
-function nodeColorsColormap_popupmenu_Callback(hObject, ~, handles)
+function nodeColorsColormap_popupmenu_Callback(hObject, ~, handles) %#ok
 % hObject    handle to nodeColorsColormap_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -653,7 +725,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
+function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to nodeColorsColormap_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -662,12 +734,12 @@ function nodeColorsColormap_popupmenu_CreateFcn(hObject, ~, ~)
 %       See ISPC and COMPUTER.
     prepForWindowsOs(hObject);
     setPopupColorMapOptions(hObject);
-    setPopupMenuToDefaultState(hObject, 'nodeColorscheme');
+    setPopupMenuToDefaultState(hObject, 'nodeColorscheme');   
 end
 
 
 
-function edgeAlpha_edit_Callback(hObject, ~, handles)
+function edgeAlpha_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to edgeAlpha_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -681,7 +753,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function edgeAlpha_edit_CreateFcn(hObject, ~, ~)
+function edgeAlpha_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to edgeAlpha_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -695,7 +767,7 @@ end
 
 
 
-function nodeAlpha_edit_Callback(hObject, ~, handles)
+function nodeAlpha_edit_Callback(hObject, ~, handles) %#ok
 % hObject    handle to nodeAlpha_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -709,7 +781,7 @@ end
 
 
 % --- Executes during object creation, after setting all properties.
-function nodeAlpha_edit_CreateFcn(hObject, ~, ~)
+function nodeAlpha_edit_CreateFcn(hObject, ~, ~) %#ok
 % hObject    handle to nodeAlpha_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -719,5 +791,86 @@ function nodeAlpha_edit_CreateFcn(hObject, ~, ~)
 circleState = mockCircleState();
 set(hObject, 'String', num2str(circleState.nodeAlpha));
 prepForWindowsOs(hObject);
+
+end
+
+
+% --- Executes on button press in isCustomEdgeColorscheme_Checkbox.
+function isCustomEdgeColorscheme_Checkbox_Callback(hObject, ~, handles) %#ok
+% hObject    handle to isCustomEdgeColorscheme_Checkbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of
+% isCustomEdgeColorscheme_Checkbox
+    val = get(hObject, 'Value');
+    setBoundField(handles.output, 'isCustomEdgeColorscheme', val);
+end
+
+
+% --- Executes on button press in isCustomNodeColorscheme_Checkbox.
+function isCustomNodeColorscheme_Checkbox_Callback(hObject, ~, handles) %#ok
+% hObject    handle to isCustomNodeColorscheme (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of
+% isCustomNodeColorscheme_Checkbox
+    val = get(hObject, 'Value');
+    setBoundField(handles.output, 'isCustomNodeColorscheme', val);
+end
+
+
+function customEdgeColorscheme_edit_Callback(hObject, ~, handles) %#ok
+% hObject    handle to customEdgeColorscheme_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of customEdgeColorscheme_edit as text
+%        str2double(get(hObject,'String')) returns contents of customEdgeColorscheme_edit as a double
+
+    colorscheme = get(hObject, 'String');
+    setBoundField(handles.output, 'customEdgeColorscheme', colorscheme);
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function customEdgeColorscheme_edit_CreateFcn(hObject, ~, ~) %#ok
+% hObject    handle to customEdgeColorscheme_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+end
+
+
+
+function customNodeColorscheme_edit_Callback(hObject, ~, handles) %#ok
+% hObject    handle to customNodeColorscheme_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of customNodeColorscheme_edit as text
+%        str2double(get(hObject,'String')) returns contents of customNodeColorscheme_edit as a double
+    colorscheme = get(hObject, 'String');
+    setBoundField(handles.output, 'customNodeColorscheme', colorscheme);
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function customNodeColorscheme_edit_CreateFcn(hObject, ~, ~) %#ok
+% hObject    handle to customNodeColorscheme_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 end

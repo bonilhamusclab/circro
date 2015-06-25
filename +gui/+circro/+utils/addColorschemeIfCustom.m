@@ -1,4 +1,4 @@
-function [v, status] = addColorMapNameIfCustom(v, colorscheme)
+function [v, status] = addColorschemeIfCustom(v, colorscheme)
     names = v.colorMapNames;
     isName = any(cellfun(@(s) strcmpi(s, colorscheme), names));
     
@@ -8,7 +8,7 @@ function [v, status] = addColorMapNameIfCustom(v, colorscheme)
         q = sprintf('%s is not a default, do you still wish to use it?', colorscheme);
         answer = questdlg(q, 'Colorscheme', 'yes', 'no', 'yes');
         if strcmpi(answer, 'yes')
-            Circro('circro.addColorMapName', colorscheme);
+            Circro('circro.addColorschemes', colorscheme);
             status = 'added';
             v = guidata(v.hMainFigure);
         else
